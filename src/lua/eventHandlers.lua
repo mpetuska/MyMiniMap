@@ -6,4 +6,3 @@
 ADDON.EventHandlers = {}
 local EventHandlers = ADDON.EventHandlers
 
-

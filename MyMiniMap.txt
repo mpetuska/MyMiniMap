@@ -12,5 +12,4 @@ src/lua/eventHandlers.lua
 src/lua/slashCommands.lua
 
 src/lua/init.lua
-src/xml/core.xml
-src/xml/minimap.xml
+src/xml/miniMap.xml

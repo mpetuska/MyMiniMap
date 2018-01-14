@@ -1,0 +1,481 @@
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="MMM" mouseEnabled="true" movable="false" clampedToScreen="true"
+                         hidden="false">
+            <Anchor point="BOTTOMRIGHT" relativeTo="GuiRoot" relativePoint="BOTTOMRIGHT"/>
+
+
+            <!--<Controls>-->
+            <!--<Texture name="$(parent)_WheelBackground" resizeToFitFile="false"-->
+            <!--textureFile="MyMiniMap/resources/MMM_Blank.dds" hidden="false" layer="0">-->
+            <!--<Dimensions x="0" y="0"/>-->
+            <!--<Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>-->
+            <!--</Texture>-->
+            <!--<Texture name="$(parent)_PlayerPin" resizeToFitFile="true" layer="4" scale="1">-->
+            <!--<Anchor relativeTo="MMM_Scroll" point="CENTER" relativePoint="CENTER" />-->
+            <!--</Texture>-->
+            <!--<Texture name="$(parent)_Wheel" resizeToFitFile="false" layer="4" hidden="false" scale="1"-->
+            <!--textureFile="MyMiniMap/resources/MMM_Wheel.dds" alpha="1">-->
+            <!--<Anchor relativeTo="$(parent)" point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT"/>-->
+            <!--<Dimensions x="256" y="256"/>-->
+            <!--</Texture>-->
+            <!--</Controls>-->
+        </TopLevelControl>
+
+        <TopLevelControl name="Fyr_MM" mouseEnabled="true" movable="true" hidden="false">
+            <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER"/>
+            <Controls>
+                <Texture name="$(parent)_Camera" resizeToFitFile="true" layer="4" scale="1" blendmode="ADD">
+                    <Anchor relativeTo="Fyr_MM_Scroll" point="CENTER" relativePoint="CENTER"/>
+                </Texture>
+                <StatusBar name="$(parent)_Bg" layer="1" color="000000" hidden="false">
+                    <AnchorFill/>
+                </StatusBar>
+                <Backdrop name="$(parent)_Border" hidden="false" tier="MEDIUM" layer="OVERLAY">
+                    <Edge file="EsoUI/Art/WorldMap/worldmap_frame_edge.dds" edgeFileWidth="128" edgeFileHeight="16"/>
+                    <Insets left="-6" top="-6" right="6" bottom="6"></Insets>
+                    <OnInitialized>
+                        self:SetCenterColor(0, 0, 0, 0)
+                    </OnInitialized>
+                    <Anchor point="TOPLEFT" relativeTo="Fyr_MM" offsetX="-4" offsetY="-4"></Anchor>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="Fyr_MM"/>
+                </Backdrop>
+                <Label name="$(parent)_ZoomLevel" font="ZoFontGame" layer="1" scale="0.75" hidden="false"
+                       text="ZoomLevel">
+                    <Anchor point="TOPLEFT" relativeTo="Fyr_MM" relativePoint="BOTTOMLEFT"/>
+                </Label>
+                <Control name="Fyr_MM_Frame_Control" mouseEnabled="true" movable="true" alpha="1" hidden="false"
+                         topmost="false" shape="CIRCLE">
+                    <Anchor point="CENTER" relativePoint="CENTER" relativeTo="Fyr_MM" offsetX="0" offsetY="0"></Anchor>
+                    <Controls>
+                        <Texture name="Fyr_MM_Wheel_Background" resizeToFitFile="false"
+                                 textureFile="MyMiniMap/resources/MMM_Blank.dds" hidden="false" layer="0">
+                            <Dimensions x="0" y="0"/>
+                            <Anchor relativeTo="Fyr_MM" point="CENTER" relativePoint="CENTER"/>
+                        </Texture>
+                        <Scroll name="Fyr_MM_Scroll_WheelNS" hidden="false" layer="0">
+                            <Anchor relativeTo="Fyr_MM_Scroll" point="CENTER" relativePoint="CENTER"/>
+                            <Controls>
+                                <Texture name="Fyr_MM_Scroll_WNS_Map_0">
+                                    <Dimensions x="400" y="400"/>
+                                    <Anchor relativeTo="Fyr_MM_Scroll_WheelNS" point="CENTER" relativePoint="CENTER"/>
+                                </Texture>
+                                <StatusBar name="Fyr_MM_Scroll_NS_Sb" layer="1" color="000000" alpha="0" hidden="false">
+                                    <AnchorFill/>
+                                </StatusBar>
+                                <Control name="Fyr_MM_Scroll_NS_Map_Pins" hidden="false" layer="2">
+                                    <Anchor relativeTo="Fyr_MM_Scroll" point="TOPLEFT" relativePoint="TOPLEFT"/>
+                                </Control>
+                            </Controls>
+                            <FadeGradient x1="0" y1="1" size1="20" x2="0" y2="-1" size2="20"/>
+                        </Scroll>
+                        <Scroll name="Fyr_MM_Scroll_WheelWE" hidden="false" layer="0">
+                            <Anchor relativeTo="Fyr_MM_Scroll" point="CENTER" relativePoint="CENTER"/>
+                            <Controls>
+                                <Texture name="Fyr_MM_Scroll_WWE_Map_0">
+                                    <Dimensions x="400" y="400"/>
+                                    <Anchor relativeTo="Fyr_MM_Scroll_WheelNS" point="CENTER" relativePoint="CENTER"/>
+                                </Texture>
+                                <StatusBar name="Fyr_MM_Scroll_WE_Sb" layer="1" color="000000" alpha="0" hidden="false">
+                                    <AnchorFill/>
+                                </StatusBar>
+                                <Control name="Fyr_MM_Scroll_WE_Map_Pins" hidden="false" layer="2">
+                                    <Anchor relativeTo="Fyr_MM_Scroll" point="TOPLEFT" relativePoint="TOPLEFT"/>
+                                </Control>
+                            </Controls>
+                            <FadeGradient x1="1" y1="0" size1="20" x2="-1" y2="0" size2="20"/>
+                        </Scroll>
+                        <Scroll name="Fyr_MM_Scroll_WheelCenter" hidden="false" layer="0" level="0">
+                            <Anchor relativeTo="Fyr_MM_Scroll" point="CENTER" relativePoint="CENTER"/>
+                            <Controls>
+                                <Texture name="Fyr_MM_Scroll_CW_Map_0">
+                                    <Dimensions x="400" y="400"/>
+                                    <Anchor relativeTo="Fyr_MM_Scroll_WheelNS" point="CENTER" relativePoint="CENTER"/>
+                                </Texture>
+                                <StatusBar name="Fyr_MM_Scroll_WC_Sb" layer="1" color="000000" alpha="0" hidden="false">
+                                    <AnchorFill/>
+                                </StatusBar>
+                                <Control name="Fyr_MM_Scroll_CW_Map_Pins" hidden="false" layer="2">
+                                    <Anchor relativeTo="Fyr_MM_Scroll" point="TOPLEFT" relativePoint="TOPLEFT"/>
+                                </Control>
+                            </Controls>
+                        </Scroll>
+                        <StatusBar name="Fyr_MM_Scroll_Frame_Sb" layer="1" color="000000" alpha="0" hidden="false">
+                            <AnchorFill/>
+                        </StatusBar>
+                    </Controls>
+                </Control>
+                <Scroll name="$(parent)_Scroll">
+                    <Anchor relativeTo="Fyr_MM" point="TOPLEFT" relativePoint="TOPLEFT"/>
+                    <Controls>
+                        <Control name="Fyr_MM_Scroll_Map" hidden="false" layer="3">
+                            <Anchor relativeTo="Fyr_MM_Scroll" point="TOPLEFT" relativePoint="TOPLEFT"/>
+                            <Controls>
+                                <Texture name="Fyr_MM_Scroll_Fill" resizeToFitFile="true"
+                                         textureFile="MyMiniMap/resources/MMM_MapBackground.dds" layer="0"
+                                         hidden="false">
+                                    <Anchor relativeTo="Fyr_MM_Scroll" point="CENTER" relativePoint="CENTER"/>
+                                </Texture>
+                                <Control name="Fyr_MM_Scroll_Map_Pins" layer="1">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_GroupPins" layer="1">
+                                    <AnchorFill/>
+                                    <Controls>
+                                        <Texture name="$(parent)_group1" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group1_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group2" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group2_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group3" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group3_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group4" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group4_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group5" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group5_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group6" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group6_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group7" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group7_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group8" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group8_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group9" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group9_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group10" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group10_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group11" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group11_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group12" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group12_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group13" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group13_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group14" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group14_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group15" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group15_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group16" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group16_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group17" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group17_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group18" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group18_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group19" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group19_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group20" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group20_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group21" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group21_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group22" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group22_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group23" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group23_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                        <Texture name="$(parent)_group24" layer="4" scale="1" blendmode="ADD">
+                                            <Controls>
+                                                <Label name="$(parent)_label" font="ZoFontGame" layer="4" color="F07050"
+                                                       text="" scale="0.7">
+                                                    <Anchor point="CENTER" relativeTo="$(parent)"
+                                                            relativePoint="CENTER"/>
+                                                </Label>
+                                            </Controls>
+                                        </Texture>
+                                        <Texture name="$(parent)_group24_incombat" layer="4" scale="1"
+                                                 textureFile="esoui/art/mappins/ava_attackburst_32.dds"
+                                                 blendmode="ADD"></Texture>
+                                    </Controls>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_LocationPins" layer="1">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_POIPins" layer="1">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_WayshrinePins" layer="1">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_QuestPins" layer="2">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_Keeps" layer="3">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_ForwardCamps" layer="3">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_Keeps_Under_Attack" layer="3">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_Kill_Locations" layer="3">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_Objectives" layer="3">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_Links" layer="3">
+                                    <AnchorFill/>
+                                </Control>
+                                <Control name="Fyr_MM_Scroll_Map_Locks" layer="3">
+                                    <AnchorFill/>
+                                </Control>
+                                <Texture name="Fyr_MM_Scroll_Map_0">
+                                    <Dimensions x="400" y="400"/>
+                                    <Anchor relativeTo="Fyr_MM_Scroll_Map" point="TOPLEFT" relativePoint="TOPLEFT"/>
+                                </Texture>
+                            </Controls>
+                        </Control>
+                    </Controls>
+                </Scroll>
+                <Texture name="$(parent)_Player" resizeToFitFile="true" layer="4" scale="1">
+                    <Anchor relativeTo="Fyr_MM_Scroll" point="CENTER" relativePoint="CENTER"
+                            textureFile="MyMiniMap/resources/MMM_PlayerArrow.dds"/>
+                </Texture>
+                <Texture name="$(parent)_Player_incombat" resizeToFitFile="true" layer="1" hidden="false" scale="1">
+                    <Anchor relativeTo="Fyr_MM_Scroll" point="CENTER" relativePoint="CENTER"/>
+                </Texture>
+                <Button name="$(parent)_Close" alpha="0">
+                    <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" offsetX="-4" offsetY="0" relativeTo="Fyr_MM"/>
+                    <Textures normal="EsoUI/Art/Buttons/decline_up.dds" pressed="EsoUI/Art/Buttons/decline_up.dds"
+                              mouseOver="EsoUI/Art/Buttons/decline_over.dds"
+                              disabled="EsoUI/Art/Buttons/decline_up.dds"></Textures>
+                    <OnMouseDown>FyrMM.ToggleVisible()</OnMouseDown>
+                    <OnMouseEnter>FyrMM.MenuTooltip(self, "Hide MiniMap")</OnMouseEnter>
+                    <OnMouseExit>FyrMM.TooltipExit()</OnMouseExit>
+                    <Dimensions x="16" y="16"/>
+                </Button>
+                <Texture name="$(parent)_Frame_Wheel" resizeToFitFile="false" layer="4" hidden="false" scale="1"
+                         textureFile="MyMiniMap/resources/MMM_Wheel.dds" alpha="1">
+                    <Anchor relativeTo="Fyr_MM" point="CENTER" relativePoint="CENTER"/>
+                    <Dimensions x="256" y="256"/>
+                </Texture>
+            </Controls>
+        </TopLevelControl>
+    </Controls>
+</GuiXml>

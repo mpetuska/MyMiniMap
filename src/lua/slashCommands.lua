@@ -16,8 +16,10 @@ ADDON.Commands = {
 	t = function(...)
 		ADDON.Println()
 		ADDON:Print(...)
+	end,
+	toggle = function()
+		Fyr_MM:SetHidden(not Fyr_MM:IsHidden())
 	end
-	
 }
 
 function ADDON.HandleSlashCommands(str)
