@@ -1,0 +1,1 @@
+A simple addon for Elder Scrolls Online aiming to provide a minimap functionality.

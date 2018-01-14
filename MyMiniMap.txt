@@ -6,6 +6,11 @@
 ## DependsOn: 
 ## SavedVariables: DAO
 
+src/lua/settings.lua
+src/lua/util.lua
+src/lua/eventHandlers.lua
+src/lua/slashCommands.lua
 
-Core.lua
-Core.xml
+src/lua/init.lua
+src/xml/core.xml
+src/xml/minimap.xml
