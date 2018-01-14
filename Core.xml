@@ -1,0 +1,25 @@
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="MyMiniMapIndicator" mouseEnabled="true" movable="true" clampedToScreen="true"
+                         hidden="true">
+            <Dimensions x="200" y="25"/>
+            <Anchor point="BOTTOM" relativeTo="GuiRoot" relativePoint="CENTER" offsetY="-20"/>
+
+            <OnInitialized>
+                MyMiniMapIndicator:SetHidden(not IsUnitInCombat('player'))
+            </OnInitialized>
+
+            <OnMoveStop>
+                addon.OnIndicatorMoveStop()
+            </OnMoveStop>
+
+            <Controls>
+                <Label name="$(parent)Label" width="200" height="25" font="ZoFontWinH1" inheritAlpha="true"
+                       color="FF0000"
+                       wrapMode="TRUNCATE" verticalAlignment="TOP" horizontalAlignment="CENTER" text="In Combat!">
+                    <Anchor point="TOP" relativeTo="$(parent)" relativePoint="TOP"/>
+                </Label>
+            </Controls>
+        </TopLevelControl>
+    </Controls>
+</GuiXml>

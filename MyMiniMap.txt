@@ -1,0 +1,11 @@
+## Title: My MiniMap
+## Description: This add-on adds MiniMap functionality to UI
+## Author: |c006600k33ny|r
+## Version: 0.1
+## APIVersion: 100021
+## DependsOn: 
+## SavedVariables: DAO
+
+
+Core.lua
+Core.xml
