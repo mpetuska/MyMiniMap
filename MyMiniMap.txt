@@ -4,7 +4,7 @@
 ## Version: 0.1
 ## APIVersion: 100021
 ## DependsOn: 
-## SavedVariables: DAO
+## SavedVariables: Settings
 
 src/lua/settings.lua
 src/lua/util.lua

@@ -4,11 +4,14 @@
   [] Date:   January 2018
 --]]
 local EventHandlers = ADDON.EventHandlers
+local Settings = ADDON.Settings
 
 local function LoadSavedVariables()
-	for k, _ in pairs(ADDON.Settings.SavedVariables) do
-		ADDON.Settings.SavedVariables[k] = ZO_SavedVars:New(k, 1, nil, ADDON.Settings.Defaults.SavedVariables[k] or {})
-	end
+	ADDON.Settings = ZO_SavedVars:New("Settings", 1, nil, ADDON.DefaultSettings or {})
+end
+
+local function LoadState()
+	MiniMap:SetHidden(Settings.isMinimapHidden)
 end
 
 function EventHandlers.OnAddonLoaded(event, addonName)
@@ -24,6 +27,8 @@ function EventHandlers.OnAddonLoaded(event, addonName)
 	end
 	
 	LoadSavedVariables()
+	LoadState()
+	EVENT_MANAGER:RegisterForUpdate("MyMiniMap", 1, OnUiUpdate)
 end
 
 EVENT_MANAGER:RegisterForEvent(ADDON.name, EVENT_ADD_ON_LOADED, EventHandlers.OnAddonLoaded)

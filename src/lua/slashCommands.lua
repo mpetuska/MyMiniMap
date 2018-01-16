@@ -16,9 +16,29 @@ ADDON.Commands = {
 	t = function(...)
 		ADDON.Println()
 		ADDON:Print(...)
+		
+		if (ADDON.Settings.isInArrowMode) then
+			local _, _, rotation = GetMapPlayerPosition("player")
+			MiniMapPlayerPin:SetTextureCoordsRotation(rotation)
+		else
+			local rotation = GetPlayerCameraHeading()
+			MiniMapPlayerPin:SetTextureCoordsRotation(rotation)
+		end
 	end,
 	toggle = function()
-		Fyr_MM:SetHidden(not Fyr_MM:IsHidden())
+		ADDON.Settings.isMinimapHidden = not ADDON.Settings.isMinimapHidden
+		OnUiUpdate()
+	end,
+	reset = function()
+		ADDON.Settings = ADDON.DefaultSettings
+	end,
+	set = function(...)
+		local args = { ... }
+		local var = ADDON.Settings
+		for i = 1, #args - 1 do
+			var = var[args[i]]
+		end
+		var = args[#args]
 	end
 }
 

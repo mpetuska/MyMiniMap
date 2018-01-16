@@ -6,13 +6,9 @@
 ADDON = {}
 
 ADDON.name = "MyMiniMap"
-ADDON.Settings = {};
+ADDON.Settings = {}
 
-ADDON.Settings.SavedVariables = {
-	DAO
-}
-
-ADDON.Settings.Defaults = {
+ADDON.DefaultSettings = {
 	addonName = "My MiniMap",
 	Theme = {
 		hex = "00FF96"
@@ -23,8 +19,7 @@ ADDON.Settings.Defaults = {
 		normalFontObject = "GameFontNormalLarge",
 		highlightFontObject = "GameFontHighlightLarge"
 	},
-	SavedVariables = {
-	
-	}
+	isMiniMapHidden = false,
+	isInCameraMode = true
 };
 
