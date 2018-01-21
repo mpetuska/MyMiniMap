@@ -1,35 +1,57 @@
 <GuiXml>
     <Controls>
-        <Control name="MiniMapBase" hidden="false" resizeToFitFile="false" inheritsAlpha="true" scale="1"
-                 clampedToScreen="true" virtual="true">
-            <Dimensions x="250" y="250"/>
-        </Control>
-
-        <TopLevelControl name="MiniMap">
-            <Anchor point="BOTTOMRIGHT" relativeTo="GuiRoot" relativePoint="BOTTOMRIGHT"/>
+        <TopLevelControl name="MyMiniMap" shape="CIRCLE" mouseEnabled="true" movable="true" clampedToScreen="true">
+            <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER"/>
+            <Dimensions x="400" y="400"/>
             <Controls>
+                <Scroll name="$(parent)VerticalScroll" hidden="false" layer="0" level="0">
+                    <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                    <Controls>
+                        <Texture name="$(parent)Map">
+                            <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                        </Texture>
+                    </Controls>
+                </Scroll>
 
-                <Texture name="$(parent)Wheel" layer="4" movable="true" mouseEnabled="true"
-                         textureFile="MyMiniMap/resources/wheel.dds" inherits="MiniMapBase">
-                    <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$(parent)"/>
+                <Scroll name="$(parent)CenterScroll" hidden="false" layer="0" level="0">
+                    <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                    <Controls>
+                        <Texture name="$(parent)Map">
+                            <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                        </Texture>
+                    </Controls>
+                </Scroll>
+
+                <Scroll name="$(parent)HorizontalScroll" hidden="false" layer="0">
+                    <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                    <Controls>
+                        <Texture name="$(parent)Map">
+                            <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                        </Texture>
+                    </Controls>
+                    <FadeGradient x1="0" y1="1" size1="20" x2="0" y2="-1" size2="20"/>
+                </Scroll>
+
+                <Texture name="$(parent)Wheel" layer="4" textureFile="MyMiniMap/resources/wheel.dds">
+                    <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)"/>
                 </Texture>
 
-                <Texture name="$(parent)PlayerPin" layer="3" textureFile="MyMiniMap/resources/playerArrow.dds"
-                         inherits="MiniMapBase">
-                    <Dimensions x="30" y="30"/>
+                <Texture name="$(parent)PlayerPin" layer="3" textureFile="MyMiniMap/resources/playerArrow.dds">
                     <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)Wheel"/>
                 </Texture>
 
-                <Texture name="$(parent)World" layer="1"
-                         textureFile="MyMiniMap/resources/blank.dds" inherits="MiniMapBase" movable="false">
-                    <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)Wheel"/>
-                </Texture>
-                <Texture name="$(parent)Background" layer="0"
-                         textureFile="MyMiniMap/resources/roundBackground.dds" inherits="MiniMapBase" movable="false">
-                    <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)Wheel"/>
+                <!--TODO delete-->
+                <Texture name="$(parent)TestTile">
+                    <Dimensions x="400" y="400"/>
+                    <Anchor relativeTo="GuiRoot" point="TOPLEFT" relativePoint="TOPLEFT"/>
+                    <Controls>
+                        <Texture name="$(parent)1" textureFile="MyMiniMap/resources/wheel.dds">
+                            <Dimensions x="400" y="400"/>
+                            <Anchor point="TOPLEFT" relativePoint="TOPLEFT"/>
+                        </Texture>
+                    </Controls>
                 </Texture>
             </Controls>
         </TopLevelControl>
-
     </Controls>
 </GuiXml>

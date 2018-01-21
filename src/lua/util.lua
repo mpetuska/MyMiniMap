@@ -36,29 +36,3 @@ end
 function ADDON.Println()
 	CHAT_SYSTEM:AddMessage(" ");
 end
-
-function OnUiUpdate()
-	MiniMap:SetHidden(ADDON.Settings.isMinimapHidden)
-	
-	if (ADDON.Settings.isInCameraMode) then
-		local rotation = GetPlayerCameraHeading()
-		MiniMapWheel:SetTextureCoordsRotation(-rotation)
-	else
-		local _, _, rotation = GetMapPlayerPosition("player")
-		MiniMapPlayerPin:SetTextureCoordsRotation(rotation)
-	end
-	
-	--TODO WorldMapTileExtraction
-	local tileTexture = (GetMapTileTexture(1)):lower()
-	if tileTexture == nil or tileTexture == "" then
-		tileTexture = "art/maps/tamriel/tamriel_0"
-	end
-	local pos = select(2, tileTexture:find("maps/([%w%-]+)/"))
-	if pos == nil then
-		return "tamriel_0", "tamriel_", "art/maps/tamriel/"
-	end
-	pos = pos + 1
-	local texture = string.gsub(string.sub(tileTexture, pos), ".dds", ""), string.gsub(string.sub(tileTexture, pos), "0.dds", ""), string.sub(tileTexture, 1, pos - 1)
-	
-	MiniMapWorld:SetTexture("art/maps/tamriel/tamriel_0")
-end

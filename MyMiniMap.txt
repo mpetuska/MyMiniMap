@@ -8,8 +8,11 @@
 
 src/lua/settings.lua
 src/lua/util.lua
+src/lua/UIConfig.lua
 src/lua/eventHandlers.lua
 src/lua/slashCommands.lua
 
 src/lua/init.lua
+
 src/xml/miniMap.xml
+

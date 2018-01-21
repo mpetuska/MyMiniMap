@@ -14,16 +14,8 @@ ADDON.Commands = {
 		end
 	},
 	t = function(...)
-		ADDON.Println()
-		ADDON:Print(...)
-		
-		if (ADDON.Settings.isInArrowMode) then
-			local _, _, rotation = GetMapPlayerPosition("player")
-			MiniMapPlayerPin:SetTextureCoordsRotation(rotation)
-		else
-			local rotation = GetPlayerCameraHeading()
-			MiniMapPlayerPin:SetTextureCoordsRotation(rotation)
-		end
+		ADDON.UI.Maps.horizontal:SetHidden(not ADDON.UI.Maps.horizontal:IsHidden());
+		ADDON.UI.Maps.vertical:SetHidden(not ADDON.UI.Maps.vertical:IsHidden());
 	end,
 	toggle = function()
 		ADDON.Settings.isMinimapHidden = not ADDON.Settings.isMinimapHidden
@@ -32,13 +24,8 @@ ADDON.Commands = {
 	reset = function()
 		ADDON.Settings = ADDON.DefaultSettings
 	end,
-	set = function(...)
-		local args = { ... }
-		local var = ADDON.Settings
-		for i = 1, #args - 1 do
-			var = var[args[i]]
-		end
-		var = args[#args]
+	update = function()
+		ADDON.Settings.isUpdateEnabled = not ADDON.Settings.isUpdateEnabled;
 	end
 }
 
