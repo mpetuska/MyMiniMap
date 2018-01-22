@@ -5,6 +5,7 @@
 --]]
 ------------- NAMESPACE -------------
 local UI = ADDON.UI;
+local UpdateInfo;
 -------------------------------------
 local function GatherUIElements()
 	UI.miniMap = MyMiniMap
@@ -12,8 +13,8 @@ local function GatherUIElements()
 	UI.playerPin = MyMiniMapPlayerPin;
 	UI.Scrolls = {
 		center = MyMiniMapCenterScroll,
-		horizontal = MyMiniMapCenterScroll,
-		vertical = MyMiniMapCenterScroll
+		horizontal = MyMiniMapHorizontalScroll,
+		vertical = MyMiniMapVerticalScroll
 	};
 	UI.Maps = {
 		center = MyMiniMapCenterScrollMap,
@@ -25,12 +26,15 @@ local function GatherUIElements()
 		horizontal = {},
 		vertical = {}
 	}
-	UI.isSetup = true;
+	UI.isSetup = false;
 end
 
 function UI:Rescale()
 	local size = ADDON.Settings.MiniMap.size;
+	local playerPinSize = 32 * size / 512;
+	UI.playerPin:SetDimensions(playerPinSize, playerPinSize);
 	UI.wheel:SetDimensions(size, size)
+	UI.miniMap:SetDimensions(size, size)
 	
 	for name, scroll in pairs(UI.Scrolls) do
 		scroll:ClearAnchors();
@@ -43,20 +47,18 @@ function UI:Rescale()
 	UI.Scrolls.horizontal:SetDimensions(size * (scrollScaleBase + scrollScaleOffset), size * (scrollScaleBase - scrollScaleOffset));
 	UI.Scrolls.vertical:SetDimensions(size * (scrollScaleBase - scrollScaleOffset), size * (scrollScaleBase + scrollScaleOffset));
 	
-	local tileSize = size * ADDON.Settings.MiniMap.mapZoom;
 	for name, map in pairs(UI.Maps) do
 		map:ClearAnchors();
-		map:SetDimensions(tileSize, tileSize);
 		map:SetAnchor(CENTER, UI.Scrolls[name], CENTER)
 	end
-	
-	local playerPinSize = 32 / 512 * size;
-	UI.playerPin:SetDimensions(playerPinSize, playerPinSize);
 end
 
 function UI:ConfigureUI()
+	UpdateInfo = ADDON.Settings.MiniMap.UpdateInfo;
 	GatherUIElements();
 	UI:Rescale();
+	
+	UI.isSetup = true;
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -82,58 +84,37 @@ function UI:GetCurrentMapTextureFileInfo()
 	return GetMapTileTexture(pos);
 end
 
-function UI:SetMiniMapRotation(rotation)
-	for _, map in pairs(UI.Maps) do
-		local _, _, _, _, offsetX, offsetY = map:GetAnchor();
-		local mapWidth, mapHeight = map:GetDimensions();
-		local wheelCenterX, wheelCenterY = UI.wheel:GetCenter()
-		local mapCenterX, mapCenterY = map:GetCenter()
-		
-		local dx, dy = wheelCenterX - mapCenterX, wheelCenterY - mapCenterY;
-		local normalizedRotationPointX = (mapWidth / 2 + dx) / mapWidth;
-		local normalizedRotationPointY = (mapHeight / 2 + dy) / mapHeight;
-		map:SetTextureRotation(rotation, normalizedRotationPointX, normalizedRotationPointY)
-	end
-	
-	UI.wheel:SetTextureRotation(rotation)
-	
-	MyMiniMapTestTile:SetTextureRotation(rotation, 0.5, 0.5)
-end
-
-function UI:SetMapTileTexture(tileTexture)
-	for k, map in pairs(UI.Maps) do
-		map:SetTexture(tileTexture);
-	end
-	
-	MyMiniMapTestTile:SetTexture(tileTexture);
-end
-
 function UI:ConstructMap()
-	local tileCountHor, tileCountVer = GetMapNumTiles();
-	local playerX, playerY = GetMapPlayerPosition("player");
+	UpdateInfo.Map.mapId = GetCurrentMapIndex();
+	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
+	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
+	
+	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
+	local tileSize = ADDON.Settings.MiniMap.size * ADDON.Settings.MiniMap.mapZoom;
+	
+	UpdateInfo.Map.width = tileSize * tileCountHor;
+	UpdateInfo.Map.height = tileSize * tileCountVer;
+	for _, map in pairs(UI.Maps) do
+		map:SetDimensions(UpdateInfo.Map.width, UpdateInfo.Map.height)
+	end
 	
 	local x, y = 1, 1;
 	repeat
 		local tileIndex = x + (tileCountHor * (y - 1));
 		local tileTexture = GetMapTileTexture(tileIndex)
-		--TODO
-		for name, control in pairs(UI.MapTiles) do
-			if (control[tileIndex] ~= nil) then
-				control[tileIndex] = WINDOW_MANAGER:CreateControl(UI.Maps[name]:GetName() .. tostring(tileIndex), UI.Maps[name], CT_TEXTURE)
+		for group, mapTileControl in pairs(UI.MapTiles) do
+			if (mapTileControl[tileIndex] == nil) then
+				local parent = UI.Maps[group]
+				local name = UI.Maps[group]:GetName() .. tostring(tileIndex)
+				mapTileControl[tileIndex] = WINDOW_MANAGER:CreateControl(name, parent, CT_TEXTURE)
 			end
 			
-			control[tileIndex]:SetTexture(tileTexture);
-			local tileSize = size * ADDON.Settings.MiniMap.mapZoom;
-			control[tileIndex]:SetDimensions(tileSize, tileSize);
-			control[tileIndex]:SetDrawLayer(1);
-			control[tileIndex]:ClearAndchors();
-			if (x > 1) then
-				control[tileIndex]:SetAnchor(TOPLEFT, control[tileIndex - 1], TOPRIGHT);
-			elseif (y > 1) then
-				control[tileIndex]:SetAnchor(TOPLEFT, control[tileIndex - y], BOTTOMLEFT);
-			else
-				control[tileIndex]:SetAnchor(TOPLEFT, UI.Maps[name], TOPLEFT);
-			end
+			mapTileControl[tileIndex]:SetDrawLayer(1);
+			mapTileControl[tileIndex]:SetTexture(tileTexture);
+			
+			mapTileControl[tileIndex]:SetDimensions(tileSize, tileSize);
+			mapTileControl[tileIndex]:ClearAnchors();
+			mapTileControl[tileIndex]:SetAnchor(TOPLEFT, UI.Maps[group], TOPLEFT, (x - 1) * tileSize, (y - 1) * tileSize);
 		end
 		
 		if (x == tileCountHor and y < tileCountVer) then
@@ -142,49 +123,46 @@ function UI:ConstructMap()
 		else
 			x = x + 1;
 		end
-	until ( x > tileCountHor and y > tileCountVer )
+	until ( x > tileCountHor or y > tileCountVer )
+	MyMiniMapTestTile1:SetTexture(GetMapTileTexture(10))
 end
 
-function UI:UpdateMapTexture()
-	local tileCountHor, tileCountVer = GetMapNumTiles();
-	local playerX, playerY, playerRot = GetMapPlayerPosition("player");
-	local tileX = math.floor(tileCountHor * playerX);
-	local tileY = math.floor(tileCountVer * playerY);
-	local tileIndex = tileX + (tileCountHor * (tileY)) + 1;
-	UI:SetMapTileTexture(GetMapTileTexture(tileIndex));
+function UI:UpdateMapPosition()
+	local playerX, playerY = GetMapPlayerPosition("player");
 	
-	for name, scroll in pairs(ADDON.UI.Scrolls) do
-		local tileW = ADDON.UI.Maps[name]:GetWidth();
-		local scrollCenterW = scroll:GetWidth() / 2;
-		local mapW = tileW * tileCountHor;
-		local hScroll = playerX * mapW;
-		local hPos = hScroll - scrollCenterW;
-		scroll:SetHorizontalScroll(hPos)
+	for _, map in pairs(UI.Maps) do
+		local mapWidth, mapHeight = UpdateInfo.Map.width, UpdateInfo.Map.height;
+		local offsetX, offsetY = mapWidth * (0.5 - playerX), mapHeight * (0.5 - playerY);
 		
-		local tileH = ADDON.UI.Maps[name]:GetHeight();
-		local scrollCenterH = scroll:GetHeight() / 2;
-		local mapH = tileH * tileCountVer;
-		local vScroll = playerY * mapH;
-		local vPos = vScroll - scrollCenterH;
-		scroll:SetHorizontalScroll(vPos)
-		
-		--ADDON:Print(hPos, vPos);
+		map:ClearAnchors();
+		map:SetAnchor(CENTER, UI.wheel, CENTER, offsetX, offsetY);
+	end
+end
+
+function UI:UpdateMapRotation()
+	local rotation = -GetPlayerCameraHeading()
+	for group, mapTiles in pairs(UI.MapTiles) do
+		for i = 1, UpdateInfo.Map.tileCountX * UpdateInfo.Map.tileCountY do
+			local tileWidth, tileHeight = mapTiles[i]:GetDimensions();
+			local tileCenterX, tileCenterY = mapTiles[i]:GetCenter()
+			local wheelCenterX, wheelCenterY = UI.wheel:GetCenter()
+			
+			local dx, dy = wheelCenterX - tileCenterX, wheelCenterY - tileCenterY;
+			local normalizedRotationPointX = ((tileWidth / 2) + dx) / tileWidth;
+			local normalizedRotationPointY = ((tileHeight / 2) + dy) / tileHeight;
+			mapTiles[i]:SetTextureRotation(rotation, normalizedRotationPointX, normalizedRotationPointY)
+		end
 	end
 	
-	--KINDA WORKING--
-	--for name, scroll in pairs(ADDON.UI.Scrolls) do
-	--	local dx = 0.5 - ((playerX * tileCountHor) % 1);
-	--	local dy = 0.5 - ((playerY * tileCountVer) % 1);
-	--	--ADDON:Print("dx", dx, dy)
-	--
-	--	local tileWidth = ADDON.UI.Maps[name]:GetWidth();
-	--	local tileHeight = ADDON.UI.Maps[name]:GetHeight();
-	--	ADDON:Print("dx", -dx, -dy)
-	--	local hScroll = tileWidth * (-dx);
-	--	local vScroll = tileHeight * (-dy);
-	--	--ADDON:Print("hScroll", hScroll)
-	--	scroll:SetHorizontalScroll(hScroll);
-	--	scroll:SetVerticalScroll(vScroll);
-	--end
-	UI:SetMiniMapRotation(-GetPlayerCameraHeading())
+	UI.wheel:SetTextureRotation(rotation)
+	
+	MyMiniMapTestTile:SetTextureRotation(rotation, 0.5, 0.5)
+end
+
+function UI:UpdateMap()
+	if (UpdateInfo.mapId ~= GetCurrentMapIndex() or UpdateInfo.zoneId ~= GetCurrentMapZoneIndex()) then
+		UI:ConstructMap();
+	end
+	UI:UpdateMapPosition();
+	UI:UpdateMapRotation();
 end

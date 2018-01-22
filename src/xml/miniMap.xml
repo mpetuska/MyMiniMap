@@ -2,21 +2,20 @@
     <Controls>
         <TopLevelControl name="MyMiniMap" shape="CIRCLE" mouseEnabled="true" movable="true" clampedToScreen="true">
             <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER"/>
-            <Dimensions x="400" y="400"/>
             <Controls>
-                <Scroll name="$(parent)VerticalScroll" hidden="false" layer="0" level="0">
+                <Scroll name="$(parent)VerticalScroll" hidden="false" layer="0">
                     <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                     <Controls>
-                        <Texture name="$(parent)Map">
+                        <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
                             <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                         </Texture>
                     </Controls>
                 </Scroll>
 
-                <Scroll name="$(parent)CenterScroll" hidden="false" layer="0" level="0">
+                <Scroll name="$(parent)CenterScroll" hidden="false" layer="0">
                     <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                     <Controls>
-                        <Texture name="$(parent)Map">
+                        <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
                             <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                         </Texture>
                     </Controls>
@@ -25,11 +24,11 @@
                 <Scroll name="$(parent)HorizontalScroll" hidden="false" layer="0">
                     <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                     <Controls>
-                        <Texture name="$(parent)Map">
+                        <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
                             <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                         </Texture>
                     </Controls>
-                    <FadeGradient x1="0" y1="1" size1="20" x2="0" y2="-1" size2="20"/>
+                    <!--<FadeGradient x1="0" y1="1" size1="20" x2="0" y2="-1" size2="20"/>-->
                 </Scroll>
 
                 <Texture name="$(parent)Wheel" layer="4" textureFile="MyMiniMap/resources/wheel.dds">
@@ -41,7 +40,7 @@
                 </Texture>
 
                 <!--TODO delete-->
-                <Texture name="$(parent)TestTile">
+                <Texture name="$(parent)TestTile" hidden="true">
                     <Dimensions x="400" y="400"/>
                     <Anchor relativeTo="GuiRoot" point="TOPLEFT" relativePoint="TOPLEFT"/>
                     <Controls>

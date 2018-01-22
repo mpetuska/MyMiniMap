@@ -3,7 +3,7 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
-ADDON.EventHandlers = {}
+
 local EventHandlers = ADDON.EventHandlers
 
 function EventHandlers:OnUiUpdate()
@@ -15,6 +15,6 @@ function EventHandlers:OnUiUpdate()
 		UI:Rescale()
 	end
 	if (ADDON.Settings.isUpdateEnabled) then
-		UI:UpdateMapTexture()
+		UI:UpdateMap()
 	end
 end

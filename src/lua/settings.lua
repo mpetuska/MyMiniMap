@@ -8,6 +8,7 @@ ADDON = {}
 ADDON.name = "MyMiniMap"
 ADDON.Settings = {}
 ADDON.UI = {}
+ADDON.EventHandlers = {}
 
 ADDON.DefaultSettings = {
 	addonName = "My MiniMap",
@@ -26,13 +27,19 @@ ADDON.DefaultSettings = {
 		scrollScaleOffset = 0.15,
 		mapZoom = 1,
 		UpdateInfo = {
-			rotation = 0,
-			playerPos = {
-				x = 0,
-				y = 0
+			Map = {
+				mapId = 0,
+				zoneId = 0,
+				tileCountX = 0,
+				tileCountY = 0,
+				width = 0,
+				height = 0
 			},
-			tileCountX = 1,
-			tileCountY = 1
+			Player = {
+				rotation = 0,
+				normX = 0,
+				normY = 0
+			}
 		}
 	},
 	isMiniMapHidden = true,

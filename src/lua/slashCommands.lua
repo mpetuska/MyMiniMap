@@ -26,6 +26,11 @@ ADDON.Commands = {
 	end,
 	update = function()
 		ADDON.Settings.isUpdateEnabled = not ADDON.Settings.isUpdateEnabled;
+		if (ADDON.Settings.isUpdateEnabled) then
+			ADDON:Print("UI Update is enabled.")
+		else
+			ADDON:Print("UI Update is disabled.")
+		end
 	end
 }
 
