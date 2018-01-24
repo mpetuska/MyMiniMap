@@ -35,22 +35,25 @@
                     <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)"/>
                 </Texture>
 
-                <Texture name="$(parent)PlayerPin" layer="3" textureFile="MyMiniMap/resources/playerArrow.dds">
+                <Texture name="$(parent)PlayerPin" layer="3" textureFile="esoui/art/icons/mapkey/mapkey_player.dds">
                     <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)Wheel"/>
                 </Texture>
-
-                <!--TODO delete-->
-                <Texture name="$(parent)TestTile" hidden="true">
-                    <Dimensions x="400" y="400"/>
-                    <Anchor relativeTo="GuiRoot" point="TOPLEFT" relativePoint="TOPLEFT"/>
-                    <Controls>
-                        <Texture name="$(parent)1" textureFile="MyMiniMap/resources/wheel.dds">
-                            <Dimensions x="400" y="400"/>
-                            <Anchor point="TOPLEFT" relativePoint="TOPLEFT"/>
-                        </Texture>
-                    </Controls>
-                </Texture>
             </Controls>
+
+            <OnInitialized>
+                local this = ...;
+                this.animation, this.timeline = CreateSimpleAnimation(ANIMATION_SCALE, this)
+                this.animation:SetDuration(250)
+                this.animation:SetScaleValues(0.75, 1)
+                this.timeline:SetPlaybackType(ANIMATION_PLAYBACK_ONE_SHOT)
+            </OnInitialized>
+            <OnShow>
+                local this = ...;
+                this.timeline:PlayFromStart()
+            </OnShow>
+            <OnMouseUp>
+                ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y = ADDON.UI.miniMap:GetCenter();
+            </OnMouseUp>
         </TopLevelControl>
     </Controls>
 </GuiXml>

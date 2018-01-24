@@ -5,7 +5,7 @@
 --]]
 ------------- NAMESPACE -------------
 local UI = ADDON.UI;
-local UpdateInfo;
+local UpdateInfo = ADDON.Settings.MiniMap.UpdateInfo;
 -------------------------------------
 local function GatherUIElements()
 	UI.miniMap = MyMiniMap
@@ -31,8 +31,9 @@ end
 
 function UI:Rescale()
 	local size = ADDON.Settings.MiniMap.size;
-	local playerPinSize = 32 * size / 512;
-	UI.playerPin:SetDimensions(playerPinSize, playerPinSize);
+	ADDON.Settings.MiniMap.pinScale = size / 512;
+	UI.playerPin:SetDimensions(32 * ADDON.Settings.MiniMap.pinScale, 32 * ADDON.Settings.MiniMap.pinScale);
+	
 	UI.wheel:SetDimensions(size, size)
 	UI.miniMap:SetDimensions(size, size)
 	
@@ -53,37 +54,20 @@ function UI:Rescale()
 	end
 end
 
+function UI:Reposition()
+	UI.miniMap:ClearAnchors();
+	UI.miniMap:SetAnchor(CENTER, GuiRoot, CENTER, ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y);
+end
+
 function UI:ConfigureUI()
-	UpdateInfo = ADDON.Settings.MiniMap.UpdateInfo;
 	GatherUIElements();
 	UI:Rescale();
-	
+	UI:Reposition()
 	UI.isSetup = true;
 end
-
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
-
-function UI:GetCurrentMapTextureFileInfo()
-	--TODO make it return right tile
-	local horTileCount, verTileCount = GetMapNumTiles();
-	local playerX, playerY, heading = GetMapPlayerPosition("player");
-	local px, py = playerX, playerY;
-	
-	local tileTexture = (GetMapTileTexture()):lower()
-	if tileTexture == nil or tileTexture == "" then
-		return "tamriel_0", "tamriel_", "art/maps/tamriel/"
-	end
-	local pos = select(2, tileTexture:find("maps/([%w%-]+)/"))
-	if pos == nil then
-		return "tamriel_0", "tamriel_", "art/maps/tamriel/"
-	end
-	pos = pos + 1
-	--return string.gsub(string.sub(tileTexture, pos), ".dds", ""), string.gsub(string.sub(tileTexture, pos), "0.dds", ""), string.sub(tileTexture, 1, pos - 1)
-	return GetMapTileTexture(pos);
-end
-
 function UI:ConstructMap()
 	UpdateInfo.Map.mapId = GetCurrentMapIndex();
 	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
@@ -124,7 +108,6 @@ function UI:ConstructMap()
 			x = x + 1;
 		end
 	until ( x > tileCountHor or y > tileCountVer )
-	MyMiniMapTestTile1:SetTexture(GetMapTileTexture(10))
 end
 
 function UI:UpdateMapPosition()
@@ -140,29 +123,33 @@ function UI:UpdateMapPosition()
 end
 
 function UI:UpdateMapRotation()
-	local rotation = -GetPlayerCameraHeading()
-	for group, mapTiles in pairs(UI.MapTiles) do
-		for i = 1, UpdateInfo.Map.tileCountX * UpdateInfo.Map.tileCountY do
-			local tileWidth, tileHeight = mapTiles[i]:GetDimensions();
-			local tileCenterX, tileCenterY = mapTiles[i]:GetCenter()
-			local wheelCenterX, wheelCenterY = UI.wheel:GetCenter()
-			
-			local dx, dy = wheelCenterX - tileCenterX, wheelCenterY - tileCenterY;
-			local normalizedRotationPointX = ((tileWidth / 2) + dx) / tileWidth;
-			local normalizedRotationPointY = ((tileHeight / 2) + dy) / tileHeight;
-			mapTiles[i]:SetTextureRotation(rotation, normalizedRotationPointX, normalizedRotationPointY)
-		end
+	local rotation;
+	if (ADDON.Settings.isInCameraMode) then
+		rotation = GetPlayerCameraHeading();
+	else
+		_, _, rotation = GetMapPlayerPosition("player");
 	end
-	
-	UI.wheel:SetTextureRotation(rotation)
-	
-	MyMiniMapTestTile:SetTextureRotation(rotation, 0.5, 0.5)
+	if (ADDON.Settings.isMapRotationEnabled) then
+		for group, mapTiles in pairs(UI.MapTiles) do
+			for i = 1, UpdateInfo.Map.tileCountX * UpdateInfo.Map.tileCountY do
+				local tileWidth, tileHeight = mapTiles[i]:GetDimensions();
+				local tileCenterX, tileCenterY = mapTiles[i]:GetCenter();
+				local wheelCenterX, wheelCenterY = UI.wheel:GetCenter();
+				
+				local dx, dy = wheelCenterX - tileCenterX, wheelCenterY - tileCenterY;
+				local normalizedRotationPointX = ((tileWidth / 2) + dx) / tileWidth;
+				local normalizedRotationPointY = ((tileHeight / 2) + dy) / tileHeight;
+				mapTiles[i]:SetTextureRotation(-rotation, normalizedRotationPointX, normalizedRotationPointY);
+			end
+		end
+		UI.wheel:SetTextureRotation(-rotation);
+	else
+		UI.playerPin:SetTextureRotation(rotation);
+	end
 end
 
 function UI:UpdateMap()
-	if (UpdateInfo.mapId ~= GetCurrentMapIndex() or UpdateInfo.zoneId ~= GetCurrentMapZoneIndex()) then
-		UI:ConstructMap();
-	end
 	UI:UpdateMapPosition();
 	UI:UpdateMapRotation();
 end
+

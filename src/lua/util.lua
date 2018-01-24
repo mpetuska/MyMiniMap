@@ -4,6 +4,59 @@
   [] Date:   January 2018
 --]]
 
+ADDON.TextureList = {
+	GeneralPins = {
+		playerPointer = "esoui/art/icons/mapkey/mapkey_player.dds",
+		wayshrine = "esoui/art/icons/mapkey/mapkey_wayshrine.dds"
+	},
+	QuestPins = {
+		Assisted = {
+			condition = "EsoUI/Art/Compass/quest_icon_assisted.dds",
+			optionalCondition = "EsoUI/Art/Compass/quest_icon_assisted.dds",
+			ending = "EsoUI/Art/Compass/quest_icon_assisted.dds"
+		},
+		Tracked = {
+			condition = "EsoUI/Art/Compass/quest_icon.dds",
+			optionalCondition = "EsoUI/Art/Compass/quest_icon.dds",
+			ending = "EsoUI/Art/Compass/quest_icon.dds"
+		},
+		Repeatable = {
+			condition = "EsoUI/Art/Compass/quest_icon_assisted.dds",
+			optionalCondition = "EsoUI/Art/Compass/quest_icon_assisted.dds",
+			ending = "EsoUI/Art/Compass/quest_icon_assisted.dds"
+		},
+		RepeatableTracked = {
+			condition = "EsoUI/Art/Compass/quest_icon.dds",
+			optionalCondition = "EsoUI/Art/Compass/quest_icon.dds",
+			ending = "EsoUI/Art/Compass/quest_icon.dds"
+		},
+		questOfferRepeatable = "EsoUI/Art/Compass/quest_icon.dds"
+	},
+	QuestDoorPins = {
+		Assisted = {
+			condition = "EsoUI/Art/Compass/quest_icon_door_assisted.dds",
+			optionalCondition = "EsoUI/Art/Compass/quest_icon_door_assisted.dds",
+			ending = "EsoUI/Art/Compass/quest_icon_door_assisted.dds"
+		},
+		Tracked = {
+			condition = "EsoUI/Art/Compass/quest_icon_door.dds",
+			optionalCondition = "EsoUI/Art/Compass/quest_icon_door.dds",
+			ending = "EsoUI/Art/Compass/quest_icon_door.dds"
+		},
+		Repeatable = {
+			condition = "EsoUI/Art/Compass/quest_icon_door_assisted.dds",
+			optionalCondition = "EsoUI/Art/Compass/quest_icon_door_assisted.dds",
+			ending = "EsoUI/Art/Compass/quest_icon_door_assisted.dds"
+		},
+		RepeatableTracked = {
+			condition = "EsoUI/Art/Compass/quest_icon_door.dds",
+			optionalCondition = "EsoUI/Art/Compass/quest_icon_door.dds",
+			ending = "EsoUI/Art/Compass/quest_icon_door.dds"
+		},
+		questOfferRepeatable = "EsoUI/Art/Compass/quest_icon_door.dds"
+	}
+}
+
 ---Splits the string by the given separator and returns them as vararg.
 ---@param str string
 ---@param sep string
@@ -35,4 +88,8 @@ end
 ---@return void
 function ADDON.Println()
 	CHAT_SYSTEM:AddMessage(" ");
+end
+
+function ADDON:ScheduleSettingsUpdate()
+	ADDON.settingsUpdatePending = true;
 end

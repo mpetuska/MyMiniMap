@@ -6,26 +6,34 @@
 ADDON = {}
 
 ADDON.name = "MyMiniMap"
-ADDON.Settings = {}
 ADDON.UI = {}
 ADDON.EventHandlers = {}
 
+ADDON.Settings = {
+	MiniMap = {
+		UpdateInfo = {
+			Map = {},
+			Player = {}
+		}
+	}
+}
+ADDON.settingsUpdatePending = true;
 ADDON.DefaultSettings = {
 	addonName = "My MiniMap",
 	Theme = {
 		hex = "00FF96"
 	},
-	Button = {
-		xSize = 110,
-		ySize = 25,
-		normalFontObject = "GameFontNormalLarge",
-		highlightFontObject = "GameFontHighlightLarge"
-	},
 	MiniMap = {
 		size = 400,
 		scrollScaleBase = 0.65,
 		scrollScaleOffset = 0.15,
+		pinScale = 1,
 		mapZoom = 1,
+		Position = {
+			x = nil,
+			y = nil
+		},
+		
 		UpdateInfo = {
 			Map = {
 				mapId = 0,
@@ -42,10 +50,9 @@ ADDON.DefaultSettings = {
 			}
 		}
 	},
-	isMiniMapHidden = true,
+	isMiniMapHidden = false,
 	isInCameraMode = true,
+	isMapRotationEnabled = true,
 	isUpdateEnabled = true
-	
-	
 };
 
