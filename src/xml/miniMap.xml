@@ -1,3 +1,8 @@
+<!--
+  [] Author: Martynas Petuska
+  [] E-mail: martynas.petuska@outlook.com
+  [] Date:   January 2018
+-->
 <GuiXml>
     <Controls>
         <TopLevelControl name="MyMiniMap" shape="CIRCLE" mouseEnabled="true" movable="true" clampedToScreen="true">

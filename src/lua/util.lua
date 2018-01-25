@@ -3,6 +3,8 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
+---------------- NAMESPACE ----------------
+-------------------------------------------
 
 ADDON.TextureList = {
 	GeneralPins = {

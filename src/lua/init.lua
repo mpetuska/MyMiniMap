@@ -3,8 +3,10 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
+---------------- NAMESPACE ----------------
 local EventHandlers = ADDON.EventHandlers
 local Settings = ADDON.Settings
+-------------------------------------------
 
 local function LoadSavedVariables()
 	ADDON.Settings = ZO_SavedVars:New("Settings", 1, nil, ADDON.DefaultSettings or {})

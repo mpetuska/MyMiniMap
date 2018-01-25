@@ -1,9 +1,8 @@
 ## Title: My MiniMap
-## Description: This add-on adds MiniMap functionality to UI
-## Author: |c006600k33ny|r
+## Description: This add-on adds MiniMap functionality to UI.
+## Author: |c00FF96k33ny|r
 ## Version: 0.1
 ## APIVersion: 100021
-## DependsOn: 
 ## SavedVariables: Settings
 
 src/lua/settings.lua

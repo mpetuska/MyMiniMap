@@ -3,6 +3,9 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
+---------------- NAMESPACE ----------------
+-------------------------------------------
+
 ADDON.Commands = {
 	help = function()
 		ADDON:Print("List of slash commands:");
@@ -10,7 +13,8 @@ ADDON.Commands = {
 		ADDON:Print("[reset] Resets the default settings.");
 		ADDON:Print("[update] Toggles the minimap updates.");
 		ADDON:Print("[size <size>] Sets the size of the minimap.");
-		ADDON:Print("[mode <camera | player>] Sets the minimap's rotation mode.");
+		ADDON:Print("[mode <camera | player>] Sets the minimap's mode.");
+		ADDON:Print("[rotation <on | off>] Sets the minimap's rotation mode.");
 	end,
 	example = {
 		test = function(...)

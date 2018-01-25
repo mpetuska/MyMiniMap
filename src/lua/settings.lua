@@ -3,11 +3,28 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
+---------------- NAMESPACE ----------------
 ADDON = {}
+-------------------------------------------
 
 ADDON.name = "MyMiniMap"
 ADDON.UI = {}
 ADDON.EventHandlers = {}
+ADDON.UpdateInfo = {
+	Map = {
+		mapId = 0,
+		zoneId = 0,
+		tileCountX = 0,
+		tileCountY = 0,
+		width = 0,
+		height = 0
+	},
+	Player = {
+		rotation = 0,
+		normX = 0,
+		normY = 0
+	}
+}
 
 ADDON.Settings = {
 	MiniMap = {
@@ -34,25 +51,11 @@ ADDON.DefaultSettings = {
 			y = nil
 		},
 		
-		UpdateInfo = {
-			Map = {
-				mapId = 0,
-				zoneId = 0,
-				tileCountX = 0,
-				tileCountY = 0,
-				width = 0,
-				height = 0
-			},
-			Player = {
-				rotation = 0,
-				normX = 0,
-				normY = 0
-			}
-		}
-	},
-	isMiniMapHidden = false,
-	isInCameraMode = true,
-	isMapRotationEnabled = true,
-	isUpdateEnabled = true
+		
+		isMiniMapHidden = false,
+		isInCameraMode = true,
+		isMapRotationEnabled = true,
+		isUpdateEnabled = true
+	}
 };
 

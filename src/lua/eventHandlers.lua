@@ -3,10 +3,10 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
-------------- NAMESPACE -------------
+---------------- NAMESPACE ----------------
 local EventHandlers = ADDON.EventHandlers;
-local UpdateInfo = ADDON.Settings.MiniMap.UpdateInfo;
--------------------------------------
+local UpdateInfo = ADDON.UpdateInfo;
+-------------------------------------------
 
 function EventHandlers.OnUiModeChanged(eventCode, isUiShown)
 	ADDON.Settings.isMiniMapHidden = isUiShown;

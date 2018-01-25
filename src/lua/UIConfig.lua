@@ -3,10 +3,10 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
-------------- NAMESPACE -------------
+---------------- NAMESPACE ----------------
 local UI = ADDON.UI;
-local UpdateInfo = ADDON.Settings.MiniMap.UpdateInfo;
--------------------------------------
+local UpdateInfo = ADDON.UpdateInfo;
+-------------------------------------------
 local function GatherUIElements()
 	UI.miniMap = MyMiniMap
 	UI.wheel = MyMiniMapWheel;
