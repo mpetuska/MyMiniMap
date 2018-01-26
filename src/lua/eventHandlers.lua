@@ -8,19 +8,10 @@ local EventHandlers = ADDON.EventHandlers;
 local UpdateInfo = ADDON.UpdateInfo;
 -------------------------------------------
 
-function EventHandlers.OnUiModeChanged(eventCode, isUiShown)
-	ADDON.Settings.isMiniMapHidden = isUiShown;
-	ADDON:ScheduleSettingsUpdate();
-end
-
-function EventHandlers.OnSettingsModified()
-	if (ADDON.settingsUpdatePending) then
-		ADDON.UI.miniMap:SetHidden(ADDON.Settings.isMiniMapHidden);
-		ADDON.UI:Rescale();
-		ADDON.UI.wheel:SetTextureRotation(0);
-		ADDON.UI.playerPin:SetTextureRotation(0);
-		
-		ADDON.settingsUpdatePending = false;
+function EventHandlers.OnSettingsUpdate()
+	if (not table.compare(ADDON.Settings, ADDON.SnapshotSettings)) then
+		ADDON.SnapshotSettings = table.copy(ADDON.Settings);
+		UI:Reload()
 	end
 end
 
@@ -34,7 +25,9 @@ function EventHandlers.OnUiUpdate()
 		UI:ConstructMap();
 	end
 	
-	if (ADDON.Settings.isUpdateEnabled) then
+	UI.miniMap:SetHidden(ZO_Compass:IsHidden())
+	
+	if (not ADDON.UI.miniMap:IsHidden()) then
 		UI:UpdateMap();
 	end
 end

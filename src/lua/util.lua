@@ -9,53 +9,28 @@
 ADDON.TextureList = {
 	GeneralPins = {
 		playerPointer = "esoui/art/icons/mapkey/mapkey_player.dds",
-		wayshrine = "esoui/art/icons/mapkey/mapkey_wayshrine.dds"
+		wayshrineComplete = "esoui/art/icons/poi/poi_wayshrine_complete.dds",
+		wayshrineIncomplete = "esoui/art/icons/poi/poi_wayshrine_incomplete.dds"
 	},
 	QuestPins = {
-		Assisted = {
-			condition = "EsoUI/Art/Compass/quest_icon_assisted.dds",
-			optionalCondition = "EsoUI/Art/Compass/quest_icon_assisted.dds",
-			ending = "EsoUI/Art/Compass/quest_icon_assisted.dds"
-		},
-		Tracked = {
-			condition = "EsoUI/Art/Compass/quest_icon.dds",
-			optionalCondition = "EsoUI/Art/Compass/quest_icon.dds",
-			ending = "EsoUI/Art/Compass/quest_icon.dds"
-		},
-		Repeatable = {
-			condition = "EsoUI/Art/Compass/quest_icon_assisted.dds",
-			optionalCondition = "EsoUI/Art/Compass/quest_icon_assisted.dds",
-			ending = "EsoUI/Art/Compass/quest_icon_assisted.dds"
-		},
-		RepeatableTracked = {
-			condition = "EsoUI/Art/Compass/quest_icon.dds",
-			optionalCondition = "EsoUI/Art/Compass/quest_icon.dds",
-			ending = "EsoUI/Art/Compass/quest_icon.dds"
-		},
-		questOfferRepeatable = "EsoUI/Art/Compass/quest_icon.dds"
-	},
-	QuestDoorPins = {
-		Assisted = {
-			condition = "EsoUI/Art/Compass/quest_icon_door_assisted.dds",
-			optionalCondition = "EsoUI/Art/Compass/quest_icon_door_assisted.dds",
-			ending = "EsoUI/Art/Compass/quest_icon_door_assisted.dds"
-		},
-		Tracked = {
-			condition = "EsoUI/Art/Compass/quest_icon_door.dds",
-			optionalCondition = "EsoUI/Art/Compass/quest_icon_door.dds",
-			ending = "EsoUI/Art/Compass/quest_icon_door.dds"
+		Unrepeatable = {
+			area = "esoui/art/compass/quest_areapin.dds",
+			areaAssisted = "esoui/art/compass/quest_assistedareapin.dds",
+			available = "esoui/art/compass/quest_available_icon.dds",
+			icon = "esoui/art/compass/quest_icon.dds",
+			iconAssisted = "esoui/art/compass/quest_icon_assisted.dds",
+			iconDoor = "esoui/art/compass/quest_icon_door.dds",
+			iconDoorAssisted = "esoui/art/compass/quest_icon_door_assisted.dds"
 		},
 		Repeatable = {
-			condition = "EsoUI/Art/Compass/quest_icon_door_assisted.dds",
-			optionalCondition = "EsoUI/Art/Compass/quest_icon_door_assisted.dds",
-			ending = "EsoUI/Art/Compass/quest_icon_door_assisted.dds"
-		},
-		RepeatableTracked = {
-			condition = "EsoUI/Art/Compass/quest_icon_door.dds",
-			optionalCondition = "EsoUI/Art/Compass/quest_icon_door.dds",
-			ending = "EsoUI/Art/Compass/quest_icon_door.dds"
-		},
-		questOfferRepeatable = "EsoUI/Art/Compass/quest_icon_door.dds"
+			area = "esoui/art/compass/repeatablequest_areapin.dds",
+			areaAssisted = "esoui/art/compass/repeatablequest_assistedareapin.dds",
+			available = "esoui/art/compass/repeatablequest_available_icon.dds",
+			icon = "esoui/art/compass/repeatablequest_icon.dds",
+			iconAssisted = "esoui/art/compass/repeatablequest_icon_assisted.dds",
+			iconDoor = "esoui/art/compass/repeatablequest_icon_door.dds",
+			iconDoorAssisted = "esoui/art/compass/repeatablequest_icon_door_assisted.dds"
+		}
 	}
 }
 
@@ -92,6 +67,39 @@ function ADDON.Println()
 	CHAT_SYSTEM:AddMessage(" ");
 end
 
-function ADDON:ScheduleSettingsUpdate()
-	ADDON.settingsUpdatePending = true;
+---Copies the table recursively.
+---@param original table
+---@return table
+function table.copy(original)
+	local copy;
+	if type(original) == 'table' then
+		copy = {};
+		for orig_key, orig_value in next, original, nil do
+			copy[table.copy(orig_key)] = table.copy(orig_value);
+		end
+		setmetatable(copy, table.copy(getmetatable(original)));
+	else
+		-- number, string, boolean, etc
+		copy = original;
+	end
+	return copy;
+end
+
+---Recursively compares two tables for equality.
+---@param table1 table
+---@param table2 table
+---@return boolean
+function table.compare(table1, table2)
+	if (type(table1) ~= "table" or type(table2) ~= "table") then
+		return false;
+	end
+	
+	for key, value in pairs(table1) do
+		if (type(value) == "table") then
+			return table.compare(table1[key], table2[key]);
+		elseif (value ~= table2[key]) then
+			return false;
+		end
+		return true;
+	end
 end

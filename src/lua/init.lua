@@ -5,7 +5,6 @@
 --]]
 ---------------- NAMESPACE ----------------
 local EventHandlers = ADDON.EventHandlers
-local Settings = ADDON.Settings
 -------------------------------------------
 
 local function LoadSavedVariables()
@@ -13,12 +12,11 @@ local function LoadSavedVariables()
 end
 
 local function RegisterEvents()
-	EVENT_MANAGER:RegisterForEvent(ADDON.name, EVENT_RETICLE_HIDDEN_UPDATE, EventHandlers.OnUiModeChanged);
 end
 
 local function RegisterUpdates()
-	EVENT_MANAGER:RegisterForUpdate(ADDON.Settings.addonName .. "_UiUpdate", 1, EventHandlers.OnUiUpdate);
-	EVENT_MANAGER:RegisterForUpdate(ADDON.Settings.addonName .. "SettingsUpdate", 1, EventHandlers.OnSettingsModified);
+	EVENT_MANAGER:RegisterForUpdate(ADDON.Settings.addonName .. "_UiUpdate", 2, EventHandlers.OnUiUpdate);
+	EVENT_MANAGER:RegisterForUpdate(ADDON.Settings.addonName .. "_SettingsUpdate", 50, EventHandlers.OnSettingsUpdate);
 end
 
 function EventHandlers.OnAddonLoaded(event, addonName)
@@ -30,10 +28,14 @@ function EventHandlers.OnAddonLoaded(event, addonName)
 	LoadSavedVariables()
 	
 	SLASH_COMMANDS["/mmm"] = ADDON.HandleSlashCommands;
-	ADDON.UI:ConfigureUI();
-	ADDON:ScheduleSettingsUpdate();
+	ADDON.UI:Setup();
+	ADDON.SnapshotSettings = table.copy(ADDON.Settings)
 	RegisterEvents();
 	RegisterUpdates();
+	
+	if (ADDON.Settings.MiniMap.Position.x == nil) then
+		ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y = ADDON.UI.miniMap:GetCenter();
+	end
 end
 
 EVENT_MANAGER:RegisterForEvent(ADDON.name, EVENT_ADD_ON_LOADED, EventHandlers.OnAddonLoaded);

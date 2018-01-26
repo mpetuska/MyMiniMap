@@ -7,9 +7,10 @@
 local UI = ADDON.UI;
 local UpdateInfo = ADDON.UpdateInfo;
 -------------------------------------------
-local function GatherUIElements()
+local function GatherUiElements()
 	UI.miniMap = MyMiniMap
 	UI.wheel = MyMiniMapWheel;
+	UI.background = MyMiniMapBackground;
 	UI.playerPin = MyMiniMapPlayerPin;
 	UI.Scrolls = {
 		center = MyMiniMapCenterScroll,
@@ -26,21 +27,20 @@ local function GatherUIElements()
 		horizontal = {},
 		vertical = {}
 	}
-	UI.isSetup = false;
 end
 
 function UI:Rescale()
-	local size = ADDON.Settings.MiniMap.size;
-	ADDON.Settings.MiniMap.pinScale = size / 512;
-	UI.playerPin:SetDimensions(32 * ADDON.Settings.MiniMap.pinScale, 32 * ADDON.Settings.MiniMap.pinScale);
+	local size = ADDON.baseSize * ADDON.Settings.MiniMap.mapScale;
+	UI.playerPin:SetDimensions(32 * ADDON.Settings.MiniMap.mapScale, 32 * ADDON.Settings.MiniMap.mapScale);
 	
-	UI.wheel:SetDimensions(size, size)
-	UI.miniMap:SetDimensions(size, size)
+	UI.wheel:SetDimensions(size, size);
+	UI.background:SetDimensions(size, size);
+	UI.miniMap:SetDimensions(size, size);
 	
 	for name, scroll in pairs(UI.Scrolls) do
 		scroll:ClearAnchors();
-		scroll:SetScrollBounding(0)
-		scroll:SetAnchor(CENTER, MiniMapTestWheel, CENTER)
+		scroll:SetAnchor(CENTER, MiniMapTestWheel, CENTER);
+		scroll:SetScrollBounding(0);
 	end
 	local scrollScaleBase = ADDON.Settings.MiniMap.scrollScaleBase;
 	local scrollScaleOffset = ADDON.Settings.MiniMap.scrollScaleOffset;
@@ -59,8 +59,8 @@ function UI:Reposition()
 	UI.miniMap:SetAnchor(CENTER, GuiRoot, CENTER, ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y);
 end
 
-function UI:ConfigureUI()
-	GatherUIElements();
+function UI:Setup()
+	GatherUiElements();
 	UI:Rescale();
 	UI:Reposition()
 	UI.isSetup = true;
@@ -74,7 +74,7 @@ function UI:ConstructMap()
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
 	
 	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
-	local tileSize = ADDON.Settings.MiniMap.size * ADDON.Settings.MiniMap.mapZoom;
+	local tileSize = ADDON.baseSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;
 	
 	UpdateInfo.Map.width = tileSize * tileCountHor;
 	UpdateInfo.Map.height = tileSize * tileCountVer;
@@ -151,5 +151,11 @@ end
 function UI:UpdateMap()
 	UI:UpdateMapPosition();
 	UI:UpdateMapRotation();
+end
+
+function UI:Reload()
+	ADDON.UI:Rescale();
+	ADDON.UI.wheel:SetTextureRotation(0);
+	ADDON.UI.playerPin:SetTextureRotation(0);
 end
 

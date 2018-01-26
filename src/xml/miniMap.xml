@@ -6,9 +6,9 @@
 <GuiXml>
     <Controls>
         <TopLevelControl name="MyMiniMap" shape="CIRCLE" mouseEnabled="true" movable="true" clampedToScreen="true">
-            <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER"/>
+            <Anchor point="BOTTOMRIGHT" relativeTo="GuiRoot" relativePoint="BOTTOMRIGHT"/>
             <Controls>
-                <Scroll name="$(parent)VerticalScroll" hidden="false" layer="0">
+                <Scroll name="$(parent)VerticalScroll" hidden="false" layer="1">
                     <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                     <Controls>
                         <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
@@ -17,7 +17,7 @@
                     </Controls>
                 </Scroll>
 
-                <Scroll name="$(parent)CenterScroll" hidden="false" layer="0">
+                <Scroll name="$(parent)CenterScroll" hidden="false" layer="1">
                     <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                     <Controls>
                         <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
@@ -26,7 +26,7 @@
                     </Controls>
                 </Scroll>
 
-                <Scroll name="$(parent)HorizontalScroll" hidden="false" layer="0">
+                <Scroll name="$(parent)HorizontalScroll" hidden="false" layer="1">
                     <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                     <Controls>
                         <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
@@ -36,6 +36,10 @@
                     <!--<FadeGradient x1="0" y1="1" size1="20" x2="0" y2="-1" size2="20"/>-->
                 </Scroll>
 
+                <Texture name="$(parent)Background" layer="0" textureFile="MyMiniMap/resources/roundBackground.dds">
+                    <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)"/>
+                </Texture>
+
                 <Texture name="$(parent)Wheel" layer="4" textureFile="MyMiniMap/resources/wheel.dds">
                     <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)"/>
                 </Texture>
@@ -43,13 +47,19 @@
                 <Texture name="$(parent)PlayerPin" layer="3" textureFile="esoui/art/icons/mapkey/mapkey_player.dds">
                     <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)Wheel"/>
                 </Texture>
+
+                <Texture name="$(parent)T" layer="3" textureFile="esoui/art/icons/mapkey/mapkey_wayshrine.dds"
+                         resizeToFitFile="true" clampedToScreen="true">
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="GuiRoot"/>
+                </Texture>
             </Controls>
 
             <OnInitialized>
                 local this = ...;
-                this.animation, this.timeline = CreateSimpleAnimation(ANIMATION_SCALE, this)
+
+                this.animation, this.timeline = CreateSimpleAnimation(ANIMATION_ALPHA, this)
                 this.animation:SetDuration(250)
-                this.animation:SetScaleValues(0.75, 1)
+                this.animation:SetAlphaValues(0.75, 1)
                 this.timeline:SetPlaybackType(ANIMATION_PLAYBACK_ONE_SHOT)
             </OnInitialized>
             <OnShow>
@@ -57,7 +67,8 @@
                 this.timeline:PlayFromStart()
             </OnShow>
             <OnMouseUp>
-                ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y = ADDON.UI.miniMap:GetCenter();
+                local this = ...;
+                ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y = this:GetCenter();
             </OnMouseUp>
         </TopLevelControl>
     </Controls>

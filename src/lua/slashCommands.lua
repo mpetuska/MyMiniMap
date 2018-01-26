@@ -11,7 +11,6 @@ ADDON.Commands = {
 		ADDON:Print("List of slash commands:");
 		ADDON:Print("[toggle] Shows/hides the minimap.");
 		ADDON:Print("[reset] Resets the default settings.");
-		ADDON:Print("[update] Toggles the minimap updates.");
 		ADDON:Print("[size <size>] Sets the size of the minimap.");
 		ADDON:Print("[mode <camera | player>] Sets the minimap's mode.");
 		ADDON:Print("[rotation <on | off>] Sets the minimap's rotation mode.");
@@ -22,23 +21,12 @@ ADDON.Commands = {
 		end
 	},
 	toggle = function()
-		ADDON.Settings.isMiniMapHidden = not ADDON.Settings.isMiniMapHidden;
-		ADDON:ScheduleSettingsUpdate();
+		ADDON.UI.miniMap:SetHidden(not ADDON.UI.miniMap:IsHidden());
 	end,
 	reset = function()
 		ADDON.Settings = ADDON.DefaultSettings;
 		ADDON.UI:ConfigureUI();
-		ADDON:ScheduleSettingsUpdate();
 		ADDON:Print("Addon settings reset.")
-	end,
-	update = function()
-		ADDON.Settings.isUpdateEnabled = not ADDON.Settings.isUpdateEnabled;
-		ADDON:ScheduleSettingsUpdate();
-		if (ADDON.Settings.isUpdateEnabled) then
-			ADDON:Print("UI Update is enabled.")
-		else
-			ADDON:Print("UI Update is disabled.")
-		end
 	end,
 	size = function(size)
 		if (type(size) == "number") then
@@ -49,7 +37,6 @@ ADDON.Commands = {
 			ADDON.Commands.help();
 			return;
 		end
-		ADDON:ScheduleSettingsUpdate();
 		ADDON:Print("Size updated to", size);
 	end,
 	mode = function(mode)
@@ -63,7 +50,6 @@ ADDON.Commands = {
 			ADDON.Commands.help();
 			return;
 		end
-		ADDON:ScheduleSettingsUpdate();
 		ADDON:Print("Minimap set to rotate with", mode);
 	end,
 	rotation = function(isEnabled)
@@ -77,7 +63,6 @@ ADDON.Commands = {
 			ADDON.Commands.help();
 			return;
 		end
-		ADDON:ScheduleSettingsUpdate();
 		ADDON:Print("Minimap's rotation is", isEnabled);
 	end
 }

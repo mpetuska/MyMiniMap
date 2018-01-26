@@ -7,8 +7,10 @@
 ADDON = {}
 -------------------------------------------
 
-ADDON.name = "MyMiniMap"
+ADDON.name = "MyMiniMap";
+ADDON.baseSize = 512;
 ADDON.UI = {}
+ADDON.UI.isSetup = false;
 ADDON.EventHandlers = {}
 ADDON.UpdateInfo = {
 	Map = {
@@ -34,28 +36,23 @@ ADDON.Settings = {
 		}
 	}
 }
-ADDON.settingsUpdatePending = true;
 ADDON.DefaultSettings = {
 	addonName = "My MiniMap",
 	Theme = {
 		hex = "00FF96"
 	},
 	MiniMap = {
-		size = 400,
+		mapScale = 0.8,
 		scrollScaleBase = 0.65,
 		scrollScaleOffset = 0.15,
-		pinScale = 1,
 		mapZoom = 1,
 		Position = {
 			x = nil,
 			y = nil
-		},
-		
-		
-		isMiniMapHidden = false,
-		isInCameraMode = true,
-		isMapRotationEnabled = true,
-		isUpdateEnabled = true
-	}
+		}
+	},
+	isInCameraMode = true,
+	isMapRotationEnabled = true,
+	isUpdateEnabled = true
 };
 
