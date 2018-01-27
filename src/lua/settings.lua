@@ -27,6 +27,10 @@ ADDON.UpdateInfo = {
 		normY = 0
 	}
 }
+ADDON.Boundaries = {
+	mapZoomMin = 0.45;
+	mapZoomMax = 1.75;
+}
 
 ADDON.Settings = {
 	MiniMap = {
@@ -42,7 +46,7 @@ ADDON.DefaultSettings = {
 		hex = "00FF96"
 	},
 	MiniMap = {
-		mapScale = 0.8,
+		mapScale = 0.6,
 		scrollScaleBase = 0.65,
 		scrollScaleOffset = 0.15,
 		mapZoom = 1,

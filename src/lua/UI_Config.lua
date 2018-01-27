@@ -27,6 +27,11 @@ local function GatherUiElements()
 		horizontal = {},
 		vertical = {}
 	}
+	UI.Pins = {
+		center = MyMiniMapCenterScrollPins,
+		horizontal = MyMiniMapHorizontalScrollPins,
+		vertical = MyMiniMapVerticalScrollPins
+	}
 end
 
 function UI:Rescale()
@@ -113,6 +118,7 @@ end
 function UI:UpdateMapPosition()
 	local playerX, playerY = GetMapPlayerPosition("player");
 	
+	UpdateInfo.Player.normX, UpdateInfo.Player.normY = playerX, playerY;
 	for _, map in pairs(UI.Maps) do
 		local mapWidth, mapHeight = UpdateInfo.Map.width, UpdateInfo.Map.height;
 		local offsetX, offsetY = mapWidth * (0.5 - playerX), mapHeight * (0.5 - playerY);
@@ -129,6 +135,7 @@ function UI:UpdateMapRotation()
 	else
 		_, _, rotation = GetMapPlayerPosition("player");
 	end
+	
 	if (ADDON.Settings.isMapRotationEnabled) then
 		for group, mapTiles in pairs(UI.MapTiles) do
 			for i = 1, UpdateInfo.Map.tileCountX * UpdateInfo.Map.tileCountY do
@@ -149,8 +156,19 @@ function UI:UpdateMapRotation()
 end
 
 function UI:UpdateMap()
-	UI:UpdateMapPosition();
-	UI:UpdateMapRotation();
+	local playerX, playerY = GetMapPlayerPosition("player");
+	if (UpdateInfo.Player.normX ~= playerX or UpdateInfo.Player.normY ~= playerY) then
+		UI:UpdateMapPosition();
+	end
+	local rotation;
+	if (ADDON.Settings.isInCameraMode) then
+		rotation = GetPlayerCameraHeading();
+	else
+		_, _, rotation = GetMapPlayerPosition("player");
+	end
+	if (UpdateInfo.Player.rotation ~= rotation) then
+		UI:UpdateMapRotation();
+	end
 end
 
 function UI:Reload()

@@ -14,6 +14,7 @@
                         <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
                             <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                         </Texture>
+                        <Control name="$(parent)Pins" layer="2"/>
                     </Controls>
                 </Scroll>
 
@@ -23,6 +24,7 @@
                         <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
                             <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                         </Texture>
+                        <Control name="$(parent)Pins" layer="2"/>
                     </Controls>
                 </Scroll>
 
@@ -32,6 +34,7 @@
                         <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
                             <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                         </Texture>
+                        <Control name="$(parent)Pins" layer="2"/>
                     </Controls>
                     <!--<FadeGradient x1="0" y1="1" size1="20" x2="0" y2="-1" size2="20"/>-->
                 </Scroll>
@@ -66,10 +69,24 @@
                 local this = ...;
                 this.timeline:PlayFromStart()
             </OnShow>
-            <OnMouseUp>
+            <OnMoveStop>
                 local this = ...;
                 ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y = this:GetCenter();
-            </OnMouseUp>
+            </OnMoveStop>
+            <OnMouseWheel>
+                local this, delta, ctrl, alt, shift, command = ...;
+
+                if (shift) then
+                local newZoom = ADDON.Settings.MiniMap.mapZoom + (delta * 0.1);
+                newZoom = math.max(newZoom, ADDON.Boundaries.mapZoomMin);
+                newZoom = math.min(newZoom, ADDON.Boundaries.mapZoomMax);
+
+                ADDON.Settings.MiniMap.mapZoom = newZoom;
+                ADDON.UI:ConstructMap();
+                ADDON.UI:UpdateMapPosition();
+                ADDON.UI:UpdateMapRotation();
+                end
+            </OnMouseWheel>
         </TopLevelControl>
     </Controls>
 </GuiXml>

@@ -7,7 +7,8 @@
 
 src/lua/settings.lua
 src/lua/util.lua
-src/lua/UIConfig.lua
+src/lua/UI_Utils.lua
+src/lua/UI_Config.lua
 src/lua/eventHandlers.lua
 src/lua/slashCommands.lua
 
