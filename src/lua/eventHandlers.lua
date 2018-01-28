@@ -8,6 +8,7 @@ local EventHandlers = ADDON.EventHandlers;
 local UpdateInfo = ADDON.UpdateInfo;
 -------------------------------------------
 
+--- Handles regular checks for any changes made in the ADDON.Settings.
 function EventHandlers.OnSettingsUpdate()
 	if (not table.compare(ADDON.Settings, ADDON.SnapshotSettings)) then
 		ADDON.SnapshotSettings = table.copy(ADDON.Settings);
@@ -15,18 +16,14 @@ function EventHandlers.OnSettingsUpdate()
 	end
 end
 
+--- Handles main UI update event.
 function EventHandlers.OnUiUpdate()
 	local UI = ADDON.UI;
 	if not UI.isSetup then
 		return;
 	end
 	
-	if (UpdateInfo.mapId ~= GetCurrentMapIndex() or UpdateInfo.zoneId ~= GetCurrentMapZoneIndex()) then
-		UI:ConstructMap();
-	end
-	
 	UI.miniMap:SetHidden(ZO_Compass:IsHidden())
-	
 	if (not ADDON.UI.miniMap:IsHidden()) then
 		UI:UpdateMap();
 	end

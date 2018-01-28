@@ -82,9 +82,10 @@
                 newZoom = math.min(newZoom, ADDON.Boundaries.mapZoomMax);
 
                 ADDON.Settings.MiniMap.mapZoom = newZoom;
-                ADDON.UI:ConstructMap();
-                ADDON.UI:UpdateMapPosition();
-                ADDON.UI:UpdateMapRotation();
+                local UpdateInfo = ADDON.UpdateInfo;
+                ADDON.UI:ConstructMap(UpdateInfo.Map.mapId, UpdateInfo.Map.zoneId);
+                ADDON.UI:UpdateMapPosition(UpdateInfo.Player.normX, UpdateInfo.Player.normY);
+                ADDON.UI:UpdateMapRotation(UpdateInfo.Player.rotation);
                 end
             </OnMouseWheel>
         </TopLevelControl>

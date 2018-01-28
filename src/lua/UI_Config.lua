@@ -7,75 +7,14 @@
 local UI = ADDON.UI;
 local UpdateInfo = ADDON.UpdateInfo;
 -------------------------------------------
-local function GatherUiElements()
-	UI.miniMap = MyMiniMap
-	UI.wheel = MyMiniMapWheel;
-	UI.background = MyMiniMapBackground;
-	UI.playerPin = MyMiniMapPlayerPin;
-	UI.Scrolls = {
-		center = MyMiniMapCenterScroll,
-		horizontal = MyMiniMapHorizontalScroll,
-		vertical = MyMiniMapVerticalScroll
-	};
-	UI.Maps = {
-		center = MyMiniMapCenterScrollMap,
-		horizontal = MyMiniMapHorizontalScrollMap,
-		vertical = MyMiniMapVerticalScrollMap
-	};
-	UI.MapTiles = {
-		center = {},
-		horizontal = {},
-		vertical = {}
-	}
-	UI.Pins = {
-		center = MyMiniMapCenterScrollPins,
-		horizontal = MyMiniMapHorizontalScrollPins,
-		vertical = MyMiniMapVerticalScrollPins
-	}
-end
 
-function UI:Rescale()
-	local size = ADDON.baseSize * ADDON.Settings.MiniMap.mapScale;
-	UI.playerPin:SetDimensions(32 * ADDON.Settings.MiniMap.mapScale, 32 * ADDON.Settings.MiniMap.mapScale);
-	
-	UI.wheel:SetDimensions(size, size);
-	UI.background:SetDimensions(size, size);
-	UI.miniMap:SetDimensions(size, size);
-	
-	for name, scroll in pairs(UI.Scrolls) do
-		scroll:ClearAnchors();
-		scroll:SetAnchor(CENTER, MiniMapTestWheel, CENTER);
-		scroll:SetScrollBounding(0);
-	end
-	local scrollScaleBase = ADDON.Settings.MiniMap.scrollScaleBase;
-	local scrollScaleOffset = ADDON.Settings.MiniMap.scrollScaleOffset;
-	UI.Scrolls.center:SetDimensions(size * scrollScaleBase, size * scrollScaleBase);
-	UI.Scrolls.horizontal:SetDimensions(size * (scrollScaleBase + scrollScaleOffset), size * (scrollScaleBase - scrollScaleOffset));
-	UI.Scrolls.vertical:SetDimensions(size * (scrollScaleBase - scrollScaleOffset), size * (scrollScaleBase + scrollScaleOffset));
-	
-	for name, map in pairs(UI.Maps) do
-		map:ClearAnchors();
-		map:SetAnchor(CENTER, UI.Scrolls[name], CENTER)
-	end
-end
 
-function UI:Reposition()
-	UI.miniMap:ClearAnchors();
-	UI.miniMap:SetAnchor(CENTER, GuiRoot, CENTER, ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y);
-end
-
-function UI:Setup()
-	GatherUiElements();
-	UI:Rescale();
-	UI:Reposition()
-	UI.isSetup = true;
-end
-------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------
-function UI:ConstructMap()
-	UpdateInfo.Map.mapId = GetCurrentMapIndex();
-	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
+--- Constructs the map for a given map and zone.
+---@param mapId number
+---@param zoneId number
+function UI:ConstructMap(mapId, zoneId)
+	UpdateInfo.Map.mapId = mapId;
+	UpdateInfo.Map.zoneId = zoneId;
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
 	
 	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
@@ -115,26 +54,24 @@ function UI:ConstructMap()
 	until ( x > tileCountHor or y > tileCountVer )
 end
 
-function UI:UpdateMapPosition()
-	local playerX, playerY = GetMapPlayerPosition("player");
+--- Updates map's position to the given normalised coordinates.
+---@param nX number
+---@param nY number
+function UI:UpdateMapPosition(nX, nY)
+	UpdateInfo.Player.normX, UpdateInfo.Player.normY = nX, nY;
 	
-	UpdateInfo.Player.normX, UpdateInfo.Player.normY = playerX, playerY;
+	local mapWidth, mapHeight = UpdateInfo.Map.width, UpdateInfo.Map.height;
+	local offsetX, offsetY = mapWidth * (0.5 - nX), mapHeight * (0.5 - nY);
 	for _, map in pairs(UI.Maps) do
-		local mapWidth, mapHeight = UpdateInfo.Map.width, UpdateInfo.Map.height;
-		local offsetX, offsetY = mapWidth * (0.5 - playerX), mapHeight * (0.5 - playerY);
-		
 		map:ClearAnchors();
 		map:SetAnchor(CENTER, UI.wheel, CENTER, offsetX, offsetY);
 	end
 end
 
-function UI:UpdateMapRotation()
-	local rotation;
-	if (ADDON.Settings.isInCameraMode) then
-		rotation = GetPlayerCameraHeading();
-	else
-		_, _, rotation = GetMapPlayerPosition("player");
-	end
+--- Updates map's or player pin's rotation to a given rotation in radians.
+---@param rotation number
+function UI:UpdateMapRotation(rotation)
+	UpdateInfo.Player.rotation = rotation;
 	
 	if (ADDON.Settings.isMapRotationEnabled) then
 		for group, mapTiles in pairs(UI.MapTiles) do
@@ -155,25 +92,38 @@ function UI:UpdateMapRotation()
 	end
 end
 
-function UI:UpdateMap()
-	local playerX, playerY = GetMapPlayerPosition("player");
-	if (UpdateInfo.Player.normX ~= playerX or UpdateInfo.Player.normY ~= playerY) then
-		UI:UpdateMapPosition();
+function UI:UpdatePins(zoneId)
+	for i = 1, GetNumPOIs(zoneId) do
+		local normalizedX, normalizedZ, poiPinType, icon, isShownInCurrentMap, linkedCollectibleIsLocked = GetPOIMapInfo(zoneId, i);
+		--TODO
 	end
+end
+
+--- Handles map's update logic.
+function UI:UpdateMap()
+	---------- Details -----------
+	local mapId, zoneId = GetCurrentMapIndex(), GetCurrentMapZoneIndex();
+	local playerX, playerY, playerRotation = GetMapPlayerPosition("player");
 	local rotation;
 	if (ADDON.Settings.isInCameraMode) then
 		rotation = GetPlayerCameraHeading();
 	else
-		_, _, rotation = GetMapPlayerPosition("player");
+		rotation = playerRotation;
 	end
-	if (UpdateInfo.Player.rotation ~= rotation) then
-		UI:UpdateMapRotation();
+	------------- Map ------------
+	if (UpdateInfo.Map.mapId ~= mapId or UpdateInfo.Map.zoneId ~= zoneId) then
+		UI.ConstructMap(mapId, zoneId);
 	end
+	---------- Position ----------
+	if (UpdateInfo.Player.normX ~= playerX or UpdateInfo.Player.normY ~= playerY) then
+		UI:UpdateMapPosition(playerX, playerY);
+		UI:UpdateMapRotation(rotation);
+	else
+		---------- Rotation ----------
+		if (UpdateInfo.Player.rotation ~= rotation) then
+			UI:UpdateMapRotation(rotation);
+		end
+	end
+	------------ Pins ------------
+	UI:UpdatePins(zoneId);
 end
-
-function UI:Reload()
-	ADDON.UI:Rescale();
-	ADDON.UI.wheel:SetTextureRotation(0);
-	ADDON.UI.playerPin:SetTextureRotation(0);
-end
-
