@@ -8,10 +8,10 @@ local UI = ADDON.UI;
 local UpdateInfo = ADDON.UpdateInfo;
 -------------------------------------------
 
-
 --- Constructs the map for a given map and zone.
 ---@param mapId number
 ---@param zoneId number
+---@return void
 function UI:ConstructMap(mapId, zoneId)
 	UpdateInfo.Map.mapId = mapId;
 	UpdateInfo.Map.zoneId = zoneId;
@@ -32,9 +32,9 @@ function UI:ConstructMap(mapId, zoneId)
 		local tileTexture = GetMapTileTexture(tileIndex)
 		for group, mapTileControl in pairs(UI.MapTiles) do
 			if (mapTileControl[tileIndex] == nil) then
-				local parent = UI.Maps[group]
-				local name = UI.Maps[group]:GetName() .. tostring(tileIndex)
-				mapTileControl[tileIndex] = WINDOW_MANAGER:CreateControl(name, parent, CT_TEXTURE)
+				local parent = UI.Maps[group];
+				local name = UI.Maps[group]:GetName() .. tostring(tileIndex);
+				mapTileControl[tileIndex] = WINDOW_MANAGER:CreateControl(name, parent, CT_TEXTURE);
 			end
 			
 			mapTileControl[tileIndex]:SetDrawLayer(1);
@@ -57,6 +57,7 @@ end
 --- Updates map's position to the given normalised coordinates.
 ---@param nX number
 ---@param nY number
+---@return void
 function UI:UpdateMapPosition(nX, nY)
 	UpdateInfo.Player.normX, UpdateInfo.Player.normY = nX, nY;
 	
@@ -70,6 +71,7 @@ end
 
 --- Updates map's or player pin's rotation to a given rotation in radians.
 ---@param rotation number
+---@return void
 function UI:UpdateMapRotation(rotation)
 	UpdateInfo.Player.rotation = rotation;
 	
@@ -92,14 +94,8 @@ function UI:UpdateMapRotation(rotation)
 	end
 end
 
-function UI:UpdatePins(zoneId)
-	for i = 1, GetNumPOIs(zoneId) do
-		local normalizedX, normalizedZ, poiPinType, icon, isShownInCurrentMap, linkedCollectibleIsLocked = GetPOIMapInfo(zoneId, i);
-		--TODO
-	end
-end
-
 --- Handles map's update logic.
+---@return void
 function UI:UpdateMap()
 	---------- Details -----------
 	local mapId, zoneId = GetCurrentMapIndex(), GetCurrentMapZoneIndex();
@@ -125,5 +121,4 @@ function UI:UpdateMap()
 		end
 	end
 	------------ Pins ------------
-	UI:UpdatePins(zoneId);
 end
