@@ -9,6 +9,7 @@ ADDON = {}
 
 ADDON.name = "MyMiniMap";
 ADDON.baseSize = 512;
+ADDON.pinBaseSize = 32;
 ADDON.UI = {}
 ADDON.UI.isSetup = false;
 ADDON.EventHandlers = {}
@@ -57,6 +58,7 @@ ADDON.DefaultSettings = {
 	},
 	isInCameraMode = true,
 	isMapRotationEnabled = true,
-	isUpdateEnabled = true
+	isUpdateEnabled = true,
+	showUnexploredPins = true
 };
 

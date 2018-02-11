@@ -9,6 +9,7 @@ local UpdateInfo = ADDON.UpdateInfo;
 -------------------------------------------
 
 --- Handles regular checks for any changes made in the ADDON.Settings.
+---@return void
 function EventHandlers.OnSettingsUpdate()
 	if (not table.compare(ADDON.Settings, ADDON.SnapshotSettings)) then
 		ADDON.SnapshotSettings = table.copy(ADDON.Settings);
@@ -17,6 +18,7 @@ function EventHandlers.OnSettingsUpdate()
 end
 
 --- Handles main UI update event.
+---@return void
 function EventHandlers.OnUiUpdate()
 	local UI = ADDON.UI;
 	if not UI.isSetup then

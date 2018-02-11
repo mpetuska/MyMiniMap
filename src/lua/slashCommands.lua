@@ -69,6 +69,7 @@ ADDON.Commands = {
 
 --- Handles a given command string redirrecting to an appropriate function in the ADDON.Commands table.
 ---@param str string
+---@return void
 function ADDON.HandleSlashCommands(str)
 	if (#str == 0) then
 		ADDON.Commands.help();

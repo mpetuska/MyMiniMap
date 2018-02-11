@@ -7,10 +7,14 @@
 local EventHandlers = ADDON.EventHandlers
 -------------------------------------------
 
+--- Creates or loads all of the saved variables from previous sessions.
+---@return void
 local function LoadSavedVariables()
 	ADDON.Settings = ZO_SavedVars:New("Settings", 1, nil, ADDON.DefaultSettings or {})
 end
 
+--- Registers handler functions for events.
+---@return void
 local function RegisterEvents()
 end
 
@@ -19,6 +23,8 @@ local function RegisterUpdates()
 	EVENT_MANAGER:RegisterForUpdate(ADDON.Settings.addonName .. "_SettingsUpdate", 50, EventHandlers.OnSettingsUpdate);
 end
 
+--- Initialises the addon.
+---@return void
 function EventHandlers.OnAddonLoaded(event, addonName)
 	if addonName ~= ADDON.name then
 		return
