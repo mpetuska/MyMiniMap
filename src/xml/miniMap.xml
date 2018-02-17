@@ -1,0 +1,86 @@
+<!--
+  [] Author: Martynas Petuska
+  [] E-mail: martynas.petuska@outlook.com
+  [] Date:   January 2018
+-->
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="MyMiniMap" shape="CIRCLE" mouseEnabled="true" movable="true" clampedToScreen="true">
+            <Anchor point="BOTTOMRIGHT" relativeTo="GuiRoot" relativePoint="BOTTOMRIGHT"/>
+            <Controls>
+                <Scroll name="$(parent)VerticalScroll" hidden="false" layer="1">
+                    <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                    <Controls>
+                        <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
+                            <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                        </Texture>
+                    </Controls>
+                </Scroll>
+
+                <Scroll name="$(parent)CenterScroll" hidden="false" layer="1">
+                    <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                    <Controls>
+                        <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
+                            <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                        </Texture>
+                    </Controls>
+                </Scroll>
+
+                <Scroll name="$(parent)HorizontalScroll" hidden="false" layer="1">
+                    <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                    <Controls>
+                        <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
+                            <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
+                        </Texture>
+                    </Controls>
+                    <!--<FadeGradient x1="0" y1="1" size1="20" x2="0" y2="-1" size2="20"/>-->
+                </Scroll>
+
+                <Texture name="$(parent)Background" layer="0" textureFile="MyMiniMap/resources/roundBackground.dds">
+                    <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)"/>
+                </Texture>
+
+                <Texture name="$(parent)Wheel" layer="4" textureFile="MyMiniMap/resources/wheel.dds">
+                    <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)"/>
+                </Texture>
+
+                <Texture name="$(parent)PlayerPin" layer="3" textureFile="esoui/art/icons/mapkey/mapkey_player.dds">
+                    <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)Wheel"/>
+                </Texture>
+            </Controls>
+
+            <OnInitialized>
+                local this = ...;
+
+                this.animation, this.timeline = CreateSimpleAnimation(ANIMATION_ALPHA, this)
+                this.animation:SetDuration(250)
+                this.animation:SetAlphaValues(0.75, 1)
+                this.timeline:SetPlaybackType(ANIMATION_PLAYBACK_ONE_SHOT)
+            </OnInitialized>
+            <OnShow>
+                local this = ...;
+                this.timeline:PlayFromStart()
+            </OnShow>
+            <OnMoveStop>
+                local this = ...;
+                ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y = this:GetCenter();
+            </OnMoveStop>
+            <OnMouseWheel>
+                local this, delta, ctrl, alt, shift, command = ...;
+
+                if (shift) then
+                local newZoom = ADDON.Settings.MiniMap.mapZoom + (delta * 0.1);
+                newZoom = math.max(newZoom, ADDON.Boundaries.mapZoomMin);
+                newZoom = math.min(newZoom, ADDON.Boundaries.mapZoomMax);
+
+                ADDON.Settings.MiniMap.mapZoom = newZoom;
+                local UpdateInfo = ADDON.UpdateInfo;
+                ADDON.UI:ConstructMap(UpdateInfo.Map.mapId, UpdateInfo.Map.zoneId);
+                ADDON.UI:UpdateMapPosition(UpdateInfo.Player.normX, UpdateInfo.Player.normY);
+                ADDON.UI:UpdateMapRotation(UpdateInfo.Player.rotation);
+                ADDON.UI:UpdatePins();
+                end
+            </OnMouseWheel>
+        </TopLevelControl>
+    </Controls>
+</GuiXml>
