@@ -3,6 +3,36 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
+---------------- NAMESPACE ----------------
+-------------------------------------------
+
+ADDON.TextureList = {
+	GeneralPins = {
+		playerPointer = "esoui/art/icons/mapkey/mapkey_player.dds",
+		wayshrineComplete = "esoui/art/icons/poi/poi_wayshrine_complete.dds",
+		wayshrineIncomplete = "esoui/art/icons/poi/poi_wayshrine_incomplete.dds"
+	},
+	QuestPins = {
+		Unrepeatable = {
+			area = "esoui/art/compass/quest_areapin.dds",
+			areaAssisted = "esoui/art/compass/quest_assistedareapin.dds",
+			available = "esoui/art/compass/quest_available_icon.dds",
+			icon = "esoui/art/compass/quest_icon.dds",
+			iconAssisted = "esoui/art/compass/quest_icon_assisted.dds",
+			iconDoor = "esoui/art/compass/quest_icon_door.dds",
+			iconDoorAssisted = "esoui/art/compass/quest_icon_door_assisted.dds"
+		},
+		Repeatable = {
+			area = "esoui/art/compass/repeatablequest_areapin.dds",
+			areaAssisted = "esoui/art/compass/repeatablequest_assistedareapin.dds",
+			available = "esoui/art/compass/repeatablequest_available_icon.dds",
+			icon = "esoui/art/compass/repeatablequest_icon.dds",
+			iconAssisted = "esoui/art/compass/repeatablequest_icon_assisted.dds",
+			iconDoor = "esoui/art/compass/repeatablequest_icon_door.dds",
+			iconDoorAssisted = "esoui/art/compass/repeatablequest_icon_door_assisted.dds"
+		}
+	}
+}
 
 ---Splits the string by the given separator and returns them as vararg.
 ---@param str string
@@ -37,28 +67,39 @@ function ADDON.Println()
 	CHAT_SYSTEM:AddMessage(" ");
 end
 
-function OnUiUpdate()
-	MiniMap:SetHidden(ADDON.Settings.isMinimapHidden)
-	
-	if (ADDON.Settings.isInCameraMode) then
-		local rotation = GetPlayerCameraHeading()
-		MiniMapWheel:SetTextureCoordsRotation(-rotation)
+---Copies the table recursively.
+---@param original table
+---@return table
+function table.copy(original)
+	local copy;
+	if type(original) == 'table' then
+		copy = {};
+		for orig_key, orig_value in next, original, nil do
+			copy[table.copy(orig_key)] = table.copy(orig_value);
+		end
+		setmetatable(copy, table.copy(getmetatable(original)));
 	else
-		local _, _, rotation = GetMapPlayerPosition("player")
-		MiniMapPlayerPin:SetTextureCoordsRotation(rotation)
+		-- number, string, boolean, etc
+		copy = original;
+	end
+	return copy;
+end
+
+---Recursively compares two tables for equality.
+---@param table1 table
+---@param table2 table
+---@return boolean
+function table.compare(table1, table2)
+	if (type(table1) ~= "table" or type(table2) ~= "table") then
+		return false;
 	end
 	
-	--TODO WorldMapTileExtraction
-	local tileTexture = (GetMapTileTexture(1)):lower()
-	if tileTexture == nil or tileTexture == "" then
-		tileTexture = "art/maps/tamriel/tamriel_0"
+	for key, value in pairs(table1) do
+		if (type(value) == "table") then
+			return table.compare(table1[key], table2[key]);
+		elseif (value ~= table2[key]) then
+			return false;
+		end
+		return true;
 	end
-	local pos = select(2, tileTexture:find("maps/([%w%-]+)/"))
-	if pos == nil then
-		return "tamriel_0", "tamriel_", "art/maps/tamriel/"
-	end
-	pos = pos + 1
-	local texture = string.gsub(string.sub(tileTexture, pos), ".dds", ""), string.gsub(string.sub(tileTexture, pos), "0.dds", ""), string.sub(tileTexture, 1, pos - 1)
-	
-	MiniMapWorld:SetTexture("art/maps/tamriel/tamriel_0")
 end
