@@ -52,6 +52,14 @@ function UI:ConstructMap(mapId, zoneId)
 			x = x + 1;
 		end
 	until ( x > tileCountHor or y > tileCountVer )
+	
+	-- Map Pins --
+	for i = 1, GetNumFastTravelNodes() do
+		local known, name, nX, nY, icon, glowIcon, poiType, isShownInCurrentMap = GetFastTravelNodeInfo(i);
+		if (isShownInCurrentMap) then
+			ADDON.Classes.Pin:NewWayshrine(i, nX, nY, icon);
+		end
+	end
 end
 
 --- Updates map's position to the given normalised coordinates.
@@ -94,6 +102,15 @@ function UI:UpdateMapRotation(rotation)
 	end
 end
 
+function UI:UpdatePins()
+	for i = 1, GetNumFastTravelNodes() do
+		local known, name, nX, nY, icon, glowIcon, poiType, isShownInCurrentMap = GetFastTravelNodeInfo(i);
+		if (isShownInCurrentMap) then
+			ADDON.Classes.Pin:NewWayshrine(i, nX, nY, icon);
+		end
+	end
+end
+
 --- Handles map's update logic.
 ---@return void
 function UI:UpdateMap()
@@ -108,7 +125,7 @@ function UI:UpdateMap()
 	end
 	------------- Map ------------
 	if (UpdateInfo.Map.mapId ~= mapId or UpdateInfo.Map.zoneId ~= zoneId) then
-		UI.ConstructMap(mapId, zoneId);
+		UI:ConstructMap(mapId, zoneId);
 	end
 	---------- Position ----------
 	if (UpdateInfo.Player.normX ~= playerX or UpdateInfo.Player.normY ~= playerY) then
@@ -121,4 +138,5 @@ function UI:UpdateMap()
 		end
 	end
 	------------ Pins ------------
+	UI:UpdatePins();
 end

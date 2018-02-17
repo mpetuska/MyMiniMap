@@ -37,26 +37,40 @@ function Pin:SetActive(isActive)
 end
 
 function Pin:Update()
-	-- Position --
+	-- Is Visible? --
+	if (not ADDON.UI:IsPinInsideWheel(self)) then
+		self:SetActive(false);
+		return;
+	end
 	
+	-- Position --
+	self:SetMapPos();
 	
 	-- Rotation --
-	local pinWidth, pinHeight = self:GetDimensions();
-	local pinCenterX, pinCenterY = self:GetScreenPos();
-	local wheelCenterX, wheelCenterY = UI.wheel:GetCenter();
-	local dx, dy = wheelCenterX - pinCenterX, wheelCenterY - pinCenterY;
-	local normalizedRotationPointX = ((pinWidth / 2) + dx) / pinWidth;
-	local normalizedRotationPointY = ((pinHeight / 2) + dy) / pinHeight;
-	
-	-- Update --
-	for group, control in pairs(self.Controls) do
-		control:SetTextureRotation(-ADDON.UpdateInfo.Player.rotation, normalizedRotationPointX, normalizedRotationPointY);
+	if (ADDON.Settings.isMapRotationEnabled) then
+		-- TODO Update pin's rotation without rotating the pin itself using SetTextureCoords(number left, number right, number top, number bottom)
+		local pinWidth, pinHeight = self:GetDimensions();
+		local pinCenterX, pinCenterY = self:GetScreenPos();
+		local wheelCenterX, wheelCenterY = UI.wheel:GetCenter();
+		local dx, dy = wheelCenterX - pinCenterX, wheelCenterY - pinCenterY;
+		local normalizedRotationPointX = ((pinWidth / 2) + dx) / pinWidth;
+		local normalizedRotationPointY = ((pinHeight / 2) + dy) / pinHeight;
+		
+		for group, control in pairs(self.Controls) do
+			control:SetTextureRotation(-ADDON.UpdateInfo.Player.rotation, normalizedRotationPointX, normalizedRotationPointY);
+		end
 	end
 end
 
 function Pin:SetMapPos(x, y)
-	self.MapPos.x = x;
-	self.MapPos.y = y;
+	if (x ~= nil and y ~= nil) then
+		self.MapPos.x = x;
+		self.MapPos.y = y;
+	else
+		x = self.MapPos.x;
+		y = self.MapPos.y;
+	end
+	
 	for _, control in pairs(self.Controls) do
 		control:ClearAnchors();
 		control:SetAnchor(CENTER, control:GetParent(), TOPLEFT, x * control:GetParent():GetWidth(), y * control:GetParent():GetHeight());
@@ -106,21 +120,29 @@ function Pin:New(pinIndex, poiType)
 			pin.Controls[group] = WINDOW_MANAGER:CreateControl(name, map, CT_TEXTURE);
 		end
 		pin.Controls[group]:SetTexture(icon);
-		pin.Controls[group]:SetDimensions(ADDON.pinBaseSize * ADDON.Settings.MiniMap.mapScale, ADDON.pinBaseSize * ADDON.Settings.MiniMap.mapScale);
+		local size = ADDON.pinBaseSize * 2 * ADDON.Settings.MiniMap.mapScale;
+		pin.Controls[group]:SetDimensions(size, size);
 	end
 	
 	pin:SetMapPos(mapX, mapY);
-	pin:SetActive(true);
+	pin:SetActive(not ADDON.UI:IsPinInsideWheel(self));
 	
 	return pin;
 end
 
 function Pin:NewWayshrine(pinId, mapX, mapY, icon)
-	local container = UI.Pins.Wayshrines;
+	if (not ADDON.UI:AreCoordinatesInsideWheel(mapX, mapY)) then
+		return;
+	end
 	
+	local container = UI.PinObjects;
 	local pin;
 	for _, p in pairs(container) do
-		if (p.id == pinId and p.type == POI_TYPE_WAYSHRINE) then
+		local pX, pY = p:GetMapPos();
+		if (p.id == pinId and p.type == POI_TYPE_WAYSHRINE and pX == mapX and pY == mapY) then
+			if (p:IsActive()) then
+				p:Update();
+			end
 			return p;
 		elseif (not p:IsActive()) then
 			pin = p;
@@ -138,6 +160,7 @@ function Pin:NewWayshrine(pinId, mapX, mapY, icon)
 		for group, map in pairs(UI.Maps) do
 			local name = map:GetName() .. "Pin_Wayshrine" .. tostring(#container + 1);
 			pin.Controls[group] = WINDOW_MANAGER:CreateControl(name, map, CT_TEXTURE);
+			pin.Controls[group]:SetDrawLayer(2);
 		end
 		container[#container + 1] = pin;
 	end
@@ -146,9 +169,10 @@ function Pin:NewWayshrine(pinId, mapX, mapY, icon)
 	pin.id = pinId;
 	
 	-- Setup controls --
+	local size = ADDON.pinBaseSize * 2 * ADDON.Settings.MiniMap.mapScale;
 	for _, control in pairs(pin.Controls) do
 		control:SetTexture(icon);
-		control:SetDimensions(ADDON.pinBaseSize * ADDON.Settings.MiniMap.mapScale, ADDON.pinBaseSize * ADDON.Settings.MiniMap.mapScale);
+		control:SetDimensions(size, size);
 		control:SetHidden(false);
 	end
 	

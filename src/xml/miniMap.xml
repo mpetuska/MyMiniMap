@@ -14,7 +14,6 @@
                         <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
                             <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                         </Texture>
-                        <Control name="$(parent)Pins" layer="2"/>
                     </Controls>
                 </Scroll>
 
@@ -24,7 +23,6 @@
                         <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
                             <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                         </Texture>
-                        <Control name="$(parent)Pins" layer="2"/>
                     </Controls>
                 </Scroll>
 
@@ -34,7 +32,6 @@
                         <Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
                             <Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
                         </Texture>
-                        <Control name="$(parent)Pins" layer="2"/>
                     </Controls>
                     <!--<FadeGradient x1="0" y1="1" size1="20" x2="0" y2="-1" size2="20"/>-->
                 </Scroll>
@@ -49,11 +46,6 @@
 
                 <Texture name="$(parent)PlayerPin" layer="3" textureFile="esoui/art/icons/mapkey/mapkey_player.dds">
                     <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)Wheel"/>
-                </Texture>
-
-                <Texture name="$(parent)T" layer="3" textureFile="esoui/art/icons/mapkey/mapkey_wayshrine.dds"
-                         resizeToFitFile="true" clampedToScreen="true">
-                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="GuiRoot"/>
                 </Texture>
             </Controls>
 
@@ -86,6 +78,7 @@
                 ADDON.UI:ConstructMap(UpdateInfo.Map.mapId, UpdateInfo.Map.zoneId);
                 ADDON.UI:UpdateMapPosition(UpdateInfo.Player.normX, UpdateInfo.Player.normY);
                 ADDON.UI:UpdateMapRotation(UpdateInfo.Player.rotation);
+                ADDON.UI:UpdatePins();
                 end
             </OnMouseWheel>
         </TopLevelControl>
