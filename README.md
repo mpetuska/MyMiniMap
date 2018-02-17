@@ -1,1 +1,2 @@
-A simple addon for Elder Scrolls Online aiming to provide a minimap functionality.
+# MyMiniMap
+An addon for Elder Scrolls Online to provide a minimap functionality.
