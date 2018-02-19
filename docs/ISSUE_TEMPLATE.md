@@ -1,8 +1,8 @@
 ## Description
-N/A
+
 
 ## Technical Description
-N/A
 
-### Prerequisites: N/A
+
+### Prerequisites: 
 ### Pull request: TBC
