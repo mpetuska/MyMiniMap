@@ -9,7 +9,7 @@ local UI = ADDON.UI;
 -------------------------------------------
 
 
----@class Pin
+---@class Pin_Old
 local Pin = {};
 Pin.__index = Pin;
 ADDON.Classes.Pin = Pin;
