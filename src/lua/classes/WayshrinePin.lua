@@ -3,9 +3,8 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   February 2018
 --]]
-local super = require "lua.classes.AbstractPin";
-
 --====================================================== CLASS =======================================================--
+local super = require "lua.classes.AbstractPin";
 ---A base class to hold common functionality shared between the various types of map pins.
 ---It is mostly intended to be extended by the pin-type-specific classes.
 --- 
@@ -33,5 +32,5 @@ end
 
 -- region Getters & Setters
 -- endregion
-
+--====================================================================================================================--
 return WayshrinePin;
