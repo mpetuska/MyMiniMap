@@ -13,7 +13,8 @@ ADDON.Sizes = {
 	playerPinSize = 32;
 	mapPinSize = 64;
 }
-ADDON.UI = {}
+ADDON.UI = {};
+ADDON.Classes = {};
 ADDON.UI.isSetup = false;
 ADDON.EventHandlers = {}
 ADDON.UpdateInfo = {
