@@ -2,7 +2,7 @@
 ## Description: This add-on adds MiniMap functionality to UI.
 ## Author: |c00FF96k33ny|r
 ## Version: 0.1
-## APIVersion: 100021
+## APIVersion: 100022
 ## SavedVariables: Settings
 
 src/lua/settings.lua
@@ -12,6 +12,8 @@ src/lua/UI_Config.lua
 src/lua/eventHandlers.lua
 src/lua/slashCommands.lua
 src/lua/classes/pin.lua
+src/lua/classes/AbstractPin.lua
+src/lua/classes/WayshrinePin.lua
 
 src/lua/init.lua
 

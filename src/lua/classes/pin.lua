@@ -120,7 +120,7 @@ function Pin:New(pinIndex, poiType)
 			pin.Controls[group] = WINDOW_MANAGER:CreateControl(name, map, CT_TEXTURE);
 		end
 		pin.Controls[group]:SetTexture(icon);
-		local size = ADDON.pinBaseSize * 2 * ADDON.Settings.MiniMap.mapScale;
+		local size = ADDON.Sizes.playerPinSize * 2 * ADDON.Settings.MiniMap.mapScale;
 		pin.Controls[group]:SetDimensions(size, size);
 	end
 	
@@ -169,7 +169,7 @@ function Pin:NewWayshrine(pinId, mapX, mapY, icon)
 	pin.id = pinId;
 	
 	-- Setup controls --
-	local size = ADDON.pinBaseSize * 2 * ADDON.Settings.MiniMap.mapScale;
+	local size = ADDON.Sizes.playerPinSize * 2 * ADDON.Settings.MiniMap.mapScale;
 	for _, control in pairs(pin.Controls) do
 		control:SetTexture(icon);
 		control:SetDimensions(size, size);

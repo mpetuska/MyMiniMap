@@ -18,7 +18,7 @@ function UI:ConstructMap(mapId, zoneId)
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
 	
 	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
-	local tileSize = ADDON.baseSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;
+	local tileSize = ADDON.Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;
 	
 	UpdateInfo.Map.width = tileSize * tileCountHor;
 	UpdateInfo.Map.height = tileSize * tileCountVer;
@@ -54,10 +54,10 @@ function UI:ConstructMap(mapId, zoneId)
 	until ( x > tileCountHor or y > tileCountVer )
 	
 	-- Map Pins --
-	for i = 1, GetNumFastTravelNodes() do
-		local known, name, nX, nY, icon, glowIcon, poiType, isShownInCurrentMap = GetFastTravelNodeInfo(i);
-		if (isShownInCurrentMap) then
-			ADDON.Classes.Pin:NewWayshrine(i, nX, nY, icon);
+	for nodeIndex = 1, GetNumFastTravelNodes() do
+		local known, name, nX, nY, icon, glowIcon, poiType, isShownInCurrentMap = GetFastTravelNodeInfo(nodeIndex);
+		if (isShownInCurrentMap and known) then
+			ADDON.Classes.FastTravelPin:New(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType);
 		end
 	end
 end
@@ -67,7 +67,7 @@ end
 ---@param nY number
 ---@return void
 function UI:UpdateMapPosition(nX, nY)
-	UpdateInfo.Player.normX, UpdateInfo.Player.normY = nX, nY;
+	UpdateInfo.Player.nX, UpdateInfo.Player.nY = nX, nY;
 	
 	local mapWidth, mapHeight = UpdateInfo.Map.width, UpdateInfo.Map.height;
 	local offsetX, offsetY = mapWidth * (0.5 - nX), mapHeight * (0.5 - nY);
@@ -103,11 +103,8 @@ function UI:UpdateMapRotation(rotation)
 end
 
 function UI:UpdatePins()
-	for i = 1, GetNumFastTravelNodes() do
-		local known, name, nX, nY, icon, glowIcon, poiType, isShownInCurrentMap = GetFastTravelNodeInfo(i);
-		if (isShownInCurrentMap) then
-			ADDON.Classes.Pin:NewWayshrine(i, nX, nY, icon);
-		end
+	for _, pin in pairs(ADDON.Classes.FastTravelPin.Objects) do
+		pin:Update();
 	end
 end
 
@@ -123,20 +120,23 @@ function UI:UpdateMap()
 	else
 		rotation = playerRotation;
 	end
+	ADDON.UpdateInfo.Map.rotation = rotation;
+	ADDON.UpdateInfo.Player.nX = playerX;
+	ADDON.UpdateInfo.Player.nY = playerY;
 	------------- Map ------------
 	if (UpdateInfo.Map.mapId ~= mapId or UpdateInfo.Map.zoneId ~= zoneId) then
 		UI:ConstructMap(mapId, zoneId);
 	end
 	---------- Position ----------
-	if (UpdateInfo.Player.normX ~= playerX or UpdateInfo.Player.normY ~= playerY) then
-		UI:UpdateMapPosition(playerX, playerY);
+	--if (UpdateInfo.Player.nX ~= playerX or UpdateInfo.Player.nY ~= playerY) then
+	UI:UpdateMapPosition(playerX, playerY);
+	UI:UpdateMapRotation(rotation);
+	--else
+	---------- Rotation ----------
+	if (UpdateInfo.Player.rotation ~= rotation) then
 		UI:UpdateMapRotation(rotation);
-	else
-		---------- Rotation ----------
-		if (UpdateInfo.Player.rotation ~= rotation) then
-			UI:UpdateMapRotation(rotation);
-		end
 	end
+	--end
 	------------ Pins ------------
 	UI:UpdatePins();
 end
