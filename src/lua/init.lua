@@ -10,7 +10,7 @@ local EventHandlers = ADDON.EventHandlers
 --- Creates or loads all of the saved variables from previous sessions.
 ---@return void
 local function LoadSavedVariables()
-	ADDON.Settings = ZO_SavedVars:New("Settings", 1, nil, ADDON.DefaultSettings or {})
+	ADDON.Settings = ZO_SavedVars:New("Settings", 0, nil, ADDON.DefaultSettings or {})
 end
 
 --- Registers handler functions for events.

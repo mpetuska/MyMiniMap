@@ -8,9 +8,13 @@ ADDON = {}
 -------------------------------------------
 
 ADDON.name = "MyMiniMap";
-ADDON.baseSize = 512;
-ADDON.pinBaseSize = 32;
-ADDON.UI = {}
+ADDON.Sizes = {
+	miniMapSize = 512;
+	playerPinSize = 32;
+	mapPinSize = 64;
+}
+ADDON.UI = {};
+ADDON.Classes = {};
 ADDON.UI.isSetup = false;
 ADDON.EventHandlers = {}
 ADDON.UpdateInfo = {
@@ -20,12 +24,13 @@ ADDON.UpdateInfo = {
 		tileCountX = 0,
 		tileCountY = 0,
 		width = 0,
-		height = 0
+		height = 0,
+		rotation = 0
 	},
 	Player = {
 		rotation = 0,
-		normX = 0,
-		normY = 0
+		nX = 0,
+		nY = 0
 	}
 }
 ADDON.Boundaries = {
@@ -33,14 +38,6 @@ ADDON.Boundaries = {
 	mapZoomMax = 1.75;
 }
 
-ADDON.Settings = {
-	MiniMap = {
-		UpdateInfo = {
-			Map = {},
-			Player = {}
-		}
-	}
-}
 ADDON.DefaultSettings = {
 	addonName = "My MiniMap",
 	Theme = {

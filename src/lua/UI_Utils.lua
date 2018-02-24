@@ -13,7 +13,7 @@ local UpdateInfo = ADDON.UpdateInfo;
 ---@param normalizedY number
 ---@return boolean
 function UI:AreCoordinatesInsideWheel(normalizedX, normalizedY)
-	local centerX, centerY = UpdateInfo.Player.normX, UpdateInfo.Player.normY;
+	local centerX, centerY = UpdateInfo.Player.nX, UpdateInfo.Player.nY;
 	local r = UI.miniMap:GetWidth() / UpdateInfo.Map.width;
 	local dx, dy = normalizedX - centerX, normalizedY - centerY;
 	
@@ -68,7 +68,7 @@ function UI:CreateWayshrinePin(nodeIndex)
 			end
 			UI.Pins[group][nodeIndex] = pinControl;
 			pinObject[group] = pinControl;
-			pinControl:SetDimensions(ADDON.pinBaseSize * ADDON.Settings.MiniMap.mapScale, ADDON.pinBaseSize * ADDON.Settings.MiniMap.mapScale);
+			pinControl:SetDimensions(ADDON.Sizes.playerPinSize * ADDON.Settings.MiniMap.mapScale, ADDON.Sizes.playerPinSize * ADDON.Settings.MiniMap.mapScale);
 			pinControl.object = pinObject;
 			pinControl.type = pinType;
 			pinControl.tag = tag;
@@ -83,8 +83,8 @@ function UI:CreateWayshrinePin(nodeIndex)
 			pinControl:SetMouseEnabled(false);
 			pinControl.UpdatePosition = function(self)
 				local nX, nY = self:GetPosition();
-				local iX = (nX * UpdateInfo.Map.width) - UpdateInfo.Player.normX;
-				local iY = (nY * UpdateInfo.Map.height) - UpdateInfo.Player.normY;
+				local iX = (nX * UpdateInfo.Map.width) - UpdateInfo.Player.nX;
+				local iY = (nY * UpdateInfo.Map.height) - UpdateInfo.Player.nY;
 				local rX = (math.cos(-UpdateInfo.Player.rotation) * iX) - (math.sin(-UpdateInfo.Player.rotation) * iY);
 				local rY = (math.sin(-UpdateInfo.Player.rotation) * iX) + (math.cos(-UpdateInfo.Player.rotation) * iY);
 				
@@ -122,8 +122,8 @@ end
 --- Rescales the UI.
 ---@return void
 function UI:Rescale()
-	local size = ADDON.baseSize * ADDON.Settings.MiniMap.mapScale;
-	UI.playerPin:SetDimensions(ADDON.pinBaseSize * ADDON.Settings.MiniMap.mapScale, ADDON.pinBaseSize * ADDON.Settings.MiniMap.mapScale);
+	local size = ADDON.Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale;
+	UI.playerPin:SetDimensions(ADDON.Sizes.playerPinSize * ADDON.Settings.MiniMap.mapScale, ADDON.Sizes.playerPinSize * ADDON.Settings.MiniMap.mapScale);
 	
 	UI.wheel:SetDimensions(size, size);
 	UI.background:SetDimensions(size, size);
@@ -150,7 +150,7 @@ end
 ---@return void
 function UI:Reposition()
 	UI.miniMap:ClearAnchors();
-	UI.miniMap:SetAnchor(CENTER, GuiRoot, CENTER, ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y);
+	UI.miniMap:SetAnchor(CENTER, GuiRoot, TOPLEFT, ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y);
 end
 
 --- Handles initial UI setup.
