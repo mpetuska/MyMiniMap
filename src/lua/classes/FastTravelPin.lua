@@ -5,7 +5,7 @@
 --]]
 local UI = ADDON.UI;
 local super = ADDON.Classes.Pin;
-local eventsHandlersRegistered = false;
+local eventHandlersRegistered = false;
 --====================================================== CLASS =======================================================--
 ---A class to represent and control wayshrine pins.
 --- 
@@ -26,9 +26,9 @@ local Objects = FastTravelPin.Objects;
 function FastTravelPin:New(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType)
 	local obj = setmetatable({}, { __index = self });
 	obj:Init(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType);
-	if (not eventsHandlersRegistered) then
+	if (not eventHandlersRegistered) then
 		EVENT_MANAGER:RegisterForEvent(ADDON.name .. "_FastTravelPinDiscovered", EVENT_FAST_TRAVEL_NETWORK_UPDATED, FastTravelPin.OnFastTravelNetworkUpdated);
-		eventsHandlersRegistered = true;
+		eventHandlersRegistered = true;
 	end
 	return obj;
 end

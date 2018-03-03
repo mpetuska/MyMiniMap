@@ -62,6 +62,38 @@ function UI:ConstructMap(mapId, zoneId)
 	end
 end
 
+function UI:RescaleMap()
+	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
+	local tileSize = ADDON.Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;
+	
+	UpdateInfo.Map.width = tileSize * tileCountHor;
+	UpdateInfo.Map.height = tileSize * tileCountVer;
+	for _, map in pairs(UI.Maps) do
+		map:SetDimensions(UpdateInfo.Map.width, UpdateInfo.Map.height)
+	end
+	
+	local x, y = 1, 1;
+	repeat
+		local tileIndex = x + (tileCountHor * (y - 1));
+		for group, mapTileControl in pairs(UI.MapTiles) do
+			mapTileControl[tileIndex]:SetDimensions(tileSize, tileSize);
+			mapTileControl[tileIndex]:ClearAnchors();
+			mapTileControl[tileIndex]:SetAnchor(TOPLEFT, UI.Maps[group], TOPLEFT, (x - 1) * tileSize, (y - 1) * tileSize);
+		end
+		
+		if (x == tileCountHor and y < tileCountVer) then
+			x = 1;
+			y = y + 1;
+		else
+			x = x + 1;
+		end
+	until ( x > tileCountHor or y > tileCountVer )
+	
+	UI:UpdatePins();
+	UI:UpdateMapPosition(UpdateInfo.Player.nX, UpdateInfo.Player.nY);
+	UI:UpdateMapRotation(UpdateInfo.Player.rotation);
+end
+
 --- Updates map's position to the given normalised coordinates.
 ---@param nX number
 ---@param nY number
