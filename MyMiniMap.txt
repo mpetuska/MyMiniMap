@@ -12,7 +12,7 @@ src/lua/UI_Config.lua
 src/lua/eventHandlers.lua
 src/lua/slashCommands.lua
 src/lua/classes/AbstractPin.lua
-src/lua/classes/WayshrinePin.lua
+src/lua/classes/FastTravelPin.lua
 
 src/lua/init.lua
 

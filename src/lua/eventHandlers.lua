@@ -30,3 +30,12 @@ function EventHandlers.OnUiUpdate()
 		UI:UpdateMap();
 	end
 end
+
+function EventHandlers.OnZoom(delta)
+	local newZoom = ADDON.Settings.MiniMap.mapZoom + (delta * ADDON.Constants.zoomDelta);
+	newZoom = math.max(newZoom, ADDON.Boundaries.mapZoomMin);
+	newZoom = math.min(newZoom, ADDON.Boundaries.mapZoomMax);
+	ADDON.Settings.MiniMap.mapZoom = newZoom;
+	
+	ADDON.UI:RescaleMap();
+end

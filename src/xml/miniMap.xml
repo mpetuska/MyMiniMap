@@ -69,16 +69,7 @@
 				local this, delta, ctrl, alt, shift, command = ...;
 
 				if (shift) then
-				local newZoom = ADDON.Settings.MiniMap.mapZoom + (delta * 0.1);
-				newZoom = math.max(newZoom, ADDON.Boundaries.mapZoomMin);
-				newZoom = math.min(newZoom, ADDON.Boundaries.mapZoomMax);
-
-				ADDON.Settings.MiniMap.mapZoom = newZoom;
-				local UpdateInfo = ADDON.UpdateInfo;
-				ADDON.UI:ConstructMap(UpdateInfo.Map.mapId, UpdateInfo.Map.zoneId);
-				ADDON.UI:UpdateMapPosition(UpdateInfo.Player.nX, UpdateInfo.Player.nY);
-				ADDON.UI:UpdateMapRotation(UpdateInfo.Player.rotation);
-				ADDON.UI:UpdatePins();
+				ADDON.EventHandlers.OnZoom(delta);
 				end
 			</OnMouseWheel>
 		</TopLevelControl>

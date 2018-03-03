@@ -13,6 +13,13 @@ ADDON.Sizes = {
 	playerPinSize = 32;
 	mapPinSize = 64;
 }
+ADDON.Constants = {
+	zoomDelta = 0.1;
+}
+ADDON.Boundaries = {
+	mapZoomMin = 0.45;
+	mapZoomMax = 1.75;
+}
 ADDON.UI = {};
 ADDON.Classes = {};
 ADDON.UI.isSetup = false;
@@ -33,11 +40,6 @@ ADDON.UpdateInfo = {
 		nY = 0
 	}
 }
-ADDON.Boundaries = {
-	mapZoomMin = 0.45;
-	mapZoomMax = 1.75;
-}
-
 ADDON.DefaultSettings = {
 	addonName = "My MiniMap",
 	Theme = {
