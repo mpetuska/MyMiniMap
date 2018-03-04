@@ -34,7 +34,6 @@ function EventHandlers.OnAddonLoaded(event, addonName)
 	
 	SLASH_COMMANDS["/mmm"] = ADDON.HandleSlashCommands;
 	ADDON.UI:Setup();
-	ADDON.SnapshotSettings = table.copy(ADDON.Settings)
 	RegisterEvents();
 	RegisterUpdates();
 	

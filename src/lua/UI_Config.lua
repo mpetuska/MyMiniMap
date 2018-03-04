@@ -8,13 +8,13 @@ local UI = ADDON.UI;
 local UpdateInfo = ADDON.UpdateInfo;
 -------------------------------------------
 
---- Constructs the map for a given map and zone.
+---Constructs the map.
 ---@param mapId number
 ---@param zoneId number
 ---@return void
-function UI:ConstructMap(mapId, zoneId)
-	UpdateInfo.Map.mapId = mapId;
-	UpdateInfo.Map.zoneId = zoneId;
+function UI:ConstructMap()
+	UpdateInfo.Map.mapId = GetCurrentMapIndex();
+	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
 	
 	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
@@ -47,7 +47,7 @@ function UI:ConstructMap(mapId, zoneId)
 	end
 end
 
----Refreshes map scale from the update info properties.
+---Refreshes map's scale from the update info properties.
 function UI:RescaleMap()
 	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
 	local tileSize = ADDON.Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;

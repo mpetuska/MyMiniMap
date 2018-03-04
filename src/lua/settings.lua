@@ -55,10 +55,7 @@ ADDON.DefaultSettings = {
 			y = nil
 		}
 	},
-	isInCameraMode = true,
-	isMapRotationEnabled = true,
-	isUpdateEnabled = true,
-	showUnexploredPins = true
+	isMapRotationEnabled = true
 };
 ADDON.Settings = ADDON.DefaultSettings;
 
