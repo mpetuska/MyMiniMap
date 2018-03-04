@@ -10,11 +10,6 @@ local eventHandlersRegistered = false;
 ---A class to represent and control fast travel pins.
 --- 
 ---@class FastTravelPin
----@field public Position table
----@field public icon string
----@field public type number
----@field public zoneId number
----@field public enabled boolean
 local FastTravelPin = super:New();
 ADDON.Classes.FastTravelPin = FastTravelPin;
 FastTravelPin.Objects = {};

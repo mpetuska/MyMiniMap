@@ -8,12 +8,6 @@
 ---It is mostly intended to be extended by the pin-type-specific classes.
 --- 
 ---@class Pin
----@field public Controls table
----@field public Position table
----@field public icon string
----@field public type number
----@field public zoneId number
----@field public enabled boolean
 local Pin = {};
 ADDON.Classes.Pin = Pin;
 --====================================================================================================================--
