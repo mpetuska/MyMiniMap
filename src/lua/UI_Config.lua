@@ -13,6 +13,9 @@ local UpdateInfo = ADDON.UpdateInfo;
 ---@param zoneId number
 ---@return void
 function UI:ConstructMap()
+	--GetPlayerLocationName()
+	--GetPlayerActiveZoneName()
+	--GetPlayerActiveSubzoneName()
 	UpdateInfo.Map.mapId = GetCurrentMapIndex();
 	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
@@ -28,7 +31,7 @@ function UI:ConstructMap()
 		local tileIndex = x + (tileCountHor * (y - 1));
 		local nX = (x - 1) * tileSize / UpdateInfo.Map.width;
 		local nY = (y - 1) * tileSize / UpdateInfo.Map.height;
-		ADDON.Classes.MapTile:New(mapId, zoneId, tileIndex, nX, nY, tileSize)
+		ADDON.Classes.MapTile:New(UpdateInfo.Map.mapId, UpdateInfo.Map.zoneId, tileIndex, nX, nY, tileSize)
 		
 		if (x == tileCountHor and y < tileCountVer) then
 			x = 1;
