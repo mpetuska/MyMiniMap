@@ -7,7 +7,7 @@ local UI = ADDON.UI;
 local super = ADDON.Classes.Pin;
 local eventHandlersRegistered = false;
 --====================================================== CLASS =======================================================--
----A class to represent and control wayshrine pins.
+---A class to represent and control fast travel pins.
 --- 
 ---@class FastTravelPin
 ---@field public Position table
@@ -22,7 +22,7 @@ local Objects = FastTravelPin.Objects;
 --====================================================================================================================--
 
 ---Constructor
----@return WayshrinePin
+---@return FastTravelPin
 function FastTravelPin:New(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType)
 	local obj = setmetatable({}, { __index = self });
 	obj:Init(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType);
