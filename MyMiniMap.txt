@@ -11,6 +11,7 @@ src/lua/UI_Utils.lua
 src/lua/UI_Config.lua
 src/lua/eventHandlers.lua
 src/lua/slashCommands.lua
+src/lua/classes/MapTile.lua
 src/lua/classes/AbstractPin.lua
 src/lua/classes/FastTravelPin.lua
 

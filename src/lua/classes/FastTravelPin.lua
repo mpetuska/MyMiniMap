@@ -17,6 +17,14 @@ local Objects = FastTravelPin.Objects;
 --====================================================================================================================--
 
 ---Constructor
+---@param nodeIndex number
+---@param known boolean
+---@param name string
+---@param nX number
+---@param nY number
+---@param icon string
+---@param glowIcon string
+---@param poiType number
 ---@return FastTravelPin
 function FastTravelPin:New(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType)
 	local obj = setmetatable({}, { __index = self });
@@ -29,21 +37,41 @@ function FastTravelPin:New(nodeIndex, known, name, nX, nY, icon, glowIcon, poiTy
 end
 
 ---Initialises the new object.
+---@param nodeIndex number
+---@param known boolean
+---@param name string
+---@param nX number
+---@param nY number
+---@param icon string
+---@param glowIcon string
+---@param poiType number
 function FastTravelPin:Init(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType)
 	super.Init(self, known, name, poiType, icon, glowIcon);
 	self.nodeIndex = nodeIndex;
 	
 	local size = ADDON.Sizes.mapPinSize * ADDON.Settings.MiniMap.mapScale;
-	for group, map in pairs(UI.Maps) do
-		local controlName = map:GetName() .. "FastTravelPin_" .. tostring(#Objects + 1);
-		self.Controls[group] = WINDOW_MANAGER:CreateControl(controlName, map, CT_TEXTURE);
+	local objectId = #Objects + 1;
+	for group, scroll in pairs(UI.Scrolls) do
+		if (self.Controls[group] == nil) then
+			local controlName = scroll:GetName() .. "_FastTravelPin" .. tostring(objectId);
+			self.Controls[group] = WINDOW_MANAGER:CreateControl(controlName, scroll, CT_TEXTURE);
+			Objects[objectId] = self;
+		end
+		
 		self.Controls[group]:SetTexture(icon);
 		self.Controls[group]:SetDimensions(size, size);
-		self.Controls[group]:SetDrawLayer(2);
+		self.Controls[group]:SetDrawLevel(2);
 		self.Controls[group]:SetHidden(not self.enabled);
 	end
-	Objects[#Objects + 1] = self;
-	self:SetMapPos(nX, nY)
+	
+	self.Controls.center:SetMouseEnabled(true);
+	self.Controls.center:SetHandler("OnMouseEnter", function(it)
+		ZO_Tooltips_ShowTextTooltip(it, TOP, self.name)
+	end);
+	self.Controls.center:SetHandler("OnMouseExit", function()
+		ZO_Tooltips_HideTextTooltip()
+	end);
+	self:SetPosition(nX, nY);
 end
 
 ---Event handler for EVENT_FAST_TRAVEL_NETWORK_UPDATED. Enabled the newly discovered pin.
