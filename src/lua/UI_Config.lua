@@ -13,9 +13,6 @@ local UpdateInfo = ADDON.UpdateInfo;
 ---@param zoneId number
 ---@return void
 function UI:ConstructMap()
-	--GetPlayerLocationName()
-	--GetPlayerActiveZoneName()
-	--GetPlayerActiveSubzoneName()
 	UpdateInfo.Map.mapId = GetCurrentMapIndex();
 	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
