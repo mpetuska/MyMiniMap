@@ -6,15 +6,26 @@
 ---------------- NAMESPACE ----------------
 local UI = ADDON.UI;
 local UpdateInfo = ADDON.UpdateInfo;
+local Classes = ADDON.Classes;
 -------------------------------------------
 
 ---Constructs the map.
----@param mapId number
----@param zoneId number
----@return void
-function UI:ConstructMap()
-	UpdateInfo.Map.mapId = GetCurrentMapIndex();
+---@param subZoneId number
+---@param subZoneName string
+function UI:ConstructMap(subZoneName)
+	if (not subZoneName) then
+		local resultCode = SetMapToPlayerLocation();
+		if (resultCode == SET_MAP_RESULT_FAILED) then
+			return zo_callLater(function()
+				UI:ConstructMap(subZoneName);
+			end, 250);
+		elseif (resultCode == SET_MAP_RESULT_MAP_CHANGED) then
+			CALLBACK_MANAGER:FireCallbacks("OnWorldMapChanged");
+		end
+	end
+	
 	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
+	UpdateInfo.Map.subZoneName = subZoneName or GetPlayerLocationName();
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
 	
 	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
@@ -23,13 +34,22 @@ function UI:ConstructMap()
 	UpdateInfo.Map.width = tileSize * tileCountHor;
 	UpdateInfo.Map.height = tileSize * tileCountVer;
 	
-	local x, y = 1, 1;
+	for _, tile in pairs(Classes.MapTile.Objects) do
+		tile:SetEnabled(false);
+	end
+	local x, y, count = 1, 1, 1;
 	repeat
 		local tileIndex = x + (tileCountHor * (y - 1));
 		local nX = (x - 1) * tileSize / UpdateInfo.Map.width;
 		local nY = (y - 1) * tileSize / UpdateInfo.Map.height;
-		ADDON.Classes.MapTile:New(UpdateInfo.Map.mapId, UpdateInfo.Map.zoneId, tileIndex, nX, nY, tileSize)
 		
+		if (Classes.MapTile.Objects[count]) then
+			Classes.MapTile.Objects[count]:Init(UpdateInfo.Map.zoneId, subZoneId, tileIndex, nX, nY, tileSize);
+		else
+			Classes.MapTile:New(UpdateInfo.Map.zoneId, subZoneId, tileIndex, nX, nY, tileSize)
+		end
+		
+		count = count + 1;
 		if (x == tileCountHor and y < tileCountVer) then
 			x = 1;
 			y = y + 1;
@@ -39,10 +59,17 @@ function UI:ConstructMap()
 	until ( x > tileCountHor or y > tileCountVer )
 	
 	-- Map Pins --
+	for _, pin in pairs(Classes.FastTravelPin.Objects) do
+		pin:SetEnabled(false);
+	end
 	for nodeIndex = 1, GetNumFastTravelNodes() do
 		local known, name, nX, nY, icon, glowIcon, poiType, isShownInCurrentMap = GetFastTravelNodeInfo(nodeIndex);
-		if (isShownInCurrentMap and known) then
-			ADDON.Classes.FastTravelPin:New(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType);
+		if (isShownInCurrentMap) then
+			if (Classes.FastTravelPin.Objects[nodeIndex]) then
+				Classes.FastTravelPin.Objects[nodeIndex]:Init(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType);
+			else
+				Classes.FastTravelPin:New(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType);
+			end
 		end
 	end
 end

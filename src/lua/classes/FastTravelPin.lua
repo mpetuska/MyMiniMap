@@ -28,6 +28,8 @@ local Objects = FastTravelPin.Objects;
 ---@return FastTravelPin
 function FastTravelPin:New(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType)
 	local obj = setmetatable({}, { __index = self });
+	table.insert(Objects, obj);
+	obj.objectId = #Objects;
 	obj:Init(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType);
 	if (not eventHandlersRegistered) then
 		EVENT_MANAGER:RegisterForEvent(ADDON.name .. "_FastTravelPinDiscovered", EVENT_FAST_TRAVEL_NETWORK_UPDATED, FastTravelPin.OnFastTravelNetworkUpdated);
@@ -50,12 +52,11 @@ function FastTravelPin:Init(nodeIndex, known, name, nX, nY, icon, glowIcon, poiT
 	self.nodeIndex = nodeIndex;
 	
 	local size = ADDON.Sizes.mapPinSize * ADDON.Settings.MiniMap.mapScale;
-	local objectId = #Objects + 1;
+	local objectId = self.objectId;
 	for group, scroll in pairs(UI.Scrolls) do
-		if (self.Controls[group] == nil) then
+		if (not self.Controls[group]) then
 			local controlName = scroll:GetName() .. "_FastTravelPin" .. tostring(objectId);
 			self.Controls[group] = WINDOW_MANAGER:CreateControl(controlName, scroll, CT_TEXTURE);
-			Objects[objectId] = self;
 		end
 		
 		self.Controls[group]:SetTexture(icon);

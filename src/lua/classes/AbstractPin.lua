@@ -27,7 +27,7 @@ end
 ---@param icon string
 ---@param glowIcon string
 function AbstractPin:Init(known, name, poiType, icon, glowIcon)
-	self.Controls = {}
+	self.Controls = self.Controls or {};
 	self.Position = {
 		x = nil,
 		y = nil

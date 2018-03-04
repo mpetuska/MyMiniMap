@@ -5,7 +5,6 @@
 --]]
 local UI = ADDON.UI;
 local UpdateInfo = ADDON.UpdateInfo;
-local eventHandlersRegistered = false;
 --====================================================== CLASS =======================================================--
 ---Class representing map tiles.
 --- 
@@ -16,30 +15,32 @@ MapTile.Objects = {};
 local Objects = MapTile.Objects;
 --====================================================================================================================--
 ---Constructor
----@param mapId number
 ---@param zoneId number
+---@param subZoneName string
 ---@param tileId number
 ---@param xPos number
 ---@param yPos number
 ---@param size number
 ---@return MapTile
-function MapTile:New(mapId, zoneId, tileId, xPos, yPos, size)
+function MapTile:New(zoneId, subZoneName, tileId, xPos, yPos, size)
 	local obj = setmetatable({}, { __index = self });
-	obj:Init(mapId, zoneId, tileId, xPos, yPos, size);
+	table.insert(Objects, obj);
+	obj.objectId = #Objects;
+	obj:Init(zoneId, subZoneName, tileId, xPos, yPos, size);
 	return obj;
 end
 
 ---Initialises the new object.
----@param mapId number
 ---@param zoneId number
+---@param subZoneName string
 ---@param tileId number
 ---@param xPos number
 ---@param yPos number
 ---@param size number
-function MapTile:Init(mapId, zoneId, tileId, xPos, yPos, size)
+function MapTile:Init(zoneId, subZoneName, tileId, xPos, yPos, size)
 	self.enabled = true;
-	self.mapId = mapId;
 	self.zoneId = zoneId;
+	self.subZoneId = subZoneName;
 	self.tileId = tileId;
 	self.Position = {
 		x = xPos,
@@ -47,14 +48,13 @@ function MapTile:Init(mapId, zoneId, tileId, xPos, yPos, size)
 	}
 	self.size = size;
 	
-	self.Controls = {};
+	self.Controls = self.Controls or {};
 	local tileTexture = GetMapTileTexture(self.tileId);
-	local objectId = #Objects + 1;
+	local objectId = self.objectId;
 	for group, scroll in pairs(UI.Scrolls) do
-		if (self.Controls[group] == nil) then
+		if (not self.Controls[group]) then
 			local controlName = scroll:GetName() .. "_MapTile" .. tostring(objectId);
 			self.Controls[group] = WINDOW_MANAGER:CreateControl(controlName, scroll, CT_TEXTURE);
-			Objects[objectId] = self;
 		end
 		self.Controls[group]:SetTexture(tileTexture);
 		self.Controls[group]:SetDimensions(self.size, self.size);
