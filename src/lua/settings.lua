@@ -25,14 +25,14 @@ ADDON.Classes = {};
 ADDON.UI.isSetup = false;
 ADDON.EventHandlers = {}
 ADDON.UpdateInfo = {
+	updatePending = true,
 	Map = {
 		mapId = 0,
 		zoneId = 0,
 		tileCountX = 0,
 		tileCountY = 0,
 		width = 0,
-		height = 0,
-		rotation = 0
+		height = 0
 	},
 	Player = {
 		rotation = 0,
@@ -55,9 +55,7 @@ ADDON.DefaultSettings = {
 			y = nil
 		}
 	},
-	isInCameraMode = true,
-	isMapRotationEnabled = true,
-	isUpdateEnabled = true,
-	showUnexploredPins = true
+	isMapRotationEnabled = true
 };
+ADDON.Settings = ADDON.DefaultSettings;
 

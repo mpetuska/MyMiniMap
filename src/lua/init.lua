@@ -19,8 +19,7 @@ local function RegisterEvents()
 end
 
 local function RegisterUpdates()
-	EVENT_MANAGER:RegisterForUpdate(ADDON.Settings.addonName .. "_UiUpdate", 2, EventHandlers.OnUiUpdate);
-	EVENT_MANAGER:RegisterForUpdate(ADDON.Settings.addonName .. "_SettingsUpdate", 50, EventHandlers.OnSettingsUpdate);
+	EVENT_MANAGER:RegisterForUpdate(ADDON.Settings.addonName .. "_UiUpdate", 1, EventHandlers.OnUiUpdate);
 end
 
 --- Initialises the addon.
@@ -35,7 +34,6 @@ function EventHandlers.OnAddonLoaded(event, addonName)
 	
 	SLASH_COMMANDS["/mmm"] = ADDON.HandleSlashCommands;
 	ADDON.UI:Setup();
-	ADDON.SnapshotSettings = table.copy(ADDON.Settings)
 	RegisterEvents();
 	RegisterUpdates();
 	

@@ -12,7 +12,6 @@ ADDON.Commands = {
 		ADDON:Print("[toggle] Shows/hides the minimap.");
 		ADDON:Print("[reset] Resets the default settings.");
 		ADDON:Print("[size <size>] Sets the size of the minimap.");
-		ADDON:Print("[mode <camera | player>] Sets the minimap's mode.");
 		ADDON:Print("[rotation <on | off>] Sets the minimap's rotation mode.");
 	end,
 	example = {
@@ -39,19 +38,6 @@ ADDON.Commands = {
 		end
 		ADDON:Print("Size updated to", size);
 	end,
-	mode = function(mode)
-		if (mode == "camera") then
-			ADDON.Settings.isInCameraMode = true;
-		elseif (mode == "player") then
-			ADDON.Settings.isInCameraMode = false;
-		else
-			ADDON.Println()
-			ADDON:Print("Invalid command argument!")
-			ADDON.Commands.help();
-			return;
-		end
-		ADDON:Print("Minimap set to rotate with", mode);
-	end,
 	rotation = function(isEnabled)
 		if (isEnabled == "on") then
 			ADDON.Settings.isMapRotationEnabled = true;
@@ -63,11 +49,14 @@ ADDON.Commands = {
 			ADDON.Commands.help();
 			return;
 		end
+		ADDON.UI.playerPin:SetTextureRotation(0);
+		ADDON.UI.wheel:SetTextureRotation(0);
+		ADDON.UI.UpdateMap();
 		ADDON:Print("Minimap's rotation is", isEnabled);
 	end
 }
 
---- Handles a given command string redirrecting to an appropriate function in the ADDON.Commands table.
+--- Handles a given command string redirecting to an appropriate function in the ADDON.Commands table.
 ---@param str string
 ---@return void
 function ADDON.HandleSlashCommands(str)

@@ -10,29 +10,14 @@
 			<Controls>
 				<Scroll name="$(parent)VerticalScroll" hidden="false" layer="1">
 					<Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
-					<Controls>
-						<Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
-							<Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
-						</Texture>
-					</Controls>
 				</Scroll>
 
 				<Scroll name="$(parent)CenterScroll" hidden="false" layer="1">
 					<Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
-					<Controls>
-						<Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
-							<Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
-						</Texture>
-					</Controls>
 				</Scroll>
 
 				<Scroll name="$(parent)HorizontalScroll" hidden="false" layer="1">
 					<Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
-					<Controls>
-						<Texture name="$(parent)Map" textureFile="MyMiniMap/resources/blank.dds">
-							<Anchor relativeTo="$(parent)" point="CENTER" relativePoint="CENTER"/>
-						</Texture>
-					</Controls>
 					<!--<FadeGradient x1="0" y1="1" size1="20" x2="0" y2="-1" size2="20"/>-->
 				</Scroll>
 
@@ -40,11 +25,11 @@
 					<Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)"/>
 				</Texture>
 
-				<Texture name="$(parent)Wheel" layer="4" textureFile="MyMiniMap/resources/wheel.dds">
+				<Texture name="$(parent)Wheel" layer="3" textureFile="MyMiniMap/resources/wheel.dds">
 					<Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)"/>
 				</Texture>
 
-				<Texture name="$(parent)PlayerPin" layer="3" textureFile="esoui/art/icons/mapkey/mapkey_player.dds">
+				<Texture name="$(parent)PlayerPin" layer="2" textureFile="esoui/art/icons/mapkey/mapkey_player.dds">
 					<Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)Wheel"/>
 				</Texture>
 			</Controls>
