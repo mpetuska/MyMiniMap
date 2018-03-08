@@ -67,18 +67,12 @@ end
 
 function UI:ConstructMapPins()
 	local zoneId = UpdateInfo.Map.zoneId;
-	for _, pin in pairs(Classes.Pin.Objects) do
-		pin:SetEnabled(false);
-	end
+	Classes.Pin.SetEnabledAll(false);
 	for poiIndex = 1, UpdateInfo.Map.poiCount do
 		local nX, nY, mapDisplayPinType, icon, isShownInCurrentMap, linkedCollectibleIsLocked = GetPOIMapInfo(zoneId, poiIndex);
 		local objectiveName, objectiveLevel, startDescription, finishedDescription = GetPOIInfo(zoneId, poiIndex)
 		if (isShownInCurrentMap and not icon:find("icon_missing")) then
-			if (Classes.Pin.Objects[poiIndex]) then
-				Classes.Pin.Objects[poiIndex]:Init(zoneId, poiIndex, objectiveName, mapDisplayPinType, icon, nX, nY);
-			else
-				Classes.Pin:New(zoneId, poiIndex, objectiveName, mapDisplayPinType, icon, nX, nY);
-			end
+			Classes.PoiPin:New(zoneId, poiIndex, objectiveName, mapDisplayPinType, icon, nX, nY);
 		end
 	end
 end
@@ -100,9 +94,7 @@ end
 
 ---Updates map pins.
 function UI:UpdatePins()
-	for _, pin in pairs(ADDON.Classes.Pin.Objects) do
-		pin:Update();
-	end
+	Classes.Pin.UpdateAll();
 end
 
 ---Updates map tiles.
