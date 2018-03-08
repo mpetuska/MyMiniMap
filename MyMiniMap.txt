@@ -12,8 +12,9 @@ src/lua/UI_Config.lua
 src/lua/eventHandlers.lua
 src/lua/slashCommands.lua
 src/lua/classes/MapTile.lua
-src/lua/classes/AbstractPin.lua
-src/lua/classes/FastTravelPin.lua
+src/lua/classes/Pin.lua
+# DEPRECIATED src/lua/classes/AbstractPin.lua
+# DEPRECIATED src/lua/classes/FastTravelPin.lua
 
 src/lua/init.lua
 

@@ -34,11 +34,11 @@ end
 ---@param eventCode number
 ---@param zoneName string
 ---@param subZoneName string
----@param newSubzone boolean
+---@param newSubZone boolean
 ---@param zoneId number
 ---@param subZoneId number
-function EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubzone, zoneId, subZoneId)
-	if (ADDON.UpdateInfo.Map.subZoneName == subZoneName or subZoneName:lower():find("wayshrine")) then
+function EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubZone, zoneId, subZoneId)
+	if (subZoneName and (ADDON.UpdateInfo.Map.subZoneName == subZoneName or subZoneName:lower():find("wayshrine"))) then
 		return
 	end
 	local resultCode = SetMapToPlayerLocation();
@@ -48,7 +48,14 @@ function EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubzon
 		CALLBACK_MANAGER:FireCallbacks("OnWorldMapChanged");
 	elseif (resultCode == SET_MAP_RESULT_FAILED) then
 		zo_callLater(function()
-			EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubzone, zoneId, subZoneId);
+			EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubZone, zoneId, subZoneId);
 		end, 250);
 	end
+end
+
+---Handles EVENT_PLAYER_ACTIVATED event.
+---@param eventCode number
+---@param initial boolean
+function EventHandlers.OnPlayerActivated(eventCode, initial)
+	UI:ConstructMap(subZoneName);
 end
