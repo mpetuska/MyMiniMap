@@ -1,7 +1,7 @@
 --[[
   [] Author: Martynas Petuska
   [] E-mail: martynas.petuska@outlook.com
-  [] Date:   February 2018
+  [] Date:   March 2018
 --]]
 local UpdateInfo = ADDON.UpdateInfo;
 local Settings = ADDON.Settings;
