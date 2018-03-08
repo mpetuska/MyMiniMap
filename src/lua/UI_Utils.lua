@@ -83,7 +83,6 @@ end
 function UI:Setup()
 	GatherUiElements();
 	UI:Reposition();
-	UI:ConstructMap();
 	UI:Rescale();
 	UI.isSetup = true;
 end

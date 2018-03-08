@@ -25,12 +25,18 @@ function UI:ConstructMap(subZoneName)
 	end
 	
 	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
-	UpdateInfo.Map.subZoneName = subZoneName or GetPlayerLocationName();
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
+	UpdateInfo.Map.poiCount = GetNumPOIs(UpdateInfo.Map.zoneId);
+	UpdateInfo.Map.subZoneName = subZoneName or GetPlayerLocationName();
 	
-	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
+	UI:ConstructMapTiles();
+	UI:ConstructMapPins();
+end
+
+function UI:ConstructMapTiles()
+	local subZoneName = UpdateInfo.Map.subZoneName;
 	local tileSize = ADDON.Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;
-	
+	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
 	UpdateInfo.Map.width = tileSize * tileCountHor;
 	UpdateInfo.Map.height = tileSize * tileCountVer;
 	
@@ -44,9 +50,9 @@ function UI:ConstructMap(subZoneName)
 		local nY = (y - 1) * tileSize / UpdateInfo.Map.height;
 		
 		if (Classes.MapTile.Objects[count]) then
-			Classes.MapTile.Objects[count]:Init(UpdateInfo.Map.zoneId, subZoneId, tileIndex, nX, nY, tileSize);
+			Classes.MapTile.Objects[count]:Init(UpdateInfo.Map.zoneId, subZoneName, tileIndex, nX, nY, tileSize);
 		else
-			Classes.MapTile:New(UpdateInfo.Map.zoneId, subZoneId, tileIndex, nX, nY, tileSize)
+			Classes.MapTile:New(UpdateInfo.Map.zoneId, subZoneName, tileIndex, nX, nY, tileSize)
 		end
 		
 		count = count + 1;
@@ -57,18 +63,21 @@ function UI:ConstructMap(subZoneName)
 			x = x + 1;
 		end
 	until ( x > tileCountHor or y > tileCountVer )
-	
-	-- Map Pins --
-	for _, pin in pairs(Classes.FastTravelPin.Objects) do
+end
+
+function UI:ConstructMapPins()
+	local zoneId = UpdateInfo.Map.zoneId;
+	for _, pin in pairs(Classes.Pin.Objects) do
 		pin:SetEnabled(false);
 	end
-	for nodeIndex = 1, GetNumFastTravelNodes() do
-		local known, name, nX, nY, icon, glowIcon, poiType, isShownInCurrentMap = GetFastTravelNodeInfo(nodeIndex);
-		if (isShownInCurrentMap) then
-			if (Classes.FastTravelPin.Objects[nodeIndex]) then
-				Classes.FastTravelPin.Objects[nodeIndex]:Init(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType);
+	for poiIndex = 1, UpdateInfo.Map.poiCount do
+		local nX, nY, mapDisplayPinType, icon, isShownInCurrentMap, linkedCollectibleIsLocked = GetPOIMapInfo(zoneId, poiIndex);
+		local objectiveName, objectiveLevel, startDescription, finishedDescription = GetPOIInfo(zoneId, poiIndex)
+		if (isShownInCurrentMap and not icon:find("icon_missing")) then
+			if (Classes.Pin.Objects[poiIndex]) then
+				Classes.Pin.Objects[poiIndex]:Init(zoneId, poiIndex, objectiveName, mapDisplayPinType, icon, nX, nY);
 			else
-				Classes.FastTravelPin:New(nodeIndex, known, name, nX, nY, icon, glowIcon, poiType);
+				Classes.Pin:New(zoneId, poiIndex, objectiveName, mapDisplayPinType, icon, nX, nY);
 			end
 		end
 	end
@@ -91,7 +100,7 @@ end
 
 ---Updates map pins.
 function UI:UpdatePins()
-	for _, pin in pairs(ADDON.Classes.FastTravelPin.Objects) do
+	for _, pin in pairs(ADDON.Classes.Pin.Objects) do
 		pin:Update();
 	end
 end

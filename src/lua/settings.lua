@@ -29,6 +29,7 @@ ADDON.UpdateInfo = {
 	Map = {
 		mapId = 0,
 		zoneId = 0,
+		poiCount = 0,
 		subZoneName = "",
 		tileCountX = 0,
 		tileCountY = 0,

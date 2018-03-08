@@ -10,7 +10,7 @@ local UpdateInfo = ADDON.UpdateInfo;
 --- 
 ---@class AbstractPin
 local AbstractPin = {};
-ADDON.Classes.Pin = AbstractPin;
+ADDON.Classes.AbstractPin = AbstractPin;
 --====================================================================================================================--
 
 ---Constructor
