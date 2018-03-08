@@ -27,6 +27,7 @@ function UI:ConstructMap(subZoneName)
 	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
 	UpdateInfo.Map.poiCount = GetNumPOIs(UpdateInfo.Map.zoneId);
+	UpdateInfo.Map.locationCount = GetNumMapLocations();
 	UpdateInfo.Map.subZoneName = subZoneName or GetPlayerLocationName();
 	
 	UI:ConstructMapTiles();
@@ -68,11 +69,18 @@ end
 function UI:ConstructMapPins()
 	local zoneId = UpdateInfo.Map.zoneId;
 	Classes.Pin.SetEnabledAll(false);
-	for poiIndex = 1, UpdateInfo.Map.poiCount do
+	for poiIndex = 0, UpdateInfo.Map.poiCount do
 		local nX, nY, mapDisplayPinType, icon, isShownInCurrentMap, linkedCollectibleIsLocked = GetPOIMapInfo(zoneId, poiIndex);
 		local objectiveName, objectiveLevel, startDescription, finishedDescription = GetPOIInfo(zoneId, poiIndex)
 		if (isShownInCurrentMap and not icon:find("icon_missing")) then
 			Classes.PoiPin:New(zoneId, poiIndex, objectiveName, mapDisplayPinType, icon, nX, nY);
+		end
+	end
+	for locationIndex = 0, UpdateInfo.Map.locationCount do
+		local icon, nX, nY = GetMapLocationIcon(locationIndex);
+		local name = GetMapLocationTooltipHeader(locationIndex);
+		if (not icon:find("icon_missing")) then
+			Classes.LocationPin:New(zoneId, locationIndex, name, icon, nX, nY);
 		end
 	end
 end

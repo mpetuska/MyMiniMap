@@ -16,6 +16,12 @@ local classSetup = false;
 ---Constructor.
 ---@return PoiPin
 function PoiPin:New(zoneId, poiId, name, poiType, icon, nX, nY, enabled)
+	if (not classSetup) then
+		super.RegisterSubclass(PoiPin);
+		EVENT_MANAGER:RegisterForEvent(ADDON.name .. "_PoiDiscovered", EVENT_POI_DISCOVERED, PoiPin.OnPoiDiscovered);
+		classSetup = true;
+	end
+	
 	if (Objects[poiId]) then
 		Objects[poiId]:Init(zoneId, poiId, name, poiType, icon, nX, nY, enabled);
 		return Objects[poiId];
@@ -25,11 +31,6 @@ function PoiPin:New(zoneId, poiId, name, poiType, icon, nX, nY, enabled)
 	obj.objectId = #Objects;
 	obj.type = "PoiPin";
 	obj:Init(zoneId, poiId, name, poiType, icon, nX, nY, enabled);
-	if (not classSetup) then
-		super.RegisterSubclass(PoiPin);
-		EVENT_MANAGER:RegisterForEvent(ADDON.name .. "_PoiDiscovered", EVENT_POI_DISCOVERED, PoiPin.OnPoiDiscovered);
-		classSetup = true;
-	end
 	return obj;
 end
 

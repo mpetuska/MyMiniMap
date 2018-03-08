@@ -51,11 +51,12 @@ function EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubZon
 			EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubZone, zoneId, subZoneId);
 		end, 250);
 	end
+	d("ZONE CHANGED")
 end
 
 ---Handles EVENT_PLAYER_ACTIVATED event.
 ---@param eventCode number
 ---@param initial boolean
 function EventHandlers.OnPlayerActivated(eventCode, initial)
-	UI:ConstructMap(subZoneName);
+	UI:ConstructMap();
 end

@@ -17,6 +17,9 @@ end
 ---@return void
 local function RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent(ADDON.name .. "_ZoneChanged", EVENT_ZONE_CHANGED, EventHandlers.OnZoneChanged);
+	EVENT_MANAGER:RegisterForEvent(ADDON.name .. "_ZoneChangeds", EVENT_ZONE_UPDATED, function()
+		d("ZONE UPDATED")
+	end);
 	EVENT_MANAGER:RegisterForEvent(ADDON.name .. "_PlayerActivated", EVENT_PLAYER_ACTIVATED, EventHandlers.OnPlayerActivated);
 end
 
