@@ -9,21 +9,22 @@ ADDON = {}
 
 ADDON.name = "MyMiniMap";
 ADDON.Sizes = {
-	miniMapSize = 512;
-	playerPinSize = 32;
-	mapPinSize = 64;
-}
+	miniMapSize = 512,
+	playerPinSize = 32,
+	mapPinSize = 0
+};
+ADDON.Sizes.mapPinSize = ADDON.Sizes.playerPinSize * 1.75;
 ADDON.Constants = {
-	zoomDelta = 0.1;
-}
+	zoomDelta = 0.1
+};
 ADDON.Boundaries = {
-	mapZoomMin = 0.45;
-	mapZoomMax = 1.75;
-}
+	mapZoomMin = 0.5,
+	mapZoomMax = 2.00
+};
 ADDON.UI = {};
 ADDON.Classes = {};
 ADDON.UI.isSetup = false;
-ADDON.EventHandlers = {}
+ADDON.EventHandlers = {};
 ADDON.UpdateInfo = {
 	updatePending = true,
 	Map = {
@@ -41,7 +42,7 @@ ADDON.UpdateInfo = {
 		nX = 0,
 		nY = 0
 	}
-}
+};
 ADDON.DefaultSettings = {
 	addonName = "My MiniMap",
 	Theme = {

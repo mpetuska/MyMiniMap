@@ -27,6 +27,7 @@ function UI:ConstructMap(subZoneName)
 	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
 	UpdateInfo.Map.poiCount = GetNumPOIs(UpdateInfo.Map.zoneId);
+	UpdateInfo.Map.locationCount = GetNumMapLocations();
 	UpdateInfo.Map.subZoneName = subZoneName or GetPlayerLocationName();
 	
 	UI:ConstructMapTiles();
@@ -67,18 +68,19 @@ end
 
 function UI:ConstructMapPins()
 	local zoneId = UpdateInfo.Map.zoneId;
-	for _, pin in pairs(Classes.Pin.Objects) do
-		pin:SetEnabled(false);
-	end
-	for poiIndex = 1, UpdateInfo.Map.poiCount do
+	Classes.Pin.SetEnabledAll(false);
+	for poiIndex = 0, UpdateInfo.Map.poiCount do
 		local nX, nY, mapDisplayPinType, icon, isShownInCurrentMap, linkedCollectibleIsLocked = GetPOIMapInfo(zoneId, poiIndex);
 		local objectiveName, objectiveLevel, startDescription, finishedDescription = GetPOIInfo(zoneId, poiIndex)
 		if (isShownInCurrentMap and not icon:find("icon_missing")) then
-			if (Classes.Pin.Objects[poiIndex]) then
-				Classes.Pin.Objects[poiIndex]:Init(zoneId, poiIndex, objectiveName, mapDisplayPinType, icon, nX, nY);
-			else
-				Classes.Pin:New(zoneId, poiIndex, objectiveName, mapDisplayPinType, icon, nX, nY);
-			end
+			Classes.PoiPin:New(zoneId, poiIndex, objectiveName, mapDisplayPinType, icon, nX, nY);
+		end
+	end
+	for locationIndex = 0, UpdateInfo.Map.locationCount do
+		local icon, nX, nY = GetMapLocationIcon(locationIndex);
+		local name = GetMapLocationTooltipHeader(locationIndex);
+		if (not icon:find("icon_missing")) then
+			Classes.LocationPin:New(zoneId, locationIndex, name, icon, nX, nY);
 		end
 	end
 end
@@ -100,9 +102,7 @@ end
 
 ---Updates map pins.
 function UI:UpdatePins()
-	for _, pin in pairs(ADDON.Classes.Pin.Objects) do
-		pin:Update();
-	end
+	Classes.Pin.UpdateAll();
 end
 
 ---Updates map tiles.
