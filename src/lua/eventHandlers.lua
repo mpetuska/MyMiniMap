@@ -11,12 +11,7 @@ local UI = ADDON.UI;
 --- Handles main UI update event.
 ---@return void
 function EventHandlers.OnUiUpdate()
-	local UI = ADDON.UI;
-	if not UI.isSetup then
-		return;
-	end
-	
-	if (not ADDON.UI.miniMap:IsHidden()) then
+	if (UI.isSetup and not ADDON.UI.miniMap:IsHidden()) then
 		UI:UpdateMap();
 	end
 end
@@ -51,7 +46,12 @@ function EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubZon
 			EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubZone, zoneId, subZoneId);
 		end, 250);
 	end
-	d("ZONE CHANGED")
+end
+
+---Handles EVENT_CURRENT_SUBZONE_LIST_CHANGED event.
+---@param eventCode number
+function EventHandlers.OnSubZoneChanged(eventCode)
+	UI:ConstructMap();
 end
 
 ---Handles EVENT_PLAYER_ACTIVATED event.
