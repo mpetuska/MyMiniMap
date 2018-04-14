@@ -4,7 +4,7 @@
   [] Date:   February 2018
 --]]
 local UI = ADDON.UI;
-local super = ADDON.Classes.AbstractPin;
+local super = ADDON.Classes.Pin;
 local eventHandlersRegistered = false;
 --====================================================== CLASS =======================================================--
 ---A class to represent and control fast travel pins.
