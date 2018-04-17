@@ -6,7 +6,7 @@
 ---------------- NAMESPACE ----------------
 -------------------------------------------
 
-ADDON.TextureList = {
+ADDON.PinTextures = {
 	GeneralPins = {
 		playerPointer = "esoui/art/icons/mapkey/mapkey_player.dds",
 		wayshrineComplete = "esoui/art/icons/poi/poi_wayshrine_complete.dds",
@@ -102,4 +102,13 @@ function table.compare(table1, table2)
 		end
 		return true;
 	end
+end
+
+function table.contains(table, element)
+	for _, value in pairs(table) do
+		if (value == element) then
+			return true;
+		end
+	end
+	return false;
 end

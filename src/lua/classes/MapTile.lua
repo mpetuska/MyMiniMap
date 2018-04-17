@@ -58,7 +58,7 @@ function MapTile:Init(zoneId, subZoneName, tileId, xPos, yPos, size)
 		end
 		self.Controls[group]:SetTexture(tileTexture);
 		self.Controls[group]:SetDimensions(self.size, self.size);
-		self.Controls[group]:SetDrawLevel(1);
+		self.Controls[group]:SetDrawLevel(0);
 		self.Controls[group]:SetHidden(not self.enabled);
 	end
 	self:Update();

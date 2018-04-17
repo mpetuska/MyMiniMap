@@ -7,6 +7,7 @@
 local UI = ADDON.UI;
 local UpdateInfo = ADDON.UpdateInfo;
 local Classes = ADDON.Classes;
+local PinType = ADDON.Constants.PinType;
 -------------------------------------------
 
 ---Constructs the map.
@@ -67,22 +68,7 @@ function UI:ConstructMapTiles()
 end
 
 function UI:ConstructMapPins()
-	local zoneId = UpdateInfo.Map.zoneId;
-	Classes.Pin.SetEnabledAll(false);
-	for poiIndex = 0, UpdateInfo.Map.poiCount do
-		local nX, nY, mapDisplayPinType, icon, isShownInCurrentMap, linkedCollectibleIsLocked = GetPOIMapInfo(zoneId, poiIndex);
-		local objectiveName, objectiveLevel, startDescription, finishedDescription = GetPOIInfo(zoneId, poiIndex)
-		if (isShownInCurrentMap and not icon:find("icon_missing")) then
-			Classes.PoiPin:New(zoneId, poiIndex, objectiveName, mapDisplayPinType, icon, nX, nY);
-		end
-	end
-	for locationIndex = 0, UpdateInfo.Map.locationCount do
-		local icon, nX, nY = GetMapLocationIcon(locationIndex);
-		local name = GetMapLocationTooltipHeader(locationIndex);
-		if (not icon:find("icon_missing")) then
-			Classes.LocationPin:New(zoneId, locationIndex, name, icon, nX, nY);
-		end
-	end
+	Classes.MapPin.RefreshAll();
 end
 
 ---Refreshes map's scale from the update info properties.
@@ -92,7 +78,7 @@ function UI:RescaleMap()
 	
 	UpdateInfo.Map.width = tileSize * tileCountHor;
 	UpdateInfo.Map.height = tileSize * tileCountVer;
-	for _, tile in pairs(ADDON.Classes.MapTile.Objects) do
+	for _, tile in pairs(Classes.MapTile.Objects) do
 		tile:Resize(tileSize);
 	end
 	
@@ -102,18 +88,23 @@ end
 
 ---Updates map pins.
 function UI:UpdatePins()
-	Classes.Pin.UpdateAll();
+	Classes.MapPin.UpdateAll();
 end
 
 ---Updates map tiles.
 function UI:UpdateMapTiles()
-	for _, tile in pairs(ADDON.Classes.MapTile.Objects) do
+	for _, tile in pairs(Classes.MapTile.Objects) do
 		tile:Update();
 	end
 end
 
 ---Refreshes required properties for update.
 function UI:RefreshUpdateInfo()
+	local subZoneName = GetPlayerLocationName();
+	if (UpdateInfo.Map.subZoneName ~= subZoneName and not subZoneName:lower():find("wayshrine")) then
+		UI:ConstructMap(subZoneName);
+	end
+	
 	local playerX, playerY, playerRotation = GetMapPlayerPosition("player");
 	local rotation;
 	if (ADDON.Settings.isMapRotationEnabled) then
@@ -122,9 +113,7 @@ function UI:RefreshUpdateInfo()
 		rotation = playerRotation;
 	end
 	
-	if (UpdateInfo.Player.nX == playerX and UpdateInfo.Player.nY == playerY and UpdateInfo.Player.rotation == rotation) then
-		UpdateInfo.updatePending = false;
-	else
+	if (UpdateInfo.Player.nX ~= playerX or UpdateInfo.Player.nY ~= playerY or UpdateInfo.Player.rotation ~= rotation) then
 		UpdateInfo.updatePending = true;
 	end
 	UpdateInfo.Player.nX = playerX;
@@ -145,5 +134,6 @@ function UI:UpdateMap()
 		else
 			UI.wheel:SetTextureRotation(-UpdateInfo.Player.rotation);
 		end
+		UpdateInfo.updatePending = false;
 	end
 end

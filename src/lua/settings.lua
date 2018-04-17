@@ -3,9 +3,6 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
----------------- NAMESPACE ----------------
-ADDON = {}
--------------------------------------------
 
 ADDON.name = "MyMiniMap";
 ADDON.Sizes = {
@@ -14,9 +11,6 @@ ADDON.Sizes = {
 	mapPinSize = 0
 };
 ADDON.Sizes.mapPinSize = ADDON.Sizes.playerPinSize * 1.75;
-ADDON.Constants = {
-	zoomDelta = 0.1
-};
 ADDON.Boundaries = {
 	mapZoomMin = 0.5,
 	mapZoomMax = 2.00
