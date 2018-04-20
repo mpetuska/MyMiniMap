@@ -14,7 +14,7 @@ local PinType = ADDON.Constants.PinType;
 ---@param subZoneId number
 ---@param subZoneName string
 function UI:ConstructMap(subZoneName)
-	if (not subZoneName) then
+	if (not subZoneName or type(subZoneName) ~= "string") then
 		local resultCode = SetMapToPlayerLocation();
 		if (resultCode == SET_MAP_RESULT_FAILED) then
 			return zo_callLater(function()
@@ -30,9 +30,12 @@ function UI:ConstructMap(subZoneName)
 	UpdateInfo.Map.poiCount = GetNumPOIs(UpdateInfo.Map.zoneId);
 	UpdateInfo.Map.locationCount = GetNumMapLocations();
 	UpdateInfo.Map.subZoneName = subZoneName or GetPlayerLocationName();
-	
+
+	-- Allows for map pins to load.
 	UI:ConstructMapTiles();
-	UI:ConstructMapPins();
+	zo_callLater(function()
+		UI:ConstructMapPins();
+	end, 250);
 end
 
 function UI:ConstructMapTiles()
@@ -64,11 +67,14 @@ function UI:ConstructMapTiles()
 		else
 			x = x + 1;
 		end
-	until ( x > tileCountHor or y > tileCountVer )
+	until (x > tileCountHor or y > tileCountVer)
 end
 
 function UI:ConstructMapPins()
-	Classes.MapPin.RefreshAll();
+	Classes.MapPin.RemoveAll();
+	for i, pin in pairs(ZO_WorldMap_GetPinManager():GetActiveObjects()) do
+		Classes.MapPin:New(pin);
+	end
 end
 
 ---Refreshes map's scale from the update info properties.

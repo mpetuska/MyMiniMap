@@ -245,14 +245,14 @@ function MapPin:Remove()
 	self:SetEnabled(false);
 	self.inUse = false;
 	local _, referenceTable = FindByIndex(self.pinType, self.typeIndex);
-	table.remove(referenceTable, self);
+	table.remove(referenceTable, self.typeIndex);
 	table.insert(UnusedObjects, self);
 end
 --====================================================== STATIC ======================================================--
 ---Removes a pin from usage.
 ---@param pinType string
 ---@param pinIndex number
-function MapPin.Remove(pinType, pinIndex)
+function MapPin.RemovePin(pinType, pinIndex)
 	local pin = FindByIndex(pinType, pinIndex);
 	if (pin) then
 		pin:Remove();
@@ -278,6 +278,7 @@ end
 ---@param ... string
 function MapPin.RefreshAll(...)
 	local pinTypes = { ... };
+	d("length " .. #pinTypes)
 	local referenceTables = {};
 	if (#pinTypes > 0) then
 		for _, type in pairs(pinTypes) do
@@ -325,6 +326,13 @@ function MapPin.RefreshAll(...)
 				pin:Remove();
 			end
 		end
+	end
+end
+
+function MapPin.RemoveAll()
+	d("objects: " .. #Objects)
+	for _, pin in pairs(Objects) do
+		pin:Remove();
 	end
 end
 --====================================================================================================================--

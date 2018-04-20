@@ -39,8 +39,8 @@ function EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubZon
 	local resultCode = SetMapToPlayerLocation();
 	
 	if (resultCode == SET_MAP_RESULT_MAP_CHANGED) then
-		UI:ConstructMap(subZoneName);
 		CALLBACK_MANAGER:FireCallbacks("OnWorldMapChanged");
+		UI:ConstructMap(subZoneName);
 	elseif (resultCode == SET_MAP_RESULT_FAILED) then
 		zo_callLater(function()
 			EventHandlers.OnZoneChanged(eventCode, zoneName, subZoneName, newSubZone, zoneId, subZoneId);
