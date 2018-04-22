@@ -8,10 +8,10 @@
 ---@param str string
 ---@param sep string
 ---@return ...
-function split(str, sep)
+function MMM.split(str, sep)
 	local fields = {}
 	
-	local sep = sep or " "
+	sep = sep or " "
 	local pattern = string.format("([^%s]+)", sep)
 	string.gsub(str, pattern, function(c)
 		fields[#fields + 1] = c
@@ -23,9 +23,9 @@ end
 ---Prints the given arguments separated by space to the chat tab.
 ---@param ... any
 ---@return void
-function ADDON:Print(...)
-	local name = ADDON.Settings.addonName;
-	local hex = ADDON.Settings.Theme.hex;
+function MMM:Print(...)
+	local name = MMM.Settings.addonName;
+	local hex = MMM.Settings.Theme.hex;
 	local prefix = string.format("|c%s%s: |r", string.upper(hex), name);
 	CHAT_SYSTEM:AddMessage(prefix .. table.concat({ ... }, " "));
 end
@@ -33,7 +33,7 @@ end
 ---Prints a blank line.
 ---@param ... void
 ---@return void
-function ADDON.Println()
+function MMM.Println()
 	CHAT_SYSTEM:AddMessage(" ");
 end
 

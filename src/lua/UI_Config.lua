@@ -4,14 +4,15 @@
   [] Date:   January 2018
 --]]
 ---------------- NAMESPACE ----------------
-local UI = ADDON.UI;
-local UpdateInfo = ADDON.UpdateInfo;
-local Classes = ADDON.Classes;
-local Sizes = ADDON.Sizes;
+local UI = MMM.UI;
+local UpdateInfo = MMM.UpdateInfo;
+local Classes = MMM.Classes;
+local Sizes = MMM.Sizes;
 -------------------------------------------
 
 ---Constructs the map.
-function UI.ConstructMap()
+---@param subZoneName string
+function UI.ConstructMap(subZoneName)
 	UpdateInfo.Map.zoneId = GetCurrentMapZoneIndex();
 	UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY = GetMapNumTiles();
 	UpdateInfo.Map.poiCount = GetNumPOIs(UpdateInfo.Map.zoneId);
@@ -25,7 +26,7 @@ end
 
 function UI.ConstructMapTiles()
 	local subZoneName = UpdateInfo.Map.subZoneName;
-	local tileSize = Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;
+	local tileSize = Sizes.miniMapSize * MMM.Settings.MiniMap.mapScale * MMM.Settings.MiniMap.mapZoom;
 	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
 	UpdateInfo.Map.width = tileSize * tileCountHor;
 	UpdateInfo.Map.height = tileSize * tileCountVer;
@@ -62,7 +63,7 @@ end
 ---Refreshes map's scale from the update info properties.
 function UI.RescaleMap()
 	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
-	local tileSize = Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;
+	local tileSize = Sizes.miniMapSize * MMM.Settings.MiniMap.mapScale * MMM.Settings.MiniMap.mapZoom;
 
 	UpdateInfo.Map.width = tileSize * tileCountHor;
 	UpdateInfo.Map.height = tileSize * tileCountVer;
@@ -95,7 +96,7 @@ function UI.RefreshUpdateInfo()
 	
 	local playerX, playerY, playerRotation = GetMapPlayerPosition("player");
 	local rotation;
-	if (ADDON.Settings.isMapRotationEnabled) then
+	if (MMM.Settings.isMapRotationEnabled) then
 		rotation = GetPlayerCameraHeading();
 	else
 		rotation = playerRotation;
@@ -117,7 +118,7 @@ function UI.UpdateMap()
 		UI.UpdateMapTiles();
 		UI.UpdatePins();
 		
-		if (not ADDON.Settings.isMapRotationEnabled) then
+		if (not MMM.Settings.isMapRotationEnabled) then
 			UI.playerPin:SetTextureRotation(UpdateInfo.Player.rotation);
 		else
 			UI.wheel:SetTextureRotation(-UpdateInfo.Player.rotation);

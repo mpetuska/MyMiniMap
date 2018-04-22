@@ -4,22 +4,22 @@
   [] Date:   January 2018
 --]]
 
-ADDON.name = "MyMiniMap";
-ADDON.Sizes = {
+MMM.name = "MyMiniMap";
+MMM.Sizes = {
 	miniMapSize = 512,
 	playerPinSize = 32,
 	mapPinSize = 0
 };
-ADDON.Sizes.mapPinSize = ADDON.Sizes.playerPinSize * 1.75;
-ADDON.Boundaries = {
+MMM.Sizes.mapPinSize = MMM.Sizes.playerPinSize * 1.75;
+MMM.Boundaries = {
 	mapZoomMin = 0.5,
 	mapZoomMax = 2.00
 };
-ADDON.UI = {};
-ADDON.Classes = {};
-ADDON.UI.isSetup = false;
-ADDON.EventHandlers = {};
-ADDON.UpdateInfo = {
+MMM.UI = {};
+MMM.Classes = {};
+MMM.UI.isSetup = false;
+MMM.EventHandlers = {};
+MMM.UpdateInfo = {
 	updatePending = true,
 	Map = {
 		mapId = 0,
@@ -37,7 +37,7 @@ ADDON.UpdateInfo = {
 		nY = 0
 	}
 };
-ADDON.DefaultSettings = {
+MMM.DefaultSettings = {
 	addonName = "My MiniMap",
 	Theme = {
 		hex = "00FF96"
@@ -54,5 +54,5 @@ ADDON.DefaultSettings = {
 	},
 	isMapRotationEnabled = true
 };
-ADDON.Settings = ADDON.DefaultSettings;
+MMM.Settings = MMM.DefaultSettings;
 

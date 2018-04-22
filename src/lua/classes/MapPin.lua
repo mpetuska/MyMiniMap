@@ -3,14 +3,14 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   April 2018
 --]]
-local UpdateInfo = ADDON.UpdateInfo;
-local PinType = ADDON.Constants.PinType;
-local Sizes = ADDON.Sizes;
-local UI = ADDON.UI;
+local UpdateInfo = MMM.UpdateInfo;
+local PinType = MMM.Constants.PinType;
+local Sizes = MMM.Sizes;
+local UI = MMM.UI;
 --====================================================== CLASS =======================================================--
 ---@class MapPin
 local MapPin = {};
-ADDON.Classes.MapPin = MapPin;
+MMM.Classes.MapPin = MapPin;
 
 local Objects = {};
 local UnusedObjects = {};
@@ -76,7 +76,7 @@ end
 local function SetPosition(self)
 	local nX, nY = self.zoObject:GetNormalizedPosition();
 	local mapRotation = 0;
-	if (ADDON.Settings.isMapRotationEnabled) then
+	if (MMM.Settings.isMapRotationEnabled) then
 		mapRotation = UpdateInfo.Player.rotation;
 	end
 	local playerX, playerY = UpdateInfo.Player.nX, UpdateInfo.Player.nY;
@@ -168,7 +168,7 @@ function MapPin:Init(zoPinObject, pinType, typeIndex)
 	self.Controls = self.Controls or {};
 	self.icon = self:GetIcon();
 	
-	local size = Sizes.mapPinSize * ADDON.Settings.MiniMap.mapScale;
+	local size = Sizes.mapPinSize * MMM.Settings.MiniMap.mapScale;
 	for group, scroll in pairs(UI.Scrolls) do
 		if (not self.Controls[group]) then
 			local controlName = scroll:GetName() .. "_MapPin" .. tostring(self.objectId);
