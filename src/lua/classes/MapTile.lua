@@ -60,6 +60,7 @@ function MapTile:Init(zoneId, subZoneName, tileId, xPos, yPos, size)
 		self.Controls[group]:SetDimensions(self.size, self.size);
 		self.Controls[group]:SetDrawLevel(0);
 		self.Controls[group]:SetHidden(not self.enabled);
+		self.Controls[group]:SetPixelRoundingEnabled(false);
 	end
 	self:Update();
 end
