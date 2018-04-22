@@ -4,10 +4,11 @@
   [] Date:   January 2018
 --]]
 ---------------- NAMESPACE ----------------
-local UI = MMM.UI;
-local UpdateInfo = MMM.UpdateInfo;
-local Sizes = MMM.Sizes;
-local Settings = MMM.Settings;
+local ADDON = MMM;
+local UI = ADDON.UI;
+local UpdateInfo = ADDON.UpdateInfo;
+local Sizes = ADDON.Sizes;
+local Settings = ADDON.Settings;
 -------------------------------------------
 
 ---Checks is the given normalized map coordinates are inside the mini map wheel.

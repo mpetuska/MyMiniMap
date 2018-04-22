@@ -3,14 +3,18 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   March 2018
 --]]
-local UI = MMM.UI;
-local UpdateInfo = MMM.UpdateInfo;
+---------------- NAMESPACE ----------------
+local ADDON = MMM;
+local UI = ADDON.UI;
+local UpdateInfo = ADDON.UpdateInfo;
+-------------------------------------------
+
 --====================================================== CLASS =======================================================--
 ---Class representing map tiles.
 --- 
 ---@class MapTile
 local MapTile = {};
-MMM.Classes.MapTile = MapTile;
+ADDON.Classes.MapTile = MapTile;
 MapTile.Objects = {};
 local Objects = MapTile.Objects;
 --====================================================================================================================--
@@ -106,7 +110,7 @@ end
 ---Updates map tile's rotation.
 function MapTile:UpdateRotation()
 	local rotation = 0;
-	if (MMM.Settings.isMapRotationEnabled) then
+	if (ADDON.Settings.isMapRotationEnabled) then
 		rotation = UpdateInfo.Player.rotation;
 	end
 	local tileCenterX, tileCenterY = self.Controls.center:GetCenter();

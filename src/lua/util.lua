@@ -3,12 +3,15 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
+---------------- NAMESPACE ----------------
+local ADDON = MMM;
+-------------------------------------------
 
 ---Splits the string by the given separator and returns them as vararg.
 ---@param str string
 ---@param sep string
 ---@return ...
-function MMM.split(str, sep)
+function ADDON.split(str, sep)
 	local fields = {}
 	
 	sep = sep or " "
@@ -23,9 +26,9 @@ end
 ---Prints the given arguments separated by space to the chat tab.
 ---@param ... any
 ---@return void
-function MMM:Print(...)
-	local name = MMM.Settings.addonName;
-	local hex = MMM.Settings.Theme.hex;
+function ADDON:Print(...)
+	local name = ADDON.Settings.addonName;
+	local hex = ADDON.Settings.Theme.hex;
 	local prefix = string.format("|c%s%s: |r", string.upper(hex), name);
 	CHAT_SYSTEM:AddMessage(prefix .. table.concat({ ... }, " "));
 end
@@ -33,7 +36,7 @@ end
 ---Prints a blank line.
 ---@param ... void
 ---@return void
-function MMM.Println()
+function ADDON.Println()
 	CHAT_SYSTEM:AddMessage(" ");
 end
 

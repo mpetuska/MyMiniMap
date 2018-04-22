@@ -4,10 +4,11 @@
   [] Date:   January 2018
 --]]
 ---------------- NAMESPACE ----------------
-local UI = MMM.UI;
-local UpdateInfo = MMM.UpdateInfo;
-local Classes = MMM.Classes;
-local Sizes = MMM.Sizes;
+local ADDON = MMM;
+local UI = ADDON.UI;
+local UpdateInfo = ADDON.UpdateInfo;
+local Classes = ADDON.Classes;
+local Sizes = ADDON.Sizes;
 -------------------------------------------
 
 ---Constructs the map.
@@ -26,7 +27,7 @@ end
 
 function UI.ConstructMapTiles()
 	local subZoneName = UpdateInfo.Map.subZoneName;
-	local tileSize = Sizes.miniMapSize * MMM.Settings.MiniMap.mapScale * MMM.Settings.MiniMap.mapZoom;
+	local tileSize = Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;
 	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
 	UpdateInfo.Map.width = tileSize * tileCountHor;
 	UpdateInfo.Map.height = tileSize * tileCountVer;
@@ -63,7 +64,7 @@ end
 ---Refreshes map's scale from the update info properties.
 function UI.RescaleMap()
 	local tileCountHor, tileCountVer = UpdateInfo.Map.tileCountX, UpdateInfo.Map.tileCountY;
-	local tileSize = Sizes.miniMapSize * MMM.Settings.MiniMap.mapScale * MMM.Settings.MiniMap.mapZoom;
+	local tileSize = Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;
 
 	UpdateInfo.Map.width = tileSize * tileCountHor;
 	UpdateInfo.Map.height = tileSize * tileCountVer;
@@ -96,7 +97,7 @@ function UI.RefreshUpdateInfo()
 	
 	local playerX, playerY, playerRotation = GetMapPlayerPosition("player");
 	local rotation;
-	if (MMM.Settings.isMapRotationEnabled) then
+	if (ADDON.Settings.isMapRotationEnabled) then
 		rotation = GetPlayerCameraHeading();
 	else
 		rotation = playerRotation;
@@ -118,7 +119,7 @@ function UI.UpdateMap()
 		UI.UpdateMapTiles();
 		UI.UpdatePins();
 		
-		if (not MMM.Settings.isMapRotationEnabled) then
+		if (not ADDON.Settings.isMapRotationEnabled) then
 			UI.playerPin:SetTextureRotation(UpdateInfo.Player.rotation);
 		else
 			UI.wheel:SetTextureRotation(-UpdateInfo.Player.rotation);

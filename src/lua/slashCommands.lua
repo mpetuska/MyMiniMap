@@ -4,75 +4,76 @@
   [] Date:   January 2018
 --]]
 ---------------- NAMESPACE ----------------
+local ADDON = MMM;
 -------------------------------------------
 
-MMM.Commands = {
+ADDON.Commands = {
 	help = function()
-		MMM:Print("List of slash commands:");
-		--MMM:Print("[reset] Resets the default settings.");
-		--MMM:Print("[size <size>] Sets the size of the minimap.");
-		MMM:Print("[rotation <on | off>] Sets the minimap's rotation mode.");
+		ADDON:Print("List of slash commands:");
+		--ADDON:Print("[reset] Resets the default settings.");
+		--ADDON:Print("[size <size>] Sets the size of the minimap.");
+		ADDON:Print("[rotation <on | off>] Sets the minimap's rotation mode.");
 	end,
 	--example = {
 	--	test = function(...)
-	--		MMM:Print("My Value:", ...);
+	--		ADDON:Print("My Value:", ...);
 	--	end
 	--},
 	--reset = function()
-	--	MMM.Settings = MMM.DefaultSettings;
-	--	MMM.UI.ConfigureUI();
-	--	MMM:Print("Addon settings reset.")
+	--	ADDON.Settings = ADDON.DefaultSettings;
+	--	ADDON.UI.ConfigureUI();
+	--	ADDON:Print("Addon settings reset.")
 	--end,
 	--size = function(size)
 	--	size = tonumber(size);
 	--	if (type(size) == "number") then
-	--		MMM.Settings.MiniMap.size = size;
-	--		MMM.UI.wheel:SetDimensions(size, size);
+	--		ADDON.Settings.MiniMap.size = size;
+	--		ADDON.UI.wheel:SetDimensions(size, size);
 	--	else
-	--		MMM.Println()
-	--		MMM:Print("Invalid command argument!")
-	--		MMM.Commands.help();
+	--		ADDON.Println()
+	--		ADDON:Print("Invalid command argument!")
+	--		ADDON.Commands.help();
 	--		return;
 	--	end
-	--	MMM:Print("Size updated to", size);
+	--	ADDON:Print("Size updated to", size);
 	--end,
 	rotation = function(isEnabled)
 		if (isEnabled == "on") then
-			MMM.Settings.isMapRotationEnabled = true;
+			ADDON.Settings.isMapRotationEnabled = true;
 		elseif (isEnabled == "off") then
-			MMM.Settings.isMapRotationEnabled = false;
+			ADDON.Settings.isMapRotationEnabled = false;
 		else
-			MMM.Println()
-			MMM:Print("Invalid command argument!")
-			MMM.Commands.help();
+			ADDON.Println()
+			ADDON:Print("Invalid command argument!")
+			ADDON.Commands.help();
 			return;
 		end
-		MMM.UI.playerPin:SetTextureRotation(0);
-		MMM.UI.wheel:SetTextureRotation(0);
-		MMM.UpdateInfo.updatePending = true;
-		MMM.UI.UpdateMap();
-		MMM:Print("Minimap's rotation is ", isEnabled);
+		ADDON.UI.playerPin:SetTextureRotation(0);
+		ADDON.UI.wheel:SetTextureRotation(0);
+		ADDON.UpdateInfo.updatePending = true;
+		ADDON.UI.UpdateMap();
+		ADDON:Print("Minimap's rotation is ", isEnabled);
 	end
 }
 
---- Handles a given command string redirecting to an appropriate function in the MMM.Commands table.
+--- Handles a given command string redirecting to an appropriate function in the ADDON.Commands table.
 ---@param str string
 ---@return void
-function MMM.HandleSlashCommands(str)
+function ADDON.HandleSlashCommands(str)
 	if (#str == 0) then
-		MMM.Commands.help();
+		ADDON.Commands.help();
 		return;
 	end
 	
 	-- Parse arguments --
 	local args = {};
-	for _, arg in pairs({ MMM.split(str, " ") }) do
+	for _, arg in pairs({ ADDON.split(str, " ") }) do
 		if (#arg > 0) then
 			table.insert(args, arg);
 		end
 	end
 	
-	local path = MMM.Commands;
+	local path = ADDON.Commands;
 	
 	for id, arg in ipairs(args) do
 		arg = string.lower(arg);
@@ -84,15 +85,15 @@ function MMM.HandleSlashCommands(str)
 			elseif (type(path[arg]) == "table") then
 				path = path[arg];
 			else
-				MMM.Println()
-				MMM:Print("Unrecognised command!")
-				MMM.Commands.help();
+				ADDON.Println()
+				ADDON:Print("Unrecognised command!")
+				ADDON.Commands.help();
 				return
 			end
 		else
-			MMM.Println()
-			MMM:Print("Unrecognised command!")
-			MMM.Commands.help()
+			ADDON.Println()
+			ADDON:Print("Unrecognised command!")
+			ADDON.Commands.help()
 			return
 		end
 	end

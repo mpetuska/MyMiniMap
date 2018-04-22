@@ -4,10 +4,12 @@
   [] Date:   January 2018
 --]]
 ---------------- NAMESPACE ----------------
-local EventHandlers = MMM.EventHandlers;
-local UI = MMM.UI;
+local ADDON = MMM;
+local EventHandlers = ADDON.EventHandlers;
+local UI = ADDON.UI;
 -------------------------------------------
 
+---Sets map to player location recursively until it succeeds.
 local function SetMapToPlayer()
 	local resultCode = SetMapToPlayerLocation();
 
@@ -24,16 +26,21 @@ end
 --- Handles main UI update event.
 ---@return void
 function EventHandlers.OnUiUpdate()
-	if (UI.isSetup and not MMM.UI.miniMap:IsHidden()) then
+	if (UI.isSetup and not UI.miniMap:IsHidden()) then
 		UI.UpdateMap();
 	end
 end
 
+---Handles regular ui cleanup update.
+function EventHandlers.OnUiCleanup()
+	ADDON.Classes.MapPin.RefreshAll();
+end
+
 function EventHandlers.OnZoom(delta)
-	local newZoom = MMM.Settings.MiniMap.mapZoom + (delta * MMM.Constants.zoomDelta);
-	newZoom = math.max(newZoom, MMM.Boundaries.mapZoomMin);
-	newZoom = math.min(newZoom, MMM.Boundaries.mapZoomMax);
-	MMM.Settings.MiniMap.mapZoom = newZoom;
+	local newZoom = ADDON.Settings.MiniMap.mapZoom + (delta * ADDON.Constants.zoomDelta);
+	newZoom = math.max(newZoom, ADDON.Boundaries.mapZoomMin);
+	newZoom = math.min(newZoom, ADDON.Boundaries.mapZoomMax);
+	ADDON.Settings.MiniMap.mapZoom = newZoom;
 	UI.RescaleMap();
 end
 

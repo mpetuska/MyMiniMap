@@ -3,23 +3,26 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
+---------------- NAMESPACE ----------------
+local ADDON = MMM;
+-------------------------------------------
 
-MMM.name = "MyMiniMap";
-MMM.Sizes = {
+ADDON.name = "MyMiniMap";
+ADDON.Sizes = {
 	miniMapSize = 512,
 	playerPinSize = 32,
 	mapPinSize = 0
 };
-MMM.Sizes.mapPinSize = MMM.Sizes.playerPinSize * 1.75;
-MMM.Boundaries = {
+ADDON.Sizes.mapPinSize = ADDON.Sizes.playerPinSize * 1.75;
+ADDON.Boundaries = {
 	mapZoomMin = 0.5,
 	mapZoomMax = 2.00
 };
-MMM.UI = {};
-MMM.Classes = {};
-MMM.UI.isSetup = false;
-MMM.EventHandlers = {};
-MMM.UpdateInfo = {
+ADDON.UI = {};
+ADDON.Classes = {};
+ADDON.UI.isSetup = false;
+ADDON.EventHandlers = {};
+ADDON.UpdateInfo = {
 	updatePending = true,
 	Map = {
 		mapId = 0,
@@ -37,7 +40,7 @@ MMM.UpdateInfo = {
 		nY = 0
 	}
 };
-MMM.DefaultSettings = {
+ADDON.DefaultSettings = {
 	addonName = "My MiniMap",
 	Theme = {
 		hex = "00FF96"
@@ -54,5 +57,5 @@ MMM.DefaultSettings = {
 	},
 	isMapRotationEnabled = true
 };
-MMM.Settings = MMM.DefaultSettings;
+ADDON.Settings = ADDON.DefaultSettings;
 
