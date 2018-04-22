@@ -9,24 +9,20 @@
 ADDON.Commands = {
 	help = function()
 		ADDON:Print("List of slash commands:");
-		ADDON:Print("[toggle] Shows/hides the minimap.");
-		ADDON:Print("[reset] Resets the default settings.");
+		--ADDON:Print("[reset] Resets the default settings.");
 		ADDON:Print("[size <size>] Sets the size of the minimap.");
 		ADDON:Print("[rotation <on | off>] Sets the minimap's rotation mode.");
 	end,
-	example = {
-		test = function(...)
-			ADDON:Print("My Value:", ...);
-		end
-	},
-	toggle = function()
-		ADDON.UI.miniMap:SetHidden(not ADDON.UI.miniMap:IsHidden());
-	end,
-	reset = function()
-		ADDON.Settings = ADDON.DefaultSettings;
-		ADDON.UI:ConfigureUI();
-		ADDON:Print("Addon settings reset.")
-	end,
+	--example = {
+	--	test = function(...)
+	--		ADDON:Print("My Value:", ...);
+	--	end
+	--},
+	--reset = function()
+	--	ADDON.Settings = ADDON.DefaultSettings;
+	--	ADDON.UI.ConfigureUI();
+	--	ADDON:Print("Addon settings reset.")
+	--end,
 	size = function(size)
 		if (type(size) == "number") then
 			ADDON.Settings.MiniMap.size = size;
@@ -52,7 +48,7 @@ ADDON.Commands = {
 		ADDON.UI.playerPin:SetTextureRotation(0);
 		ADDON.UI.wheel:SetTextureRotation(0);
 		ADDON.UI.UpdateMap();
-		ADDON:Print("Minimap's rotation is", isEnabled);
+		ADDON:Print("Minimap's rotation is ", isEnabled);
 	end
 }
 

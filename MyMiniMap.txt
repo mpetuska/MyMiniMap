@@ -13,9 +13,6 @@ src/lua/UI_Config.lua
 src/lua/eventHandlers.lua
 src/lua/slashCommands.lua
 src/lua/classes/MapTile.lua
-src/lua/classes/Pin.lua
-src/lua/classes/PoiPin.lua
-src/lua/classes/LocationPin.lua
 src/lua/classes/MapPin.lua
 
 src/lua/init.lua

@@ -167,6 +167,9 @@ function MapPin:Init(zoPinObject, pinType, typeIndex)
 		self.Controls[group]:SetDimensions(size, size);
 		self.Controls[group]:SetHidden(not self.enabled);
 		if (self.pinType == PinType.QUEST) then
+			if (self.zoObject:IsAssisted()) then
+				self.Controls[group]:SetDrawLevel(4);
+			end
 			self.Controls[group]:SetDrawLevel(3);
 		elseif (self.pinType == PinType.FAST_TRAVEL) then
 			self.Controls[group]:SetDrawLevel(2);

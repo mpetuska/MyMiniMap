@@ -3,36 +3,6 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
----------------- NAMESPACE ----------------
--------------------------------------------
-
-ADDON.PinTextures = {
-	GeneralPins = {
-		playerPointer = "esoui/art/icons/mapkey/mapkey_player.dds",
-		wayshrineComplete = "esoui/art/icons/poi/poi_wayshrine_complete.dds",
-		wayshrineIncomplete = "esoui/art/icons/poi/poi_wayshrine_incomplete.dds"
-	},
-	QuestPins = {
-		Unrepeatable = {
-			area = "esoui/art/compass/quest_areapin.dds",
-			areaAssisted = "esoui/art/compass/quest_assistedareapin.dds",
-			available = "esoui/art/compass/quest_available_icon.dds",
-			icon = "esoui/art/compass/quest_icon.dds",
-			iconAssisted = "esoui/art/compass/quest_icon_assisted.dds",
-			iconDoor = "esoui/art/compass/quest_icon_door.dds",
-			iconDoorAssisted = "esoui/art/compass/quest_icon_door_assisted.dds"
-		},
-		Repeatable = {
-			area = "esoui/art/compass/repeatablequest_areapin.dds",
-			areaAssisted = "esoui/art/compass/repeatablequest_assistedareapin.dds",
-			available = "esoui/art/compass/repeatablequest_available_icon.dds",
-			icon = "esoui/art/compass/repeatablequest_icon.dds",
-			iconAssisted = "esoui/art/compass/repeatablequest_icon_assisted.dds",
-			iconDoor = "esoui/art/compass/repeatablequest_icon_door.dds",
-			iconDoorAssisted = "esoui/art/compass/repeatablequest_icon_door_assisted.dds"
-		}
-	}
-}
 
 ---Splits the string by the given separator and returns them as vararg.
 ---@param str string

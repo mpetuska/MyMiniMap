@@ -20,18 +20,14 @@ local function RegisterEvents()
 	EVENT_MANAGER:RegisterForEvent(ADDON.name .. "_SubZoneChanged", EVENT_CURRENT_SUBZONE_LIST_CHANGED, EventHandlers.OnSubZoneChanged);
 	EVENT_MANAGER:RegisterForEvent(ADDON.name .. "_PlayerActivated", EVENT_PLAYER_ACTIVATED, EventHandlers.OnPlayerActivated);
 
-	EVENT_MANAGER:RegisterForEvent(ADDON.name .. "_QuestRemoved", EVENT_QUEST_REMOVED,
-			--function(eventCode, isCompleted, journalIndex, questName, zoneIndex, poiIndex, questID)
-			function(...)
-				ADDON.Classes.MapPin.RefreshAll(ADDON.Constants.PinType.QUEST);
-				d("removed")
-			end);
-	CALLBACK_MANAGER:RegisterCallback("OnWorldMapQuestsDataRefresh", function(...)
-		ADDON.Classes.MapPin.RefreshAll(ADDON.Constants.PinType.QUEST);
-	end);
-end
+	local orig = ZO_WorldMap_UpdateMap;
+	function ZO_WorldMap_UpdateMap()
+		orig();
+		if (ADDON.UI.isSetup) then
+			ADDON.UI.ConstructMap();
+		end
+	end
 
-local function RegisterUpdates()
 	EVENT_MANAGER:RegisterForUpdate(ADDON.name .. "_UiUpdate", 1, EventHandlers.OnUiUpdate);
 end
 
@@ -44,12 +40,11 @@ function EventHandlers.OnAddonLoaded(event, addonName)
 		EVENT_MANAGER:UnregisterForEvent(ADDON.name, EVENT_ADD_ON_LOADED)
 	end
 	LoadSavedVariables()
-	
+
 	SLASH_COMMANDS["/mmm"] = ADDON.HandleSlashCommands;
 	ADDON.UI:Setup();
 	RegisterEvents();
-	RegisterUpdates();
-	
+
 	if (ADDON.Settings.MiniMap.Position.x == nil) then
 		ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y = ADDON.UI.miniMap:GetCenter();
 	end
@@ -62,13 +57,10 @@ function EventHandlers.OnAddonLoaded(event, addonName)
 			end, 250);
 		elseif (resultCode == SET_MAP_RESULT_MAP_CHANGED) then
 			CALLBACK_MANAGER:FireCallbacks("OnWorldMapChanged");
-			ADDON.UI.ConstructMap(GetPlayerLocationName());
 		end
 	end
 	SCENE_MANAGER:GetScene("hud"):AddFragment(fragment);
 	SCENE_MANAGER:GetScene("hudui"):AddFragment(fragment);
-
-	--CALLBACK_MANAGER:RegisterCallback("OnWorldMapChanged", ADDON.UI.ConstructMap)
 end
 
 EVENT_MANAGER:RegisterForEvent(ADDON.name, EVENT_ADD_ON_LOADED, EventHandlers.OnAddonLoaded);
