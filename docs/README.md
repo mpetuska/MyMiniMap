@@ -1,4 +1,6 @@
 # MyMiniMap
+** THIS IS STILL IN BETA AND IS NOT YET OFFICIALLY RELEASED **
+
 An addon for Elder Scrolls Online to provide a minimap functionality.
 
 To access addon settings type `/mmm` in game chat.
