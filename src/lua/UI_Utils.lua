@@ -6,13 +6,15 @@
 ---------------- NAMESPACE ----------------
 local UI = ADDON.UI;
 local UpdateInfo = ADDON.UpdateInfo;
+local Sizes = ADDON.Sizes;
+local Settings = ADDON.Settings;
 -------------------------------------------
 
 ---Checks is the given normalized map coordinates are inside the mini map wheel.
 ---@param normalizedX number
 ---@param normalizedY number
 ---@return boolean
-function UI:AreCoordinatesInsideWheel(normalizedX, normalizedY)
+function UI.AreCoordinatesInsideWheel(normalizedX, normalizedY)
 	local centerX, centerY = UpdateInfo.Player.nX, UpdateInfo.Player.nY;
 	local r = UI.miniMap:GetWidth() / UpdateInfo.Map.width;
 	local dx, dy = normalizedX - centerX, normalizedY - centerY;
@@ -20,7 +22,7 @@ function UI:AreCoordinatesInsideWheel(normalizedX, normalizedY)
 	return (math.sqrt((dx * dx) + (dy * dy)) <= r);
 end
 
-function UI:IsPinInsideWheel(pin)
+function UI.IsPinInsideWheel(pin)
 	if (not pin) then
 		return;
 	end
@@ -29,10 +31,10 @@ function UI:IsPinInsideWheel(pin)
 	local pinRadius = pin:GetDimensions() / 2;
 	local nR = pinRadius / UpdateInfo.Map.width;
 	
-	return UI:AreCoordinatesInsideWheel(nX - nR, nY - nR) or
-			UI:AreCoordinatesInsideWheel(nX + nR, nY - nR) or
-			UI:AreCoordinatesInsideWheel(nX + nR, nY + nR) or
-			UI:AreCoordinatesInsideWheel(nX - nR, nY + nR);
+	return UI.AreCoordinatesInsideWheel(nX - nR, nY - nR) or
+			UI.AreCoordinatesInsideWheel(nX + nR, nY - nR) or
+			UI.AreCoordinatesInsideWheel(nX + nR, nY + nR) or
+			UI.AreCoordinatesInsideWheel(nX - nR, nY + nR);
 end
 
 --- Collects all the UI elements into the convenience list.
@@ -51,9 +53,9 @@ end
 
 ---Rescales the UI.
 ---@return void
-function UI:Rescale()
-	local size = ADDON.Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale;
-	UI.playerPin:SetDimensions(ADDON.Sizes.playerPinSize * ADDON.Settings.MiniMap.mapScale, ADDON.Sizes.playerPinSize * ADDON.Settings.MiniMap.mapScale);
+function UI.Rescale()
+	local size = Sizes.miniMapSize * Settings.MiniMap.mapScale;
+	UI.playerPin:SetDimensions(Sizes.playerPinSize * Settings.MiniMap.mapScale, Sizes.playerPinSize * Settings.MiniMap.mapScale);
 	
 	UI.wheel:SetDimensions(size, size);
 	UI.background:SetDimensions(size, size);
@@ -61,11 +63,11 @@ function UI:Rescale()
 	
 	for name, scroll in pairs(UI.Scrolls) do
 		scroll:ClearAnchors();
-		scroll:SetAnchor(CENTER, MiniMapTestWheel, CENTER);
+		scroll:SetAnchor(CENTER, UI.wheel, CENTER);
 		scroll:SetScrollBounding(0);
 	end
-	local scrollScaleBase = ADDON.Settings.MiniMap.scrollScaleBase;
-	local scrollScaleOffset = ADDON.Settings.MiniMap.scrollScaleOffset;
+	local scrollScaleBase = Settings.MiniMap.scrollScaleBase;
+	local scrollScaleOffset = Settings.MiniMap.scrollScaleOffset;
 	UI.Scrolls.center:SetDimensions(size * scrollScaleBase, size * scrollScaleBase);
 	UI.Scrolls.horizontal:SetDimensions(size * (scrollScaleBase + scrollScaleOffset), size * (scrollScaleBase - scrollScaleOffset));
 	UI.Scrolls.vertical:SetDimensions(size * (scrollScaleBase - scrollScaleOffset), size * (scrollScaleBase + scrollScaleOffset));
@@ -73,16 +75,16 @@ end
 
 ---Reposition the UI.
 ---@return void
-function UI:Reposition()
+function UI.Reposition()
 	UI.miniMap:ClearAnchors();
-	UI.miniMap:SetAnchor(CENTER, GuiRoot, TOPLEFT, ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y);
+	UI.miniMap:SetAnchor(CENTER, GuiRoot, TOPLEFT, Settings.MiniMap.Position.x, Settings.MiniMap.Position.y);
 end
 
 ---Handles initial UI setup.
 ---@return void
-function UI:Setup()
+function UI.Setup()
 	GatherUiElements();
-	UI:Reposition();
-	UI:Rescale();
+	UI.Reposition();
+	UI.Rescale();
 	UI.isSetup = true;
 end

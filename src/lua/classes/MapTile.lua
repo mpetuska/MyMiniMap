@@ -58,7 +58,7 @@ function MapTile:Init(zoneId, subZoneName, tileId, xPos, yPos, size)
 		end
 		self.Controls[group]:SetTexture(tileTexture);
 		self.Controls[group]:SetDimensions(self.size, self.size);
-		self.Controls[group]:SetDrawLevel(1);
+		self.Controls[group]:SetDrawLevel(0);
 		self.Controls[group]:SetHidden(not self.enabled);
 	end
 	self:Update();
@@ -104,7 +104,10 @@ end
 
 ---Updates map tile's rotation.
 function MapTile:UpdateRotation()
-	local rotation = UpdateInfo.Player.rotation;
+	local rotation = 0;
+	if (ADDON.Settings.isMapRotationEnabled) then
+		rotation = UpdateInfo.Player.rotation;
+	end
 	local tileCenterX, tileCenterY = self.Controls.center:GetCenter();
 	local wheelCenterX, wheelCenterY = UI.playerPin:GetCenter();
 	
@@ -121,9 +124,7 @@ end
 function MapTile:Update()
 	if (self.enabled) then
 		self:UpdatePosition();
-		if (ADDON.Settings.isMapRotationEnabled) then
-			self:UpdateRotation();
-		end
+		self:UpdateRotation();
 	end
 end
 --====================================================================================================================--
