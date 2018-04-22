@@ -165,6 +165,7 @@ function MapPin:Init(zoPinObject, pinType, typeIndex)
 		self.Controls[group]:SetTexture(self.icon);
 		self.Controls[group]:SetDimensions(size, size);
 		self.Controls[group]:SetHidden(not self.enabled);
+		self.Controls[group]:SetPixelRoundingEnabled(false);
 		if (self.pinType == PinType.QUEST) then
 			if (self.zoObject:IsAssisted()) then
 				self.Controls[group]:SetDrawLevel(4);
@@ -280,7 +281,6 @@ end
 ---@param ... string
 function MapPin.RefreshAll(...)
 	local pinTypes = { ... };
-	d("length " .. #pinTypes)
 	local referenceTables = {};
 	if (#pinTypes > 0) then
 		for _, type in pairs(pinTypes) do
@@ -332,7 +332,6 @@ function MapPin.RefreshAll(...)
 end
 
 function MapPin.RemoveAll()
-	d("objects: " .. #Objects)
 	for _, pin in pairs(Objects) do
 		pin:Remove();
 	end

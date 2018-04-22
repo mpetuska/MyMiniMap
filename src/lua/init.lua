@@ -28,7 +28,7 @@ local function RegisterEvents()
 		end
 	end
 
-	EVENT_MANAGER:RegisterForUpdate(ADDON.name .. "_UiUpdate", 1, EventHandlers.OnUiUpdate);
+	EVENT_MANAGER:RegisterForUpdate(ADDON.name .. "_UiUpdate", 10, EventHandlers.OnUiUpdate);
 end
 
 --- Initialises the addon.
