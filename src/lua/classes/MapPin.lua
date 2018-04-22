@@ -93,6 +93,8 @@ local function SetPosition(self)
 	end
 end
 --=============================================== EVENTS & CALLBACKS =================================================--
+---Handles quest data change events.
+---@param iconRefresh boolean
 local function OnQuestDataRefresh(iconRefresh)
 	UpdateInfo.updatePending = true;
 	if (not iconRefresh) then
@@ -201,7 +203,7 @@ function MapPin:Init(zoPinObject, pinType, typeIndex)
 	self:RefreshIcon();
 end
 
----Gets the icon texture path string for the pin
+---Gets the icon texture file path string for the pin.
 ---@return string
 function MapPin:GetIcon()
 	if (self.zoObject:IsLocation()) then
@@ -273,7 +275,7 @@ function MapPin:Remove()
 	table.insert(UnusedObjects, self);
 end
 --====================================================== STATIC ======================================================--
----Removes a pin from usage.
+---Removes the pin from usage.
 ---@param pinType string
 ---@param pinIndex number
 function MapPin.RemovePin(pinType, pinIndex)
@@ -329,6 +331,8 @@ function MapPin.RefreshAll(...)
 				MapPin:New(pin);
 			elseif (table.contains(pinTypes, PinType.QUEST) and pin:IsQuest()) then
 				MapPin:New(pin);
+			elseif (table.contains(pinTypes, PinType.WAYPOINT) and pin:GetPinType() == MAP_PIN_TYPE_PLAYER_WAYPOINT) then
+				MapPin:New(pin);
 			end
 		else
 			MapPin:New(pin);
@@ -352,6 +356,7 @@ function MapPin.RefreshAll(...)
 	end
 end
 
+---Removes all pins.
 function MapPin.RemoveAll()
 	for _, pin in pairs(Objects) do
 		pin:Remove();

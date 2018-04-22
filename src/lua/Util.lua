@@ -40,7 +40,7 @@ function ADDON.Println()
 	CHAT_SYSTEM:AddMessage(" ");
 end
 
----Copies the table recursively.
+---Copies the table recursively including the metatable.
 ---@param original table
 ---@return table
 function table.copy(original)
@@ -77,6 +77,9 @@ function table.compare(table1, table2)
 	end
 end
 
+---Non-recursively checks if the table contains a given value.
+---@param table file
+---@param element any
 function table.contains(table, element)
 	for _, value in pairs(table) do
 		if (value == element) then
@@ -84,4 +87,17 @@ function table.contains(table, element)
 		end
 	end
 	return false;
+end
+
+---Recursively replaces or puts all values of the table2 into table1 without changing the reference of the table1.
+---@param table1 table
+---@param table2 table
+function table.replace(table1, table2)
+	for k, v in pairs(table2) do
+		if (type(v) == "table") then
+			table.replace(table1[k], v);
+		else
+			table1[k] = v;
+		end
+	end
 end

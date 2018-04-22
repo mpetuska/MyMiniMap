@@ -6,14 +6,14 @@
 ## SavedVariables: Settings
 
 src/lua/Constants.lua
-src/lua/settings.lua
-src/lua/util.lua
+src/lua/Settings.lua
+src/lua/Util.lua
 src/lua/UI_Utils.lua
 src/lua/UI_Config.lua
-src/lua/eventHandlers.lua
-src/lua/slashCommands.lua
-src/lua/classes/MapTile.lua
-src/lua/classes/MapPin.lua
+src/lua/EventHandlers.lua
+src/lua/SlashCommands.lua
+src/lua/Classes/MapTile.lua
+src/lua/Classes/MapPin.lua
 
 src/lua/init.lua
 

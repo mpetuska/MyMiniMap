@@ -25,6 +25,7 @@ function UI.ConstructMap(subZoneName)
 	UI.ConstructMapPins();
 end
 
+---Constructs map tiles.
 function UI.ConstructMapTiles()
 	local subZoneName = UpdateInfo.Map.subZoneName;
 	local tileSize = Sizes.miniMapSize * ADDON.Settings.MiniMap.mapScale * ADDON.Settings.MiniMap.mapZoom;
@@ -57,6 +58,7 @@ function UI.ConstructMapTiles()
 	until (x > tileCountHor or y > tileCountVer)
 end
 
+---Constructs map pins.
 function UI.ConstructMapPins()
 	Classes.MapPin.RefreshAll();
 end

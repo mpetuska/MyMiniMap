@@ -43,7 +43,7 @@ function EventHandlers.OnAddonLoaded(event, addonName)
 	end
 	LoadSavedVariables()
 
-	SLASH_COMMANDS["/ADDON"] = ADDON.HandleSlashCommands;
+	SLASH_COMMANDS["/mmm"] = ADDON.HandleSlashCommands;
 	ADDON.UI:Setup();
 	RegisterEvents();
 

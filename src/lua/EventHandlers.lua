@@ -36,6 +36,8 @@ function EventHandlers.OnUiCleanup()
 	ADDON.Classes.MapPin.RefreshAll();
 end
 
+---Handles minimap zooming event.
+---@param delta number
 function EventHandlers.OnZoom(delta)
 	local newZoom = ADDON.Settings.MiniMap.mapZoom + (delta * ADDON.Constants.zoomDelta);
 	newZoom = math.max(newZoom, ADDON.Boundaries.mapZoomMin);

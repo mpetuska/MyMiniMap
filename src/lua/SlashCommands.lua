@@ -10,7 +10,7 @@ local ADDON = MMM;
 ADDON.Commands = {
 	help = function()
 		ADDON:Print("List of slash commands:");
-		--ADDON:Print("[reset] Resets the default settings.");
+		ADDON:Print("[reset] Resets the default settings.");
 		--ADDON:Print("[size <size>] Sets the size of the minimap.");
 		ADDON:Print("[rotation <on | off>] Sets the minimap's rotation mode.");
 	end,
@@ -19,11 +19,11 @@ ADDON.Commands = {
 	--		ADDON:Print("My Value:", ...);
 	--	end
 	--},
-	--reset = function()
-	--	ADDON.Settings = ADDON.DefaultSettings;
-	--	ADDON.UI.ConfigureUI();
-	--	ADDON:Print("Addon settings reset.")
-	--end,
+	reset = function()
+		table.replace(ADDON.Settings, ADDON.DefaultSettings);
+		ADDON.UI.Setup();
+		ADDON:Print("Addon settings reset.")
+	end,
 	--size = function(size)
 	--	size = tonumber(size);
 	--	if (type(size) == "number") then

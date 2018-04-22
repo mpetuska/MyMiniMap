@@ -51,11 +51,10 @@ ADDON.DefaultSettings = {
 		scrollScaleOffset = 0.15,
 		mapZoom = 1,
 		Position = {
-			x = nil,
-			y = nil
+			x = 0,
+			y = 0
 		}
 	},
 	isMapRotationEnabled = true
 };
-ADDON.Settings = ADDON.DefaultSettings;
 
