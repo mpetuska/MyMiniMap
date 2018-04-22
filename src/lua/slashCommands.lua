@@ -9,49 +9,33 @@
 ADDON.Commands = {
 	help = function()
 		ADDON:Print("List of slash commands:");
-		ADDON:Print("[toggle] Shows/hides the minimap.");
-		ADDON:Print("[reset] Resets the default settings.");
-		ADDON:Print("[size <size>] Sets the size of the minimap.");
-		ADDON:Print("[mode <camera | player>] Sets the minimap's mode.");
+		--ADDON:Print("[reset] Resets the default settings.");
+		--ADDON:Print("[size <size>] Sets the size of the minimap.");
 		ADDON:Print("[rotation <on | off>] Sets the minimap's rotation mode.");
 	end,
-	example = {
-		test = function(...)
-			ADDON:Print("My Value:", ...);
-		end
-	},
-	toggle = function()
-		ADDON.UI.miniMap:SetHidden(not ADDON.UI.miniMap:IsHidden());
-	end,
-	reset = function()
-		ADDON.Settings = ADDON.DefaultSettings;
-		ADDON.UI:ConfigureUI();
-		ADDON:Print("Addon settings reset.")
-	end,
-	size = function(size)
-		if (type(size) == "number") then
-			ADDON.Settings.MiniMap.size = size;
-		else
-			ADDON.Println()
-			ADDON:Print("Invalid command argument!")
-			ADDON.Commands.help();
-			return;
-		end
-		ADDON:Print("Size updated to", size);
-	end,
-	mode = function(mode)
-		if (mode == "camera") then
-			ADDON.Settings.isInCameraMode = true;
-		elseif (mode == "player") then
-			ADDON.Settings.isInCameraMode = false;
-		else
-			ADDON.Println()
-			ADDON:Print("Invalid command argument!")
-			ADDON.Commands.help();
-			return;
-		end
-		ADDON:Print("Minimap set to rotate with", mode);
-	end,
+	--example = {
+	--	test = function(...)
+	--		ADDON:Print("My Value:", ...);
+	--	end
+	--},
+	--reset = function()
+	--	ADDON.Settings = ADDON.DefaultSettings;
+	--	ADDON.UI.ConfigureUI();
+	--	ADDON:Print("Addon settings reset.")
+	--end,
+	--size = function(size)
+	--	size = tonumber(size);
+	--	if (type(size) == "number") then
+	--		ADDON.Settings.MiniMap.size = size;
+	--		ADDON.UI.wheel:SetDimensions(size, size);
+	--	else
+	--		ADDON.Println()
+	--		ADDON:Print("Invalid command argument!")
+	--		ADDON.Commands.help();
+	--		return;
+	--	end
+	--	ADDON:Print("Size updated to", size);
+	--end,
 	rotation = function(isEnabled)
 		if (isEnabled == "on") then
 			ADDON.Settings.isMapRotationEnabled = true;
@@ -63,11 +47,15 @@ ADDON.Commands = {
 			ADDON.Commands.help();
 			return;
 		end
-		ADDON:Print("Minimap's rotation is", isEnabled);
+		ADDON.UI.playerPin:SetTextureRotation(0);
+		ADDON.UI.wheel:SetTextureRotation(0);
+		ADDON.UpdateInfo.updatePending = true;
+		ADDON.UI.UpdateMap();
+		ADDON:Print("Minimap's rotation is ", isEnabled);
 	end
 }
 
---- Handles a given command string redirrecting to an appropriate function in the ADDON.Commands table.
+--- Handles a given command string redirecting to an appropriate function in the ADDON.Commands table.
 ---@param str string
 ---@return void
 function ADDON.HandleSlashCommands(str)

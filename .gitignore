@@ -1,4 +1,13 @@
+### Intellij IDEA
 /.idea/
 *.iml
 *.ipr
 *.iws
+
+### Eclipse
+/.settings/
+.project
+.classpath
+
+### Other
+/target/

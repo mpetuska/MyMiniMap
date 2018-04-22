@@ -3,20 +3,29 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
----------------- NAMESPACE ----------------
-ADDON = {}
--------------------------------------------
 
 ADDON.name = "MyMiniMap";
-ADDON.baseSize = 512;
-ADDON.pinBaseSize = 32;
-ADDON.UI = {}
+ADDON.Sizes = {
+	miniMapSize = 512,
+	playerPinSize = 32,
+	mapPinSize = 0
+};
+ADDON.Sizes.mapPinSize = ADDON.Sizes.playerPinSize * 1.75;
+ADDON.Boundaries = {
+	mapZoomMin = 0.5,
+	mapZoomMax = 2.00
+};
+ADDON.UI = {};
+ADDON.Classes = {};
 ADDON.UI.isSetup = false;
-ADDON.EventHandlers = {}
+ADDON.EventHandlers = {};
 ADDON.UpdateInfo = {
+	updatePending = true,
 	Map = {
 		mapId = 0,
 		zoneId = 0,
+		poiCount = 0,
+		subZoneName = "",
 		tileCountX = 0,
 		tileCountY = 0,
 		width = 0,
@@ -24,23 +33,10 @@ ADDON.UpdateInfo = {
 	},
 	Player = {
 		rotation = 0,
-		normX = 0,
-		normY = 0
+		nX = 0,
+		nY = 0
 	}
-}
-ADDON.Boundaries = {
-	mapZoomMin = 0.45;
-	mapZoomMax = 1.75;
-}
-
-ADDON.Settings = {
-	MiniMap = {
-		UpdateInfo = {
-			Map = {},
-			Player = {}
-		}
-	}
-}
+};
 ADDON.DefaultSettings = {
 	addonName = "My MiniMap",
 	Theme = {
@@ -56,9 +52,7 @@ ADDON.DefaultSettings = {
 			y = nil
 		}
 	},
-	isInCameraMode = true,
-	isMapRotationEnabled = true,
-	isUpdateEnabled = true,
-	showUnexploredPins = true
+	isMapRotationEnabled = true
 };
+ADDON.Settings = ADDON.DefaultSettings;
 
