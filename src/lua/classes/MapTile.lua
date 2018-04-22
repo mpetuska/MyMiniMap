@@ -104,7 +104,10 @@ end
 
 ---Updates map tile's rotation.
 function MapTile:UpdateRotation()
-	local rotation = UpdateInfo.Player.rotation;
+	local rotation = 0;
+	if (ADDON.Settings.isMapRotationEnabled) then
+		rotation = UpdateInfo.Player.rotation;
+	end
 	local tileCenterX, tileCenterY = self.Controls.center:GetCenter();
 	local wheelCenterX, wheelCenterY = UI.playerPin:GetCenter();
 	
@@ -121,9 +124,7 @@ end
 function MapTile:Update()
 	if (self.enabled) then
 		self:UpdatePosition();
-		if (ADDON.Settings.isMapRotationEnabled) then
-			self:UpdateRotation();
-		end
+		self:UpdateRotation();
 	end
 end
 --====================================================================================================================--
