@@ -19,6 +19,7 @@ local QuestPins = {};
 local LocationPins = {};
 local FastTravelPins = {};
 local PoiPins = {};
+local Waypoint = {};
 --====================================================== LOCAL =======================================================--
 
 ---Finds a pin by it's type and index. If no pin is found nothing is returned in its place along with the reference table
@@ -30,28 +31,36 @@ local function FindByIndex(pinType, pinIndex)
 	local obj, referenceTable;
 	if (pinType == PinType.QUEST) then
 		referenceTable = QuestPins;
-		for _, pin in pairs(QuestPins) do
+		for _, pin in pairs(referenceTable) do
 			if (pin.typeIndex == pinIndex) then
 				obj = pin;
 			end
 		end
 	elseif (pinType == PinType.LOCATION) then
 		referenceTable = LocationPins;
-		for _, pin in pairs(LocationPins) do
+		for _, pin in pairs(referenceTable) do
 			if (pin.typeIndex == pinIndex) then
 				obj = pin;
 			end
 		end
 	elseif (pinType == PinType.POI) then
 		referenceTable = PoiPins;
-		for _, pin in pairs(PoiPins) do
+		for _, pin in pairs(referenceTable) do
 			if (pin.typeIndex == pinIndex) then
 				obj = pin;
 			end
 		end
 	elseif (pinType == PinType.FAST_TRAVEL) then
 		referenceTable = FastTravelPins;
-		for _, pin in pairs(FastTravelPins) do
+		for _, pin in pairs(referenceTable) do
+			if (pin.typeIndex == pinIndex) then
+				obj = pin;
+			end
+		end
+	elseif (pinType == PinType.WAYPOINT) then
+		referenceTable = Waypoint;
+		pinIndex = 1;
+		for _, pin in pairs(referenceTable) do
 			if (pin.typeIndex == pinIndex) then
 				obj = pin;
 			end
@@ -119,6 +128,10 @@ function MapPin:New(zoPinObject)
 		pinType = PinType.FAST_TRAVEL;
 		typeIndex = zoPinObject:GetFastTravelNodeIndex();
 		obj, referenceTable = FindByIndex(pinType, typeIndex);
+	elseif (zoPinObject:GetPinType() == MAP_PIN_TYPE_PLAYER_WAYPOINT) then
+		pinType = PinType.WAYPOINT;
+		typeIndex = 1;
+		obj, referenceTable = FindByIndex(pinType, typeIndex);
 	else
 		return ;
 	end
@@ -166,7 +179,9 @@ function MapPin:Init(zoPinObject, pinType, typeIndex)
 		self.Controls[group]:SetDimensions(size, size);
 		self.Controls[group]:SetHidden(not self.enabled);
 		self.Controls[group]:SetPixelRoundingEnabled(false);
-		if (self.pinType == PinType.QUEST) then
+		if (self.pinType == PinType.WAYPOINT) then
+			self.Controls[group]:SetDrawLevel(5);
+		elseif (self.pinType == PinType.QUEST) then
 			if (self.zoObject:IsAssisted()) then
 				self.Controls[group]:SetDrawLevel(4);
 			end
@@ -193,6 +208,8 @@ function MapPin:GetIcon()
 		return self.zoObject:GetFastTravelIcons();
 	elseif (self.zoObject:IsQuest()) then
 		return self.zoObject:GetQuestIcon();
+	elseif (self.zoObject:GetPinType() == MAP_PIN_TYPE_PLAYER_WAYPOINT) then
+		return self.zoObject:GetControl():GetChild(2):GetTextureFileName();
 	end
 end
 
