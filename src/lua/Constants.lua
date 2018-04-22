@@ -4,9 +4,9 @@
   [] Date:   April 2018
 --]]
 ---------------- NAMESPACE ----------------
-ADDON = {}
-ADDON.Constants = {};
-local Constants = ADDON.Constants;
+MMM = {}
+MMM.Constants = {};
+local Constants = MMM.Constants;
 -------------------------------------------
 
 Constants.PinType =

@@ -3,8 +3,12 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   March 2018
 --]]
+---------------- NAMESPACE ----------------
+local ADDON = MMM;
 local UI = ADDON.UI;
 local UpdateInfo = ADDON.UpdateInfo;
+-------------------------------------------
+
 --====================================================== CLASS =======================================================--
 ---Class representing map tiles.
 --- 

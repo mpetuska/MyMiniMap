@@ -4,6 +4,7 @@
   [] Date:   January 2018
 --]]
 ---------------- NAMESPACE ----------------
+local ADDON = MMM;
 local EventHandlers = ADDON.EventHandlers
 -------------------------------------------
 
@@ -28,7 +29,8 @@ local function RegisterEvents()
 		end
 	end
 
-	EVENT_MANAGER:RegisterForUpdate(ADDON.name .. "_UiUpdate", 10, EventHandlers.OnUiUpdate);
+	EVENT_MANAGER:RegisterForUpdate(ADDON.name .. "_UiUpdate", 25, EventHandlers.OnUiUpdate);
+	EVENT_MANAGER:RegisterForUpdate(ADDON.name .. "_UiCleanup", 10000, EventHandlers.OnUiCleanup);
 end
 
 --- Initialises the addon.

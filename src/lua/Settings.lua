@@ -3,6 +3,9 @@
   [] E-mail: martynas.petuska@outlook.com
   [] Date:   January 2018
 --]]
+---------------- NAMESPACE ----------------
+local ADDON = MMM;
+-------------------------------------------
 
 ADDON.name = "MyMiniMap";
 ADDON.Sizes = {
@@ -48,11 +51,10 @@ ADDON.DefaultSettings = {
 		scrollScaleOffset = 0.15,
 		mapZoom = 1,
 		Position = {
-			x = nil,
-			y = nil
+			x = 0,
+			y = 0
 		}
 	},
 	isMapRotationEnabled = true
 };
-ADDON.Settings = ADDON.DefaultSettings;
 

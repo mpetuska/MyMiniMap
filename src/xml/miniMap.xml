@@ -48,13 +48,13 @@
 			</OnShow>
 			<OnMouseUp>
 				local self, button, upInside, ctrl, alt, shift, command = ...;
-				ADDON.Settings.MiniMap.Position.x, ADDON.Settings.MiniMap.Position.y = self:GetCenter();
+				MMM.Settings.MiniMap.Position.x, MMM.Settings.MiniMap.Position.y = self:GetCenter();
 			</OnMouseUp>
 			<OnMouseWheel>
 				local this, delta, ctrl, alt, shift, command = ...;
 
 				if (shift) then
-				ADDON.EventHandlers.OnZoom(delta);
+				MMM.EventHandlers.OnZoom(delta);
 				end
 			</OnMouseWheel>
 		</TopLevelControl>
