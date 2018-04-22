@@ -15,5 +15,6 @@ Constants.PinType =
 	LOCATION = "Location",
 	FAST_TRAVEL = "FastTravel",
 	QUEST = "Quest",
+	WAYPOINT = "Waypoint"
 };
 Constants.zoomDelta = 0.1;

@@ -57,6 +57,8 @@ function EventHandlers.OnAddonLoaded(event, addonName)
 			end, 250);
 		elseif (resultCode == SET_MAP_RESULT_MAP_CHANGED) then
 			CALLBACK_MANAGER:FireCallbacks("OnWorldMapChanged");
+		else
+			ADDON.UpdateInfo.updatePending = true;
 		end
 	end
 	SCENE_MANAGER:GetScene("hud"):AddFragment(fragment);
