@@ -29,8 +29,9 @@ local function RegisterEvents()
 		end
 	end
 
-	EVENT_MANAGER:RegisterForUpdate(ADDON.name .. "_UiUpdate", 25, EventHandlers.OnUiUpdate);
 	EVENT_MANAGER:RegisterForUpdate(ADDON.name .. "_UiCleanup", 10000, EventHandlers.OnUiCleanup);
+	EventHandlers.RefreshFPS();
+	EVENT_MANAGER:RegisterForUpdate(ADDON.name .. "_RefreshFPS", 2000, EventHandlers.RefreshFPS);
 end
 
 --- Initialises the addon.
