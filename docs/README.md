@@ -1,14 +1,28 @@
 # MyMiniMap
+[![Gitter](https://badges.gitter.im/MyMiniMap/Lobby.svg)](https://gitter.im/MyMiniMap/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This is an addon for "Elder Scrolls Online" game to provide a minimap functionality. It started of as a replacement of at the time
 outdated [**MiniMap by Fyrakin**](http://www.esoui.com/downloads/info605-MiniMapbyFyrakin.html), but now it's evolved into it's own addon.
 
 ## Disclaimer
 This Add-on is not created by, affiliated with or sponsored by ZeniMax Media Inc. or its affiliates.
-The Elder Scrolls� and related logos are registered trademarks or trademarks of ZeniMax Media Inc.
+The Elder Scrolls® and related logos are registered trademarks or trademarks of ZeniMax Media Inc.
  in the United States and/or other countries. All rights reserved.
  
-LUA Script reusage or code cloning of this Add-on for other projects is allowed and encouraged **with 
+LUA Script re-usage or code cloning of this Add-on for other projects is allowed and encouraged **with 
 approved permission from the author**. 
+
+## Table of Contents
+1. [Features](#features)
+2. [Changelog](#changelog)
+	1. [v1.0.0](#v1.0.0-(initial-implementation))
+3. [Contributing](#contributing)
+	1. [Useful Resources](#useful-resources)
+	2. [Development Tips & Suggestions](#development-tips-&-suggestions)
+		1. [IDE Setup](#ide-setup)
+		2. [Emmy Lua](#emmy-lua)
+		3. [ESOUI Source Code](#esoui-source-code)
+		4. [GitHub Issue Navigation](#github-issue-navigation)
 
 ## Features
 * "North-facing Fixed" and "Rotating" modes.
