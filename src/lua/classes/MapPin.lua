@@ -184,7 +184,6 @@ function MapPin:Init(zoPinObject, pinType, typeIndex)
 		self.Controls[group]:SetTexture(self.icon);
 		self.Controls[group]:SetDimensions(size, size);
 		self.Controls[group]:SetHidden(not self.enabled);
-		self.Controls[group]:SetPixelRoundingEnabled(false);
 		if (self.pinType == PinType.WAYPOINT) then
 			self.Controls[group]:SetDrawLevel(5);
 		elseif (self.pinType == PinType.QUEST) then

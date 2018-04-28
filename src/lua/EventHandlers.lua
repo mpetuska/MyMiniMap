@@ -23,6 +23,21 @@ local function SetMapToPlayer()
 	return resultCode;
 end
 
+local lastValue = 0;
+function EventHandlers.RefreshFPS()
+	local MULTIPLIER1 = 0.55;
+	local MULTIPLIER2 = 1.25;
+
+	local fps = GetFramerate();
+	local refreshTime = math.ceil(2000 / (fps * MULTIPLIER1 + fps * MULTIPLIER2));
+
+	if lastValue ~= refreshTime then
+		EVENT_MANAGER:UnregisterForUpdate(ADDON.name .. "_UiUpdate");
+		EVENT_MANAGER:RegisterForUpdate(ADDON.name .. "_UiUpdate", refreshTime, EventHandlers.OnUiUpdate)
+		lastValue = refreshTime
+	end
+end
+
 --- Handles main UI update event.
 ---@return void
 function EventHandlers.OnUiUpdate()
